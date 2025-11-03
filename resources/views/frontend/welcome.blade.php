@@ -36,11 +36,9 @@
             <div class="md:col-span-9 col-span-12 overflow-hidden shadow-md relative">
                 <div id="banner"
                     class="owl-carousel owl-theme w-full md:h-[330px] h-auto bg-gray-100 overflow-hidden flex items-center">
-                    <img src="{{ asset('banner/banner1 (1).png') }}" alt="Banner" class="w-full h-full object-cover">
-                    <img src="{{ asset('banner/banner1 (2).png') }}" alt="Banner" class="w-full h-full object-cover">
-                    <img src="{{ asset('banner/banner1 (3).png') }}" alt="Banner" class="w-full h-full object-cover">
-                    <img src="{{ asset('banner/banner1 (4).png') }}" alt="Banner" class="w-full h-full object-cover">
-                    <img src="{{ asset('banner/banner1 (1).png') }}" alt="Banner" class="w-full h-full object-cover">
+                    @foreach ($mainBanner as $banner)
+                        <img src="{{ asset($banner->image) }}" alt="Banner" class="w-full h-full object-cover">
+                    @endforeach
                 </div>
             </div>
         </div>
@@ -48,9 +46,9 @@
 
     <div class="bg-white md:py-6 py-3 mb-6">
         <div class="max-w-6xl mx-auto md:px-0 px-2 grid grid-cols-3 gap-2">
-            <img src="{{ asset('banner/banner1 (1).png') }}" alt="Banner 1" class="w-full h-auto object-cover shadow-md">
-            <img src="{{ asset('banner/banner1 (2).png') }}" alt="Banner 2" class="w-full h-auto object-cover shadow-md">
-            <img src="{{ asset('banner/banner1 (3).png') }}" alt="Banner 3" class="w-full h-auto object-cover shadow-md">
+            @foreach ($offerBanner->random(3) as $banner)
+                <img src="{{ asset($banner->image) }}" alt="Banner 1" class="w-full h-auto min-h-40 object-cover shadow-md">
+            @endforeach
         </div>
     </div>
 
@@ -186,7 +184,9 @@
     </div>
 
     <div class="max-w-6xl mx-auto md:px-0 px-2 mb-6">
-        <img class="w-full h-full object-cover" src="{{ asset('banner/banner1a.png') }}" alt="">
+        @foreach ($offerBanner->random(1) as $banner)
+            <img src="{{ asset($banner->image) }}" alt="Banner 1" class="w-full h-full md:h-72 object-fill">
+        @endforeach
     </div>
 
     <div class="bg-white py-4 mb-6">
@@ -272,7 +272,9 @@
     </div>
 
     <div class="max-w-6xl mx-auto md:px-0 px-2 mb-6">
-        <img class="w-full h-full object-cover" src="{{ asset('banner/banner.webp') }}" alt="">
+        @foreach ($offerBanner->random(1) as $banner)
+            <img src="{{ asset($banner->image) }}" alt="Banner 1" class="w-full h-full md:h-72 object-fill">
+        @endforeach
     </div>
 
     @foreach ($categories as $category)
@@ -354,10 +356,9 @@
 
     <div class="bg-white py-6 mb-6">
         <div class="max-w-6xl mx-auto md:px-0 px-2 grid grid-cols-2 gap-2">
-            <img src="{{ asset('banner/banner1 (1).png') }}" alt="Banner 1"
-                class="w-full h-auto object-cover shadow-md">
-            <img src="{{ asset('banner/banner1 (3).png') }}" alt="Banner 3"
-                class="w-full h-auto object-cover shadow-md">
+            @foreach ($offerBanner->random(2) as $banner)
+                <img src="{{ asset($banner->image) }}" alt="Banner 1" class="w-full h-auto object-cover shadow-md">
+            @endforeach
         </div>
     </div>
 @endsection

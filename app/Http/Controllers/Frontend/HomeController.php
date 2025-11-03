@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
+use App\Models\Banner;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\Subcategory;
@@ -36,7 +37,11 @@ class HomeController extends Controller
             ->orderBy('updated_at', 'desc')
             ->get();
 
-        return view('frontend.welcome', compact('products', 'categories', 'hotDeals'));
+        $mainBanner = Banner::where('name', 'main')->get();
+
+        $offerBanner = Banner::where('name', 'offer')->get();
+
+        return view('frontend.welcome', compact('products', 'categories', 'hotDeals', 'offerBanner', 'mainBanner'));
     }
 
     public function product($slug)
