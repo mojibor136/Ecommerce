@@ -1,14 +1,21 @@
 @extends('frontend.layouts.master')
 @section('title', $product->name)
-
 @section('content')
     <div class="max-w-6xl mx-auto grid grid-cols-12 md:my-4 mb-4">
-
         <div class="border-b col-span-12 block md:hidden relative">
             <div id="phoneProduct" class="owl-carousel owl-theme flex items-center gap-2">
-                @foreach ($product->images as $image)
-                    <img src="{{ asset('uploads/products/' . $image->image) }}" alt="{{ $product->name }}"
-                        class="w-full h-full object-initial">
+                @foreach ($allImages as $image)
+                    @php
+                        $productPath = 'uploads/products/' . $image;
+                        $variantPath = 'uploads/products/variants/' . $image;
+
+                        if (file_exists(public_path($variantPath))) {
+                            $finalPath = $variantPath;
+                        } else {
+                            $finalPath = $productPath;
+                        }
+                    @endphp
+                    <img src="{{ asset($finalPath) }}" alt="{{ $product->name }}" class="w-full h-full max-h-80 object-initial">
                 @endforeach
             </div>
             <div id="productCounter"

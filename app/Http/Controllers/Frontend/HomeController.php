@@ -7,6 +7,7 @@ use App\Models\Banner;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\Subcategory;
+use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
@@ -107,19 +108,37 @@ class HomeController extends Controller
         return view('frontend.tracking');
     }
 
-    public function shop()
+    public function shop(Request $request)
     {
-        $orderedProducts = Product::where('orders', '>', 0)
-            ->orderBy('orders', 'asc')
-            ->get();
+        $allcategories = Category::all();
 
-        $randomProducts = Product::where('orders', 0)
-            ->inRandomOrder()
-            ->get();
+        $query = Product::query();
 
-        $products = $orderedProducts->merge($randomProducts);
+        if ($request->has('categories') && is_array($request->categories)) {
+            $query->whereIn('category_id', $request->categories);
+        }
 
-        return view('frontend.shop', compact('products'));
+        if ($request->filled('min_price')) {
+            $query->where('new_price', '>=', $request->min_price);
+        }
+        if ($request->filled('max_price')) {
+            $query->where('new_price', '<=', $request->max_price);
+        }
+
+        if ($request->filled('rating')) {
+            $rating = (float) $request->rating;
+
+            $query->whereHas('activeReviews', function ($q) {})
+                ->withAvg('activeReviews', 'rating')
+                ->having('active_reviews_avg_rating', '>=', $rating);
+        }
+
+        $products = $query->with('images')->orderBy('orders', 'asc')->get();
+
+        $minPrice = Product::min('new_price');
+        $maxPrice = Product::max('new_price');
+
+        return view('frontend.shop', compact('products', 'allcategories', 'minPrice', 'maxPrice'));
     }
 
     public function deals()
@@ -131,42 +150,94 @@ class HomeController extends Controller
         return view('frontend.deals', compact('products'));
     }
 
-    public function categoryProduct($slug)
+    public function categoryProduct(Request $request, $slug)
     {
-        $category = Category::where('slug', $slug)->firstOrFail();
+        $product_category = Category::where('slug', $slug)->firstOrFail();
+        $allcategories = Category::all();
 
-        $orderedProducts = Product::where('category_id', $category->id)
-            ->where('orders', '>', 0)
-            ->orderBy('orders', 'asc')
-            ->get();
+        $query = Product::with('images');
 
-        $randomProducts = Product::where('category_id', $category->id)
-            ->where('orders', 0)
-            ->inRandomOrder()
-            ->get();
+        $categoryIds = [$product_category->id];
+        if ($request->has('categories') && is_array($request->categories) && count($request->categories) > 0) {
+            $categoryIds = $request->categories;
+        }
+        $query->whereIn('category_id', $categoryIds);
+
+        if ($request->filled('min_price')) {
+            $query->where('new_price', '>=', $request->min_price);
+        }
+        if ($request->filled('max_price')) {
+            $query->where('new_price', '<=', $request->max_price);
+        }
+
+        if ($request->filled('rating')) {
+            $rating = (float) $request->rating;
+            $query->whereHas('activeReviews', function ($q) use ($rating) {
+                $q->where('rating', '>=', $rating);
+            });
+        }
+
+        $orderedProducts = (clone $query)->where('orders', '>', 0)->orderBy('orders', 'asc')->get();
+
+        $randomProducts = (clone $query)->where('orders', 0)->inRandomOrder()->get();
 
         $products = $orderedProducts->merge($randomProducts);
 
-        return view('frontend.category-product', compact('category', 'products'));
+        $minPrice = Product::whereIn('category_id', [$product_category->id])->min('new_price');
+        $maxPrice = Product::whereIn('category_id', [$product_category->id])->max('new_price');
+
+        return view('frontend.category-product', compact(
+            'product_category',
+            'products',
+            'allcategories',
+            'minPrice',
+            'maxPrice'
+        ));
     }
 
-    public function subcategoryProduct($slug)
+    public function subcategoryProduct(Request $request, $slug)
     {
         $subcategory = Subcategory::where('slug', $slug)->firstOrFail();
+        $allcategories = Category::all();
 
-        $orderedProducts = Product::where('subcategory_id', $subcategory->id)
-            ->where('orders', '>', 0)
-            ->orderBy('orders', 'asc')
-            ->get();
+        $query = Product::with('images');
 
-        $randomProducts = Product::where('subcategory_id', $subcategory->id)
-            ->where('orders', 0)
-            ->inRandomOrder()
-            ->get();
+        $categoryId = $subcategory->category_id;
+        $categoryIds = [$categoryId];
+        if ($request->has('categories') && is_array($request->categories) && count($request->categories) > 0) {
+            $categoryIds = $request->categories;
+        }
+        $query->whereIn('category_id', $categoryIds);
+
+        if ($request->filled('min_price')) {
+            $query->where('new_price', '>=', $request->min_price);
+        }
+        if ($request->filled('max_price')) {
+            $query->where('new_price', '<=', $request->max_price);
+        }
+
+        if ($request->filled('rating')) {
+            $rating = (float) $request->rating;
+            $query->whereHas('activeReviews', function ($q) use ($rating) {
+                $q->where('rating', '>=', $rating);
+            });
+        }
+
+        $orderedProducts = (clone $query)->where('orders', '>', 0)->orderBy('orders', 'asc')->get();
+        $randomProducts = (clone $query)->where('orders', 0)->inRandomOrder()->get();
 
         $products = $orderedProducts->merge($randomProducts);
 
-        return view('frontend.subcategory-product', compact('subcategory', 'products'));
+        $minPrice = Product::whereIn('category_id', $categoryIds)->min('new_price');
+        $maxPrice = Product::whereIn('category_id', $categoryIds)->max('new_price');
+
+        return view('frontend.subcategory-product', compact(
+            'subcategory',
+            'products',
+            'allcategories',
+            'minPrice',
+            'maxPrice'
+        ));
     }
 
     public function contact()
