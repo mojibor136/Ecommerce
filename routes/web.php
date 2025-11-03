@@ -25,6 +25,11 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['web', ClearBuyNow::class])->group(function () {
     Route::controller(HomeController::class)->group(function () {
         Route::get('/', 'index')->name('home');
+        Route::get('/deals', 'deals')->name('deals');
+        Route::get('/help-center', 'help')->name('help');
+        Route::get('/contact', 'contact')->name('contact');
+        Route::get('/privacy-policy', 'policy')->name('policy');
+        Route::get('/terms-and-conditions', 'terms')->name('terms');
         Route::get('/your/shop', 'shop')->name('shop');
         Route::get('/product/{slug}', 'product')->name('product.details');
         Route::get('/order/success', 'success')->name('order.success');

@@ -1,10 +1,11 @@
 @extends('frontend.layouts.master')
-@section('title', $subcategory->name)
+@section('title', 'Deals Products')
 @section('content')
     <div class="bg-gray-50 py-4 px-4">
         <div class="max-w-6xl mx-auto grid grid-cols-12 gap-4">
             <!-- ================= Sidebar Filters ================= -->
-            <aside class="col-span-12 md:col-span-3 hidden md:block bg-white rounded-lg shadow p-4 sticky top-4" id="categoryList">
+            <aside class="col-span-12 md:col-span-3 hidden md:block bg-white h-fit rounded-lg shadow p-4 sticky top-4"
+                id="categoryList">
                 <h3 class="text-lg font-semibold mb-4">Filter Products</h3>
 
                 <!-- Categories Filter -->

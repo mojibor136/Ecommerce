@@ -26,6 +26,8 @@ return new class extends Migration
             $table->string('whatsapp')->nullable();
             $table->string('facebook')->nullable();
             $table->string('phone')->nullable();
+            $table->string('address')->nullable();
+            $table->string('open_time')->nullable();
             $table->text('footer')->nullable();
             $table->timestamps();
         });

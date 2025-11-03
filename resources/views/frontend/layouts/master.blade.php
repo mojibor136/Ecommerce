@@ -10,6 +10,19 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
+    @php
+        $favicon = $setting->favicon;
+    @endphp
+    @if ($favicon && file_exists(public_path($favicon)))
+        <link rel="icon" href="{{ asset($favicon) }}" type="image/png">
+    @endif
+    <title>{{ $setting->meta_title ?? 'Bangladesh Technical Education Institute' }}</title>
+    @if (!empty($setting->meta_desc))
+        <meta name="description" content="{{ $setting->meta_desc }}">
+    @endif
+    @if (!empty($setting->meta_tag) && is_array($setting->meta_tag))
+        <meta name="keywords" content="{{ implode(', ', $setting->meta_tag) }}">
+    @endif
     <style>
         body {
             font-family: 'Roboto', 'Poppins', sans-serif;
@@ -152,8 +165,10 @@
                         class="text-white text-[14.5px] hover:text-orange-500 transition">Home</a>
                     <a href="{{ url('/your/shop') }}"
                         class="text-white text-[14.5px] hover:text-orange-500 transition">Shop</a>
-                    <a href="#" class="text-white text-[14.5px] hover:text-orange-500 transition">Deals</a>
-                    <a href="#" class="text-white text-[14.5px] hover:text-orange-500 transition">Contact</a>
+                    <a href="{{ url('deals') }}"
+                        class="text-white text-[14.5px] hover:text-orange-500 transition">Deals</a>
+                    <a href="{{ url('/contact') }}"
+                        class="text-white text-[14.5px] hover:text-orange-500 transition">Contact</a>
                 </div>
             </div>
         </div>
@@ -236,8 +251,8 @@
 
                     <h3 class="text-lg font-semibold text-white mb-2">Payment Methods</h3>
                     <div class="flex gap-3 mt-2">
-                        <img src="https://www.projapotishop.com/public/frontEnd/images/payment2.png"
-                            alt="Visa" class="w-72">
+                        <img src="https://www.projapotishop.com/public/frontEnd/images/payment2.png" alt="Visa"
+                            class="w-72">
                     </div>
                 </div>
 
@@ -250,16 +265,16 @@
                     rights reserved.
                 </p>
                 <div class="flex flex-wrap justify-center gap-4 mt-3 sm:mt-0">
-                    <a href="#" class="hover:text-orange-400 transition">Privacy Policy</a>
-                    <a href="#" class="hover:text-orange-400 transition">Terms of Use</a>
-                    <a href="#" class="hover:text-orange-400 transition">Help Center</a>
-                    <a href="#" class="hover:text-orange-400 transition">Track Order</a>
+                    <a href="{{ url('/privacy-policy') }}" class="hover:text-orange-400 transition">Privacy
+                        Policy</a>
+                    <a href="{{ url('/terms-and-conditions') }}" class="hover:text-orange-400 transition">Terms of
+                        Use</a>
+                    <a href="{{ url('/help-center') }}" class="hover:text-orange-400 transition">Help Center</a>
+                    <a href="{{ url('/order/tracking') }}" class="hover:text-orange-400 transition">Track Order</a>
                 </div>
             </div>
-
         </div>
     </footer>
-
 
     <script>
         const categoryButton = document.getElementById('categoryButton');
@@ -304,10 +319,10 @@
                         items: 5
                     },
                     1024: {
-                        items: 6
+                        items: 7
                     },
                     1280: {
-                        items: 7
+                        items: 8
                     }
                 }
             });
@@ -328,10 +343,10 @@
                         items: 2
                     },
                     480: {
-                        items: 3
+                        items: 2
                     },
                     768: {
-                        items: 5
+                        items: 4
                     },
                     1024: {
                         items: 5

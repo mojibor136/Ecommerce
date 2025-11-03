@@ -122,6 +122,15 @@ class HomeController extends Controller
         return view('frontend.shop', compact('products'));
     }
 
+    public function deals()
+    {
+        $products = Product::where('hot_deal', 1)
+            ->orderBy('updated_at', 'desc')
+            ->get();
+
+        return view('frontend.deals', compact('products'));
+    }
+
     public function categoryProduct($slug)
     {
         $category = Category::where('slug', $slug)->firstOrFail();
@@ -158,5 +167,25 @@ class HomeController extends Controller
         $products = $orderedProducts->merge($randomProducts);
 
         return view('frontend.subcategory-product', compact('subcategory', 'products'));
+    }
+
+    public function contact()
+    {
+        return view('frontend.contact');
+    }
+
+    public function policy()
+    {
+        return view('frontend.privacy-policy');
+    }
+
+    public function terms()
+    {
+        return view('frontend.terms-and-conditions');
+    }
+
+    public function help()
+    {
+        return view('frontend.help-center');
     }
 }

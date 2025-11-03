@@ -19,20 +19,21 @@
                         @foreach (session('cart') as $id => $item)
                             @php $subtotal += $item['price'] * $item['quantity']; @endphp
                             <div class="flex items-center justify-between border-b border-gray-200 py-4">
-                                <div class="flex items-center gap-4">
+                                <div class="flex items-center md:gap-4 gap-2">
                                     <img src="{{ $item['image'] }}" alt="{{ $item['name'] }}"
-                                        class="w-[68px] h-[68px] object-cover rounded">
+                                        class="w-[68px] md:h-[68px] h-[86px] object-cover rounded">
                                     <div>
-                                        <h3 class="font-medium text-gray-800 text-md">
+                                        <h3 class="font-medium text-gray-800 text-md line-clamp-1">
                                             {{ \Illuminate\Support\Str::limit($item['name'], 30) }}</h3>
-                                        <div class="flex items-center gap-2">
+                                        <div class="flex md:flex-row flex-col md:items-center items-start md:gap-2">
                                             <p class="text-gray-500 text-sm">Variation:</p>
                                             <div class="flex items-center gap-2 flex-wrap">
                                                 @if (!empty($item['variants']) && is_array($item['variants']))
                                                     @foreach ($item['variants'] as $key => $value)
                                                         <div
                                                             class="bg-white border rounded text-xs text-gray-700 px-3 py-1">
-                                                            {{ ucfirst($key) }}: {{ $value }}
+                                                            <span class="hidden md:inline">{{ ucfirst($key) }}: </span>
+                                                            {{ $value }}
                                                         </div>
                                                     @endforeach
                                                 @else
@@ -54,7 +55,7 @@
                                     <form action="{{ route('cart.remove', $id) }}" method="POST">
                                         @csrf
                                         <button type="submit"
-                                            class="text-xs rounded-3xl hover:underline mt-1 px-3 py-0.5 bg-red-500 text-white">X
+                                            class="text-xs rounded-3xl hover:underline mt-1 px-3 md:py-0.5 py-1 bg-red-500 text-white">
                                             Remove</button>
                                     </form>
                                 </div>

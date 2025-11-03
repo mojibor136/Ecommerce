@@ -5,7 +5,7 @@
         <h1
             class="text-2xl font-semibold mb-6 text-gray-800 relative inline-block
         after:content-[''] after:absolute after:w-1/2 after:h-[3px] after:bg-orange-500 after:bottom-[-6px] after:left-0">
-            🧾 Checkout
+            🛍️ Checkout
         </h1>
 
         @php
@@ -17,7 +17,7 @@
         @if ($buyNow)
             @php $subtotal = $buyNow['price'] * $buyNow['quantity']; @endphp
             <div class="flex flex-col lg:flex-row gap-4">
-                <div class="lg:w-2/3 bg-white shadow rounded-lg p-6">
+                <div class="lg:w-2/3 bg-white shadow rounded-lg md:p-6 p-4">
                     <h2 class="text-lg font-semibold mb-4 flex items-center gap-2">
                         <i class="ri-user-line text-orange-500"></i>Customer Information
                     </h2>
@@ -68,19 +68,20 @@
                     <div class="flex flex-col gap-2">
                         <div class="flex items-center justify-between border-b border-gray-200 py-4 cart-item"
                             data-id="{{ $buyNow['id'] }}">
-                            <div class="flex items-center gap-4">
+                            <div class="flex items-center md:gap-4 gap-3">
                                 <img src="{{ $buyNow['image'] }}" alt="{{ $buyNow['name'] }}"
-                                    class="w-[68px] h-[68px] object-cover rounded">
+                                    class="w-[68px] md:h-[68px] h-[86px] object-cover rounded">
                                 <div>
-                                    <h3 class="font-medium text-gray-800">
+                                    <h3 class="font-medium text-gray-800 line-clamp-1">
                                         {{ \Illuminate\Support\Str::limit($buyNow['name'], 30) }}</h3>
-                                    <div class="flex items-center gap-2">
+                                    <div class="flex md:flex-row flex-col md:items-center items-start md:gap-2">
                                         <p class="text-gray-500 text-sm">Variation:</p>
                                         <div class="flex items-center gap-2 flex-wrap">
                                             @if (!empty($buyNow['variants']) && is_array($buyNow['variants']))
                                                 @foreach ($buyNow['variants'] as $key => $value)
                                                     <div class="bg-white border rounded text-xs text-gray-700 px-3 py-1">
-                                                        {{ ucfirst($key) }}: {{ $value }}
+                                                        <span class="hidden md:inline">{{ ucfirst($key) }}: </span>
+                                                        {{ $value }}
                                                     </div>
                                                 @endforeach
                                             @else
@@ -151,7 +152,7 @@
         @elseif(count($cart) > 0)
             @php $subtotal = 0; @endphp
             <div class="flex flex-col lg:flex-row gap-4">
-                <div class="lg:w-2/3 bg-white shadow rounded-lg p-6">
+                <div class="lg:w-2/3 bg-white shadow rounded-lg md:p-6 p-4">
                     <h2 class="text-lg font-semibold mb-4 flex items-center gap-2">
                         <i class="ri-user-line text-orange-500"></i>Customer Information
                     </h2>
@@ -204,20 +205,21 @@
                             @php $subtotal += $item['price'] * $item['quantity']; @endphp
                             <div class="flex items-center justify-between border-b border-gray-200 py-4 cart-item"
                                 data-id="{{ $id }}">
-                                <div class="flex items-center gap-4">
+                                <div class="flex items-center md:gap-4 gap-3">
                                     <img src="{{ $item['image'] }}" alt="{{ $item['name'] }}"
-                                        class="w-[68px] h-[68px] object-cover rounded">
+                                        class="w-[68px] md:h-[68px] h-[86px] object-cover rounded">
                                     <div>
-                                        <h3 class="font-medium text-gray-800">
+                                        <h3 class="font-medium text-gray-800 line-clamp-1">
                                             {{ \Illuminate\Support\Str::limit($item['name'], 30) }}</h3>
-                                        <div class="flex items-center gap-2">
+                                        <div class="flex md:flex-row flex-col md:items-center items-start md:gap-2">
                                             <p class="text-gray-500 text-sm">Variation:</p>
                                             <div class="flex items-center gap-2 flex-wrap">
                                                 @if (!empty($item['variants']) && is_array($item['variants']))
                                                     @foreach ($item['variants'] as $key => $value)
                                                         <div
                                                             class="bg-white border rounded text-xs text-gray-700 px-3 py-1">
-                                                            {{ ucfirst($key) }}: {{ $value }}
+                                                            <span class="hidden md:inline">{{ ucfirst($key) }}: </span>
+                                                            {{ $value }}
                                                         </div>
                                                     @endforeach
                                                 @else
@@ -239,7 +241,7 @@
                                     <form action="{{ route('cart.remove', $id) }}" method="POST">
                                         @csrf
                                         <button type="submit"
-                                            class="text-xs rounded-3xl hover:underline mt-1 px-3 py-0.5 bg-red-500 text-white">X
+                                            class="text-xs rounded-3xl hover:underline mt-1 px-3 md:py-0.5 py-1 bg-red-500 text-white">
                                             Remove</button>
                                     </form>
                                 </div>
@@ -248,7 +250,7 @@
                     </div>
                 </div>
 
-                <div class="lg:w-1/3 bg-white shadow rounded-lg p-6 h-fit">
+                <div class="lg:w-1/3 bg-white shadow rounded-lg md:p-6 p-4 h-fit">
                     <h2 class="text-lg font-semibold mb-4 flex items-center gap-2"><i
                             class="ri-bill-line text-orange-500"></i>Order Summary</h2>
 

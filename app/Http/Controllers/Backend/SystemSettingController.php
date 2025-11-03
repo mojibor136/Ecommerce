@@ -84,6 +84,8 @@ class SystemSettingController extends Controller
             $setting = Setting::first() ?? new Setting;
 
             $setting->name = $request->name;
+            $setting->open_time = $request->open_time;
+            $setting->address = $request->address;
             $setting->facebook = $request->facebook;
             $setting->whatsapp = $request->whatsapp;
             $setting->phone = $request->phone;

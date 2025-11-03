@@ -1,5 +1,5 @@
 @extends('frontend.layouts.master')
-@section('title', 'Smart Layer It Shop')
+@section('title', $setting->meta_title)
 @section('content')
     @php
         $randomCategories = $allcategories->shuffle()->take(9);
@@ -47,12 +47,13 @@
     <div class="bg-white md:py-6 py-3 mb-6">
         <div class="max-w-6xl mx-auto md:px-0 px-2 grid grid-cols-3 gap-2">
             @foreach ($offerBanner->random(3) as $banner)
-                <img src="{{ asset($banner->image) }}" alt="Banner 1" class="w-full h-auto min-h-40 object-cover shadow-md">
+                <img src="{{ asset($banner->image) }}" alt="Banner 1"
+                    class="w-full h-auto md:min-h-40 min-h-16 object-cover shadow-md">
             @endforeach
         </div>
     </div>
 
-    <div class="bg-white py-4 my-6">
+    <div class="bg-white py-4 my-6 hidden md:block">
         <div class="max-w-6xl mx-auto">
             <h2 class="text-lg font-semibold text-gray-800 mb-4 px-2">Shop by Category</h2>
             <div id="categoryScroll"
@@ -64,6 +65,26 @@
                             class="w-16 h-14 object-contain mb-2">
                         <span
                             class="text-sm font-medium text-gray-700 text-center line-clamp-2">{{ $category->name }}</span>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    </div>
+
+    <!-- Responsive Grid for Mobile -->
+    <div class="bg-white py-4 my-6 block md:hidden">
+        <div class="max-w-6xl mx-auto px-2">
+            <h2 class="text-lg font-semibold text-gray-800 mb-4">Shop by Category</h2>
+
+            <div class="grid grid-cols-4 overflow-hidden" style="max-height: 220px;">
+                @foreach ($allcategories as $category)
+                    <div onclick="window.location.href='{{ route('category.product', $category->slug) }}'"
+                        class="flex flex-col items-center justify-start py-3 hover:shadow transition cursor-pointer">
+                        <img src="{{ asset($category->image) }}" alt="{{ $category->name }}"
+                            class="w-14 h-12 object-contain mb-2 border border-gray-50 rounded">
+                        <span class="text-xs font-medium text-gray-700 text-center line-clamp-2">
+                            {{ $category->name }}
+                        </span>
                     </div>
                 @endforeach
             </div>
@@ -357,7 +378,8 @@
     <div class="bg-white py-6 mb-6">
         <div class="max-w-6xl mx-auto md:px-0 px-2 grid grid-cols-2 gap-2">
             @foreach ($offerBanner->random(2) as $banner)
-                <img src="{{ asset($banner->image) }}" alt="Banner 1" class="w-full h-auto object-cover shadow-md">
+                <img src="{{ asset($banner->image) }}" alt="Banner 1"
+                    class="w-full h-auto md:max-h-48 md:min-h-48 object-cover shadow-md">
             @endforeach
         </div>
     </div>

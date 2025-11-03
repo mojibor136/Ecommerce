@@ -13,7 +13,12 @@
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet">
-
+    @php
+        $favicon = $setting->favicon;
+    @endphp
+    @if ($favicon && file_exists(public_path($favicon)))
+        <link rel="icon" href="{{ asset($favicon) }}" type="image/png">
+    @endif
     <style>
         @font-face {
             font-family: 'Roboto';

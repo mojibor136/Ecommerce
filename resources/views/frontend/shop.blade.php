@@ -1,5 +1,5 @@
 @extends('frontend.layouts.master')
-@section('title', 'Filter Products')
+@section('title', 'All Products')
 @section('content')
     <div class="bg-gray-50 py-4 px-4">
         <div class="max-w-6xl mx-auto grid grid-cols-12 gap-4">
