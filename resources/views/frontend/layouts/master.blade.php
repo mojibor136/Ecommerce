@@ -58,7 +58,9 @@
                 <!-- Logo -->
                 <h1 onclick="window.location.href='/'"
                     class="text-2xl font-bold text-orange-600 flex items-center gap-1 cursor-pointer">
-                    <i class="ri-shopping-bag-3-line"></i> {{ $setting->name }}
+                    <img class="max-w-36 w-auto h-14"
+                        src="https://www.projapotishop.com/public/uploads/settings/1742503481-new-projapoti-logo.webp"
+                        alt="">
                 </h1>
 
                 <!-- Search Bar -->
@@ -95,15 +97,18 @@
 
         <!-- ================= {{ $setting->name }} MOBILE HEADER ================= -->
         <header class="bg-white shadow-sm w-full z-50 md:hidden">
+            <!-- Top Bar: Menu, Logo, Cart -->
             <div class="flex items-center justify-between px-4 py-3">
                 <!-- ☰ Menu Button -->
-                <button id="mobileMenuBtn" class="text-gray-700 text-2xl hover:text-orange-500">
+                <button class="mobileMenuBtn text-gray-700 text-2xl hover:text-orange-500">
                     <i class="ri-menu-line"></i>
                 </button>
 
                 <!-- 🛍️ Logo -->
                 <a href="/" class="flex items-center gap-1 text-orange-600 font-bold text-xl">
-                    <i class="ri-shopping-bag-3-line"></i> {{ $setting->name }}
+                    <img class="max-w-36 w-auto h-12"
+                        src="https://www.projapotishop.com/public/uploads/settings/1742503481-new-projapoti-logo.webp"
+                        alt="">
                 </a>
 
                 <!-- 🛒 Cart Icon -->
@@ -111,7 +116,8 @@
                     <i class="ri-shopping-cart-line text-2xl text-gray-700 hover:text-orange-500 cursor-pointer"></i>
                     <span
                         class="absolute -top-1.5 -right-1.5 bg-red-500 text-white text-xs rounded-full px-1.5 font-semibold">
-                        {{ count(session('cart', [])) }}</span>
+                        {{ count(session('cart', [])) }}
+                    </span>
                 </div>
             </div>
 
@@ -119,42 +125,72 @@
             <div class="px-4 pb-4">
                 <div class="flex items-center bg-gray-100 rounded bg-white">
                     <input type="text" placeholder="Search products..."
-                        class="w-full bg-[transparent] px-3 py-2 outline-none rounded-l ring-1 ring-offset-1 ring-gray-200 text-sm text-gray-700 transition-colors duration-200 
-               focus:outline-none focus:ring-1 focus:ring-orange-500 focus:ring-offset-1">
+                        class="w-full bg-[transparent] px-3 py-2 outline-none rounded-l ring-1 ring-offset-1 ring-gray-200 text-sm text-gray-700 transition-colors duration-200
+                focus:outline-none focus:ring-1 focus:ring-orange-500 focus:ring-offset-1">
                     <button class="bg-orange-500 px-3 py-2 text-white hover:bg-orange-600 rounded-r">
                         <i class="ri-search-line"></i>
                     </button>
                 </div>
             </div>
-
-            <!-- 📂 Mobile Dropdown Menu (Hidden by default) -->
-            <div id="mobileMenu" class="hidden bg-gray-50 border-t border-gray-200">
-                <nav class="flex flex-col text-gray-700 text-sm">
-                    <a href="/" class="px-5 py-3 hover:bg-orange-100 flex items-center gap-2">
-                        <i class="ri-home-4-line text-orange-500"></i> Home
-                    </a>
-                    <a href="/categories" class="px-5 py-3 hover:bg-orange-100 flex items-center gap-2">
-                        <i class="ri-layout-grid-line text-orange-500"></i> Categories
-                    </a>
-                    <a href="/offers" class="px-5 py-3 hover:bg-orange-100 flex items-center gap-2">
-                        <i class="ri-percent-line text-orange-500"></i> Offers
-                    </a>
-                    <a href="/order/tracking" class="px-5 py-3 hover:bg-orange-100 flex items-center gap-2">
-                        <i class="ri-map-pin-line text-orange-500"></i> Track Order
-                    </a>
-                    <a href="/contact" class="px-5 py-3 hover:bg-orange-100 flex items-center gap-2">
-                        <i class="ri-customer-service-2-line text-orange-500"></i> Customer Service
-                    </a>
-                </nav>
-            </div>
         </header>
+
+        <!-- 📂 Mobile Dropdown Menu (Hidden by default) -->
+        <div id="mobileMenu"
+            class="fixed h-full w-72 left-0 top-0 bg-white border-t border-gray-200 z-50 transform -translate-x-full transition-transform duration-300 ease-in-out">
+            <nav class="flex flex-col text-gray-700 text-sm h-full">
+                <!-- Header -->
+                <div
+                    class="flex items-center justify-between px-4 py-1 border-b border-gray-200 sticky top-0 bg-white z-50">
+                    <img class="w-20"
+                        src="https://www.projapotishop.com/public/uploads/settings/1742503481-new-projapoti-logo.webp"
+                        alt="">
+                    <button id="closeCategorySidebar" class="text-gray-600 hover:text-orange-500">
+                        <i class="ri-close-line text-2xl"></i>
+                    </button>
+                </div>
+
+                <!-- Category List with Smooth Subcategories -->
+                <ul class="flex flex-col divide-y divide-gray-200 overflow-auto">
+                    @foreach ($allcategories as $category)
+                        <li class="flex flex-col">
+                            <!-- Main Category -->
+                            <div class="flex items-center justify-between px-4 py-3 hover:bg-orange-50 cursor-pointer"
+                                onclick="window.location.href='{{ route('category.product', $category->slug) }}'">
+                                <div class="flex items-center gap-3">
+                                    <img src="{{ asset($category->image ?? 'default-category.png') }}"
+                                        alt="{{ $category->name }}" class="w-8 h-8 object-cover rounded">
+                                    <span class="text-gray-700 font-medium">{{ $category->name }}</span>
+                                </div>
+                                @if ($category->subcategories->count())
+                                    <i class="ri-arrow-down-s-line text-gray-500 text-xl"
+                                        onclick="event.stopPropagation(); toggleSubcategory(this)"></i>
+                                @endif
+                            </div>
+
+                            <!-- Subcategory List -->
+                            @if ($category->subcategories->count())
+                                <ul
+                                    class="max-h-0 overflow-hidden transition-all duration-300 ease-in-out flex-col divide-y divide-gray-200 bg-gray-50">
+                                    @foreach ($category->subcategories as $subcategory)
+                                        <li class="flex items-center gap-3 px-8 py-3 hover:bg-orange-100 cursor-pointer"
+                                            onclick="window.location.href='{{ route('subcategory.product', $subcategory->slug) }}'">
+                                            <span class="text-gray-600 text-sm">{{ $subcategory->name }}</span>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            @endif
+                        </li>
+                    @endforeach
+                </ul>
+            </nav>
+        </div>
 
         <!-- Desktop Navigation Bar -->
         <div class="bg-gray-800 w-full hidden sm:block">
             <div class="max-w-6xl mx-auto flex items-center justify-between h-12">
                 <!-- Left: All Categories -->
                 <div id="categoryButton"
-                    class="flex items-center justify-between gap-2 bg-orange-600 px-3 h-full cursor-pointer hover:bg-orange-700 transition">
+                    class="mobileMenuBtn flex items-center justify-between gap-2 bg-orange-600 px-3 h-full cursor-pointer hover:bg-orange-700 transition">
                     <span class="text-white font-medium text-[14.5px] uppercase">All Categories</span>
                     <i class="ri-menu-line text-white text-lg"></i>
                 </div>
@@ -186,7 +222,9 @@
 
                 <!-- Brand Info -->
                 <div>
-                    <h2 class="text-2xl font-bold text-white mb-3">{{ $setting->name }}</h2>
+                    <img class="max-w-36 w-auto h-14 mb-4"
+                        src="https://www.projapotishop.com/public/uploads/settings/1742503481-new-projapoti-logo.webp"
+                        alt="">
                     <p class="text-sm text-gray-400 leading-relaxed mb-4">
                         Your trusted online store for smart gadgets, electronics, fashion and more.
                         Shop confidently — fast delivery, secure payment, and 24/7 customer support.
@@ -275,6 +313,33 @@
             </div>
         </div>
     </footer>
+
+
+    <script>
+        function toggleSubcategory(icon) {
+            const subList = icon.closest('li').querySelector('ul');
+            if (!subList) return;
+
+            if (subList.style.maxHeight && subList.style.maxHeight !== '0px') {
+                // slide up
+                subList.style.maxHeight = '0px';
+                icon.classList.remove('ri-arrow-up-s-line');
+                icon.classList.add('ri-arrow-down-s-line');
+            } else {
+                // slide down
+                subList.style.maxHeight = subList.scrollHeight + 'px';
+                icon.classList.remove('ri-arrow-down-s-line');
+                icon.classList.add('ri-arrow-up-s-line');
+            }
+        }
+
+        // Optional: Reset all sublists on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('ul > li > ul').forEach(ul => {
+                ul.style.maxHeight = '0px';
+            });
+        });
+    </script>
 
     <script>
         const categoryButton = document.getElementById('categoryButton');
@@ -463,10 +528,60 @@
     </script>
 
     <script>
-        const menuBtn = document.getElementById('mobileMenuBtn');
+        // Multiple buttons by class
+        const menuBtns = document.querySelectorAll('.mobileMenuBtn'); // note: class, not id
         const menu = document.getElementById('mobileMenu');
-        menuBtn.addEventListener('click', () => {
-            menu.classList.toggle('hidden');
+        const categoryCloseBtn = document.getElementById('closeCategorySidebar');
+
+        function openMenu() {
+            menu.style.transform = 'translateX(0)';
+        }
+
+        function closeMenu() {
+            menu.style.transform = 'translateX(-100%)';
+        }
+
+        // Loop through all buttons and attach click
+        menuBtns.forEach(btn => {
+            btn.addEventListener('click', openMenu);
+        });
+
+        categoryCloseBtn.addEventListener('click', closeMenu);
+
+        // Close menu if click outside
+        document.addEventListener('click', function(event) {
+            let clickedInsideMenuBtn = false;
+            menuBtns.forEach(btn => {
+                if (btn.contains(event.target)) clickedInsideMenuBtn = true;
+            });
+
+            if (!menu.contains(event.target) && !clickedInsideMenuBtn) {
+                closeMenu();
+            }
+        });
+
+        // Subcategory toggle
+        function toggleSubcategory(icon) {
+            const subList = icon.closest('li').querySelector('ul');
+            if (!subList) return;
+
+            if (subList.style.maxHeight && subList.style.maxHeight !== '0px') {
+                // slide up
+                subList.style.maxHeight = '0px';
+                icon.classList.remove('ri-arrow-up-s-line');
+                icon.classList.add('ri-arrow-down-s-line');
+            } else {
+                // slide down
+                subList.style.maxHeight = subList.scrollHeight + 'px';
+                icon.classList.remove('ri-arrow-down-s-line');
+                icon.classList.add('ri-arrow-up-s-line');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('ul > li > ul').forEach(ul => {
+                ul.style.maxHeight = '0px';
+            });
         });
     </script>
 
