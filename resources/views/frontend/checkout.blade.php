@@ -16,7 +16,8 @@
 
         @if ($buyNow)
             @php $subtotal = $buyNow['price'] * $buyNow['quantity']; @endphp
-            <div class="flex flex-col lg:flex-row gap-4">
+            <form action="{{ route('payment') }}" method="POST" class="flex flex-col lg:flex-row gap-4">
+                @csrf
                 <div class="lg:w-2/3 bg-white shadow rounded-lg md:p-6 p-4">
                     <h2 class="text-lg font-semibold mb-4 flex items-center gap-2">
                         <i class="ri-user-line text-orange-500"></i>Customer Information
@@ -183,15 +184,16 @@
                         });
                     </script>
 
-                    <button
+                    <button type="submit"
                         class="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 rounded-lg transition">
                         <i class="ri-lock-line mr-1"></i> Confirm & Place Order
                     </button>
                 </div>
-            </div>
+            </form>
         @elseif(count($cart) > 0)
             @php $subtotal = 0; @endphp
-            <div class="flex flex-col lg:flex-row gap-4">
+            <form action="{{ route('payment') }}" method="POST" class="flex flex-col lg:flex-row gap-4">
+                @csrf
                 <div class="lg:w-2/3 bg-white shadow rounded-lg md:p-6 p-4">
                     <h2 class="text-lg font-semibold mb-4 flex items-center gap-2">
                         <i class="ri-user-line text-orange-500"></i>Customer Information
@@ -373,12 +375,12 @@
                         });
                     </script>
 
-                    <button
+                    <button type="submit"
                         class="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 rounded-lg transition">
                         <i class="ri-lock-line mr-1"></i> Confirm & Place Order
                     </button>
                 </div>
-            </div>
+            </form>
         @else
             <div class="flex flex-col items-center justify-center py-16 bg-gray-50 rounded-lg shadow">
                 <img loading="lazy" src="https://cdn-icons-png.flaticon.com/512/2038/2038854.png" alt="Empty Cart"

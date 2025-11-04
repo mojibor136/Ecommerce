@@ -19,6 +19,7 @@ use App\Http\Controllers\Backend\SystemSettingController;
 use App\Http\Controllers\Frontend\CartController;
 use App\Http\Controllers\Frontend\CheckoutController;
 use App\Http\Controllers\Frontend\HomeController;
+use App\Http\Controllers\Frontend\PaymentController;
 use App\Http\Middleware\ClearBuyNow;
 use Illuminate\Support\Facades\Route;
 
@@ -38,6 +39,9 @@ Route::middleware(['web', ClearBuyNow::class])->group(function () {
         Route::get('/subcategory/{slug}', 'subcategoryProduct')->name('subcategory.product');
     });
 
+    Route::post('/payment', [PaymentController::class, 'payment'])->name('payment');
+    Route::get('/payment/success', [PaymentController::class, 'paymentSuccess'])->name('payment.success');
+    Route::get('/payment/fail', [PaymentController::class, 'paymentFail'])->name('payment.fail');
     Route::post('/cart/add/{product}', [CartController::class, 'add'])->name('cart.add');
     Route::post('/checkout/buy-now/{product}', [CheckoutController::class, 'buyNow'])->name('checkout.buy-now');
     Route::get('/shipping/cart', [CartController::class, 'index'])->name('cart.index');
