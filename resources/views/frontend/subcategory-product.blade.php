@@ -1,9 +1,9 @@
 @extends('frontend.layouts.master')
-@section('title', $subcategory->name)
+@section('title', $product_subcategory->name)
 @section('content')
     <div class="bg-gray-50 py-4 px-4">
         <div class="max-w-6xl mx-auto grid grid-cols-12 gap-4">
-            <form action="{{ route('subcategory.product', $subcategory->slug) }}" method="GET"
+            <form action="{{ route('subcategory.product', $product_subcategory->slug) }}" method="GET"
                 class="col-span-12 md:col-span-3 hidden md:block bg-white h-fit rounded-lg shadow p-4 sticky top-4"
                 id="categoryList">
                 <h3 class="text-lg font-semibold mb-4">Filter Products</h3>
@@ -59,7 +59,7 @@
                 <div class="flex gap-2 mt-4">
                     <button type="submit"
                         class="w-1/2 bg-orange-500 hover:bg-orange-600 text-white py-2 rounded transition">Apply</button>
-                    <a href="{{ route('subcategory.product', $subcategory->slug) }}"
+                    <a href="{{ route('subcategory.product', $product_subcategory->slug) }}"
                         class="w-1/2 bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 rounded transition text-center">Reset</a>
                 </div>
             </form>
@@ -68,14 +68,30 @@
             <main class="col-span-12 md:col-span-9">
 
                 <div class="md:hidden mb-3 -mt-1 flex justify-between items-center">
-                    <div>
-                        <select class="border border-gray-300 rounded-md px-3 py-[10px] text-sm focus:outline-none">
-                            <option>Sort by</option>
-                            <option value="price_low">Price: Low to High</option>
-                            <option value="price_high">Price: High to Low</option>
-                            <option value="rating">Top Rated</option>
+                    <form id="sortForm" action="{{ route('subcategory.product', $product_subcategory->slug) }}" method="GET">
+                        @foreach (request()->categories ?? [] as $catId)
+                            <input type="hidden" name="categories[]" value="{{ $catId }}">
+                        @endforeach
+                        @if (request()->min_price)
+                            <input type="hidden" name="min_price" value="{{ request()->min_price }}">
+                        @endif
+                        @if (request()->max_price)
+                            <input type="hidden" name="max_price" value="{{ request()->max_price }}">
+                        @endif
+                        @if (request()->rating)
+                            <input type="hidden" name="rating" value="{{ request()->rating }}">
+                        @endif
+                        <select id="sortSelect" name="sort"
+                            class="border border-gray-300 rounded-md px-3 py-[10px] text-sm focus:outline-none">
+                            <option value="">Sort by</option>
+                            <option value="price_low" {{ request('sort') == 'price_low' ? 'selected' : '' }}>Price: Low to
+                                High</option>
+                            <option value="price_high" {{ request('sort') == 'price_high' ? 'selected' : '' }}>Price: High
+                                to Low</option>
+                            <option value="rating" {{ request('sort') == 'rating' ? 'selected' : '' }}>Top Rated</option>
                         </select>
-                    </div>
+                    </form>
+
                     <button id="openFilter" type="button"
                         class="flex items-center gap-2 bg-orange-500 text-white px-4 py-[7px] rounded-md shadow hover:bg-orange-600 transition">
                         <i class="ri-filter-3-line text-lg"></i> Filter
@@ -94,7 +110,7 @@
                         </div>
 
                         <!-- Filter Form (same logic as desktop) -->
-                        <form action="{{ route('shop') }}" method="GET" class="space-y-6">
+                        <form action="{{ route('subcategory.product', $product_subcategory->slug) }}" method="GET" class="space-y-6">
                             <!-- Categories -->
                             <div>
                                 <h4 class="font-medium mb-2 text-gray-700">Categories</h4>
@@ -150,7 +166,7 @@
                             <div class="flex gap-2 pt-2">
                                 <button type="submit"
                                     class="w-1/2 bg-orange-500 hover:bg-orange-600 text-white py-2 rounded transition">Apply</button>
-                                <a href="{{ route('shop') }}"
+                                <a href="{{ route('subcategory.product', $product_subcategory->slug) }}"
                                     class="w-1/2 bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 rounded transition text-center">Reset</a>
                             </div>
                         </form>
@@ -266,6 +282,19 @@
                 panel.classList.add('translate-x-full');
                 setTimeout(() => drawer.classList.add('hidden'), 300);
             }
+        });
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const sortSelect = document.getElementById("sortSelect");
+            const sortForm = document.getElementById("sortForm");
+
+            sortSelect.addEventListener("change", function() {
+                if (this.value !== "") {
+                    sortForm.submit();
+                }
+            });
         });
     </script>
 @endsection

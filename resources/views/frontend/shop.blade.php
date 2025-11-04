@@ -73,14 +73,17 @@
             <main class="col-span-12 md:col-span-9">
 
                 <div class="md:hidden mb-3 -mt-1 flex justify-between items-center">
-                    <div>
-                        <select class="border border-gray-300 rounded-md px-3 py-[10px] text-sm focus:outline-none">
-                            <option>Sort by</option>
-                            <option value="price_low">Price: Low to High</option>
-                            <option value="price_high">Price: High to Low</option>
-                            <option value="rating">Top Rated</option>
+                    <form id="sortForm" action="{{ route('shop') }}" method="GET">
+                        <select id="sortSelect" name="sort"
+                            class="border border-gray-300 rounded-md px-3 py-[10px] text-sm focus:outline-none">
+                            <option value="">Sort by</option>
+                            <option value="price_low" {{ request('sort') == 'price_low' ? 'selected' : '' }}>Price: Low to
+                                High</option>
+                            <option value="price_high" {{ request('sort') == 'price_high' ? 'selected' : '' }}>Price: High
+                                to Low</option>
+                            <option value="rating" {{ request('sort') == 'rating' ? 'selected' : '' }}>Top Rated</option>
                         </select>
-                    </div>
+                    </form>
                     <button id="openFilter" type="button"
                         class="flex items-center gap-2 bg-orange-500 text-white px-4 py-[7px] rounded-md shadow hover:bg-orange-600 transition">
                         <i class="ri-filter-3-line text-lg"></i> Filter
@@ -198,7 +201,8 @@
                             @endif
 
                             <div class="w-full h-48 overflow-hidden">
-                                <img loading="lazy" src="{{ asset('uploads/products/' . $product->images->first()->image) }}"
+                                <img loading="lazy"
+                                    src="{{ asset('uploads/products/' . $product->images->first()->image) }}"
                                     alt="Smartphone XYZ"
                                     class="w-full h-full object-cover transform hover:scale-105 transition duration-300">
                             </div>
@@ -271,6 +275,19 @@
                 panel.classList.add('translate-x-full');
                 setTimeout(() => drawer.classList.add('hidden'), 300);
             }
+        });
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const sortSelect = document.getElementById("sortSelect");
+            const sortForm = document.getElementById("sortForm");
+
+            sortSelect.addEventListener("change", function() {
+                if (this.value !== "") {
+                    sortForm.submit();
+                }
+            });
         });
     </script>
 @endsection

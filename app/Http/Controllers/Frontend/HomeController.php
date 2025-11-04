@@ -108,11 +108,44 @@ class HomeController extends Controller
         return view('frontend.tracking');
     }
 
+    // public function shop(Request $request)
+    // {
+    //     $allcategories = Category::all();
+
+    //     $query = Product::query();
+
+    //     if ($request->has('categories') && is_array($request->categories)) {
+    //         $query->whereIn('category_id', $request->categories);
+    //     }
+
+    //     if ($request->filled('min_price')) {
+    //         $query->where('new_price', '>=', $request->min_price);
+    //     }
+    //     if ($request->filled('max_price')) {
+    //         $query->where('new_price', '<=', $request->max_price);
+    //     }
+
+    //     if ($request->filled('rating')) {
+    //         $rating = (float) $request->rating;
+
+    //         $query->whereHas('activeReviews', function ($q) {})
+    //             ->withAvg('activeReviews', 'rating')
+    //             ->having('active_reviews_avg_rating', '>=', $rating);
+    //     }
+
+    //     $products = $query->with('images')->orderBy('orders', 'asc')->get();
+
+    //     $minPrice = Product::min('new_price');
+    //     $maxPrice = Product::max('new_price');
+
+    //     return view('frontend.shop', compact('products', 'allcategories', 'minPrice', 'maxPrice'));
+    // }
+
     public function shop(Request $request)
     {
         $allcategories = Category::all();
 
-        $query = Product::query();
+        $query = Product::with('images');
 
         if ($request->has('categories') && is_array($request->categories)) {
             $query->whereIn('category_id', $request->categories);
@@ -128,17 +161,43 @@ class HomeController extends Controller
         if ($request->filled('rating')) {
             $rating = (float) $request->rating;
 
-            $query->whereHas('activeReviews', function ($q) {})
+            $query->whereHas('activeReviews', function ($q) use ($rating) {
+                $q->where('rating', '>=', $rating);
+            })
                 ->withAvg('activeReviews', 'rating')
                 ->having('active_reviews_avg_rating', '>=', $rating);
         }
 
-        $products = $query->with('images')->orderBy('orders', 'asc')->get();
+        if ($request->filled('sort')) {
+            switch ($request->sort) {
+                case 'price_low':
+                    $query->orderBy('new_price', 'asc');
+                    break;
+                case 'price_high':
+                    $query->orderBy('new_price', 'desc');
+                    break;
+                case 'rating':
+                    $query->withAvg('activeReviews', 'rating')
+                        ->orderByDesc('active_reviews_avg_rating');
+                    break;
+                default:
+                    $query->orderBy('orders', 'asc');
+            }
+        } else {
+            $query->orderBy('orders', 'asc');
+        }
+
+        $products = $query->get();
 
         $minPrice = Product::min('new_price');
         $maxPrice = Product::max('new_price');
 
-        return view('frontend.shop', compact('products', 'allcategories', 'minPrice', 'maxPrice'));
+        return view('frontend.shop', compact(
+            'products',
+            'allcategories',
+            'minPrice',
+            'maxPrice'
+        ));
     }
 
     public function deals()
@@ -177,6 +236,25 @@ class HomeController extends Controller
             });
         }
 
+        if ($request->filled('sort')) {
+            switch ($request->sort) {
+                case 'price_low':
+                    $query->orderBy('new_price', 'asc');
+                    break;
+                case 'price_high':
+                    $query->orderBy('new_price', 'desc');
+                    break;
+                case 'rating':
+                    $query->withAvg('activeReviews', 'rating')
+                        ->orderByDesc('active_reviews_avg_rating');
+                    break;
+                default:
+                    $query->orderBy('orders', 'asc');
+            }
+        } else {
+            $query->orderBy('orders', 'asc');
+        }
+
         $orderedProducts = (clone $query)->where('orders', '>', 0)->orderBy('orders', 'asc')->get();
 
         $randomProducts = (clone $query)->where('orders', 0)->inRandomOrder()->get();
@@ -197,12 +275,12 @@ class HomeController extends Controller
 
     public function subcategoryProduct(Request $request, $slug)
     {
-        $subcategory = Subcategory::where('slug', $slug)->firstOrFail();
+        $product_subcategory = Subcategory::where('slug', $slug)->firstOrFail();
         $allcategories = Category::all();
 
         $query = Product::with('images');
 
-        $categoryId = $subcategory->category_id;
+        $categoryId = $product_subcategory->category_id;
         $categoryIds = [$categoryId];
         if ($request->has('categories') && is_array($request->categories) && count($request->categories) > 0) {
             $categoryIds = $request->categories;
@@ -223,6 +301,25 @@ class HomeController extends Controller
             });
         }
 
+        if ($request->filled('sort')) {
+            switch ($request->sort) {
+                case 'price_low':
+                    $query->orderBy('new_price', 'asc');
+                    break;
+                case 'price_high':
+                    $query->orderBy('new_price', 'desc');
+                    break;
+                case 'rating':
+                    $query->withAvg('activeReviews', 'rating')
+                        ->orderByDesc('active_reviews_avg_rating');
+                    break;
+                default:
+                    $query->orderBy('orders', 'asc');
+            }
+        } else {
+            $query->orderBy('orders', 'asc');
+        }
+
         $orderedProducts = (clone $query)->where('orders', '>', 0)->orderBy('orders', 'asc')->get();
         $randomProducts = (clone $query)->where('orders', 0)->inRandomOrder()->get();
 
@@ -232,7 +329,7 @@ class HomeController extends Controller
         $maxPrice = Product::whereIn('category_id', $categoryIds)->max('new_price');
 
         return view('frontend.subcategory-product', compact(
-            'subcategory',
+            'product_subcategory',
             'products',
             'allcategories',
             'minPrice',
