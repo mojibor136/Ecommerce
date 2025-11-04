@@ -125,23 +125,63 @@
 
                     <h3 class="text-md font-semibold mb-3 flex items-center gap-2"><i
                             class="ri-bank-card-line text-orange-500"></i>Payment Method</h3>
-                    <div class="space-y-2 mb-6">
-                        <label class="flex items-center gap-2">
-                            <input type="radio" name="payment" value="cod"
-                                class="text-orange-500 focus:ring-orange-500" checked>
-                            <span>Cash on Delivery</span>
-                        </label>
-                        <label class="flex items-center gap-2">
-                            <input type="radio" name="payment" value="bkash"
-                                class="text-orange-500 focus:ring-orange-500">
-                            <span>BKash / Nagad / Rocket</span>
-                        </label>
-                        <label class="flex items-center gap-2">
-                            <input type="radio" name="payment" value="card"
-                                class="text-orange-500 focus:ring-orange-500">
-                            <span>Credit / Debit Card</span>
-                        </label>
+                    <div class="space-y-3 mb-6">
+                        <h2 class="font-semibold text-gray-800 mb-2">Select Payment Method</h2>
+
+                        <div class="grid grid-cols-3 gap-2">
+                            <div class="payment-card border border-gray-300 rounded-lg px-2 cursor-pointer text-center transition-all duration-300 hover:scale-95"
+                                data-method="cod">
+                                <img src="https://cdn-icons-png.freepik.com/512/5278/5278605.png" alt="Cash on Delivery"
+                                    class="w-24 h-12 mx-auto">
+                            </div>
+
+                            <div class="payment-card border border-gray-300 rounded-lg px-2 cursor-pointer text-center transition-all duration-300 hover:scale-95"
+                                data-method="bkash">
+                                <img src="https://www.logo.wine/a/logo/BKash/BKash-bKash-Logo.wine.svg" alt="bKash"
+                                    class="w-24 h-12 mx-auto">
+                            </div>
+
+                            <div class="payment-card border border-gray-300 rounded-lg px-2 cursor-pointer text-center transition-all duration-300 hover:scale-95"
+                                data-method="nagad">
+                                <img src="https://www.logo.wine/a/logo/Nagad/Nagad-Logo.wine.svg" alt="Nagad"
+                                    class="w-24 h-12 mx-auto">
+                            </div>
+                        </div>
+
+                        <input type="hidden" name="payment" id="selectedPaymentMethod" value="cod">
                     </div>
+
+                    <style>
+                        .payment-card {
+                            transition: all 0.3s ease;
+                        }
+
+                        .payment-card.active {
+                            border: 2px solid;
+                            border-color: #f97316;
+                            background-color: #fff7ed;
+                        }
+                    </style>
+
+                    <script>
+                        const paymentCards = document.querySelectorAll('.payment-card');
+                        const hiddenInput = document.getElementById('selectedPaymentMethod');
+
+                        paymentCards.forEach(card => {
+                            card.addEventListener('click', () => {
+                                paymentCards.forEach(c => c.classList.remove('active'));
+
+                                card.classList.add('active');
+
+                                hiddenInput.value = card.getAttribute('data-method');
+                            });
+                        });
+
+                        document.addEventListener('DOMContentLoaded', () => {
+                            const defaultCard = document.querySelector('[data-method="cod"]');
+                            if (defaultCard) defaultCard.classList.add('active');
+                        });
+                    </script>
 
                     <button
                         class="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 rounded-lg transition">
@@ -274,23 +314,64 @@
 
                     <h3 class="text-md font-semibold mb-3 flex items-center gap-2"><i
                             class="ri-bank-card-line text-orange-500"></i>Payment Method</h3>
-                    <div class="space-y-2 mb-6">
-                        <label class="flex items-center gap-2">
-                            <input type="radio" name="payment" value="cod"
-                                class="text-orange-500 focus:ring-orange-500" checked>
-                            <span>Cash on Delivery</span>
-                        </label>
-                        <label class="flex items-center gap-2">
-                            <input type="radio" name="payment" value="bkash"
-                                class="text-orange-500 focus:ring-orange-500">
-                            <span>BKash / Nagad / Rocket</span>
-                        </label>
-                        <label class="flex items-center gap-2">
-                            <input type="radio" name="payment" value="card"
-                                class="text-orange-500 focus:ring-orange-500">
-                            <span>Credit / Debit Card</span>
-                        </label>
+
+                    <div class="space-y-3 mb-6">
+                        <h2 class="font-semibold text-gray-800 mb-2">Select Payment Method</h2>
+
+                        <div class="grid grid-cols-3 gap-2">
+                            <div class="payment-card border border-gray-300 rounded-lg px-2 cursor-pointer text-center transition-all duration-300 hover:scale-95"
+                                data-method="cod">
+                                <img src="https://cdn-icons-png.freepik.com/512/5278/5278605.png" alt="Cash on Delivery"
+                                    class="w-24 h-12 mx-auto">
+                            </div>
+
+                            <div class="payment-card border border-gray-300 rounded-lg px-2 cursor-pointer text-center transition-all duration-300 hover:scale-95"
+                                data-method="bkash">
+                                <img src="https://www.logo.wine/a/logo/BKash/BKash-bKash-Logo.wine.svg" alt="bKash"
+                                    class="w-24 h-12 mx-auto">
+                            </div>
+
+                            <div class="payment-card border border-gray-300 rounded-lg px-2 cursor-pointer text-center transition-all duration-300 hover:scale-95"
+                                data-method="nagad">
+                                <img src="https://www.logo.wine/a/logo/Nagad/Nagad-Logo.wine.svg" alt="Nagad"
+                                    class="w-24 h-12 mx-auto">
+                            </div>
+                        </div>
+
+                        <input type="hidden" name="payment" id="selectedPaymentMethod" value="cod">
                     </div>
+
+                    <style>
+                        .payment-card {
+                            transition: all 0.3s ease;
+                        }
+
+                        .payment-card.active {
+                            border: 2px solid;
+                            border-color: #f97316;
+                            background-color: #fff7ed;
+                        }
+                    </style>
+
+                    <script>
+                        const paymentCards = document.querySelectorAll('.payment-card');
+                        const hiddenInput = document.getElementById('selectedPaymentMethod');
+
+                        paymentCards.forEach(card => {
+                            card.addEventListener('click', () => {
+                                paymentCards.forEach(c => c.classList.remove('active'));
+
+                                card.classList.add('active');
+
+                                hiddenInput.value = card.getAttribute('data-method');
+                            });
+                        });
+
+                        document.addEventListener('DOMContentLoaded', () => {
+                            const defaultCard = document.querySelector('[data-method="cod"]');
+                            if (defaultCard) defaultCard.classList.add('active');
+                        });
+                    </script>
 
                     <button
                         class="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 rounded-lg transition">

@@ -54,12 +54,12 @@
 
     <div class="sticky top-0 z-50 ">
         <header class="bg-white shadow-sm hidden md:block">
-            <div class="max-w-6xl mx-auto py-3 flex items-center justify-between">
+            <div class="max-w-6xl mx-auto py-4 flex items-center justify-between">
                 <!-- Logo -->
                 <h1 onclick="window.location.href='/'"
                     class="text-2xl font-bold text-orange-600 flex items-center gap-1 cursor-pointer">
-                    <img class="max-w-36 w-auto h-14"
-                        src="https://www.projapotishop.com/public/uploads/settings/1742503481-new-projapoti-logo.webp"
+                    <img class="max-w-48 w-auto h-16"
+                        src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Daraz_Logo.png/1200px-Daraz_Logo.png"
                         alt="">
                 </h1>
 
@@ -98,7 +98,7 @@
         <!-- ================= {{ $setting->name }} MOBILE HEADER ================= -->
         <header class="bg-white shadow-sm w-full z-50 md:hidden">
             <!-- Top Bar: Menu, Logo, Cart -->
-            <div class="flex items-center justify-between px-4 py-3">
+            <div class="flex items-center justify-between px-4 py-4">
                 <!-- ☰ Menu Button -->
                 <button class="mobileMenuBtn text-gray-700 text-2xl hover:text-orange-500">
                     <i class="ri-menu-line"></i>
@@ -106,8 +106,8 @@
 
                 <!-- 🛍️ Logo -->
                 <a href="/" class="flex items-center gap-1 text-orange-600 font-bold text-xl">
-                    <img class="max-w-36 w-auto h-12"
-                        src="https://www.projapotishop.com/public/uploads/settings/1742503481-new-projapoti-logo.webp"
+                    <img class="max-w-48 w-auto h-12"
+                        src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Daraz_Logo.png/1200px-Daraz_Logo.png"
                         alt="">
                 </a>
 
@@ -140,9 +140,9 @@
             <nav class="flex flex-col text-gray-700 text-sm h-full">
                 <!-- Header -->
                 <div
-                    class="flex items-center justify-between px-4 py-1 border-b border-gray-200 sticky top-0 bg-white z-50">
-                    <img class="w-20"
-                        src="https://www.projapotishop.com/public/uploads/settings/1742503481-new-projapoti-logo.webp"
+                    class="flex items-center justify-between px-4 py-2 border-b border-gray-200 sticky top-0 bg-white z-50">
+                    <img class="max-w-48 w-auto h-10"
+                        src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Daraz_Logo.png/1200px-Daraz_Logo.png"
                         alt="">
                     <button id="closeCategorySidebar" class="text-gray-600 hover:text-orange-500">
                         <i class="ri-close-line text-2xl"></i>
@@ -222,8 +222,8 @@
 
                 <!-- Brand Info -->
                 <div>
-                    <img class="max-w-36 w-auto h-14 mb-4"
-                        src="https://www.projapotishop.com/public/uploads/settings/1742503481-new-projapoti-logo.webp"
+                    <img class="max-w-48 w-auto h-20 mb-4"
+                        src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Daraz_Logo.png/1200px-Daraz_Logo.png"
                         alt="">
                     <p class="text-sm text-gray-400 leading-relaxed mb-4">
                         Your trusted online store for smart gadgets, electronics, fashion and more.
