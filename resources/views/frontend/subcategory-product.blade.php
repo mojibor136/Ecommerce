@@ -66,6 +66,97 @@
 
             <!-- ================= Products Grid ================= -->
             <main class="col-span-12 md:col-span-9">
+
+                <div class="md:hidden mb-3 -mt-1 flex justify-between items-center">
+                    <div>
+                        <select class="border border-gray-300 rounded-md px-3 py-[10px] text-sm focus:outline-none">
+                            <option>Sort by</option>
+                            <option value="price_low">Price: Low to High</option>
+                            <option value="price_high">Price: High to Low</option>
+                            <option value="rating">Top Rated</option>
+                        </select>
+                    </div>
+                    <button id="openFilter" type="button"
+                        class="flex items-center gap-2 bg-orange-500 text-white px-4 py-[7px] rounded-md shadow hover:bg-orange-600 transition">
+                        <i class="ri-filter-3-line text-lg"></i> Filter
+                    </button>
+                </div>
+
+                <!-- Mobile Filter Drawer -->
+                <div id="mobileFilterDrawer" class="fixed inset-0 z-50 bg-black/40 hidden justify-end md:hidden">
+                    <div class="bg-white w-full h-full p-5 overflow-y-auto transform translate-x-full transition-transform duration-300"
+                        id="filterPanel">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-lg font-semibold text-gray-800">Filter Products</h3>
+                            <button id="closeFilter" type="button" class="text-gray-600 hover:text-gray-900 text-xl">
+                                <i class="ri-close-line"></i>
+                            </button>
+                        </div>
+
+                        <!-- Filter Form (same logic as desktop) -->
+                        <form action="{{ route('shop') }}" method="GET" class="space-y-6">
+                            <!-- Categories -->
+                            <div>
+                                <h4 class="font-medium mb-2 text-gray-700">Categories</h4>
+                                <ul class="space-y-2 text-sm">
+                                    @foreach ($allcategories as $category)
+                                        <li>
+                                            <label class="flex items-center gap-2 cursor-pointer">
+                                                <input type="checkbox" name="categories[]" value="{{ $category->id }}"
+                                                    class="form-checkbox"
+                                                    {{ in_array($category->id, request()->categories ?? []) ? 'checked' : '' }}>
+                                                <span>{{ $category->name }}</span>
+                                            </label>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </div>
+
+                            <!-- Price -->
+                            <div>
+                                <h4 class="font-medium mb-2 text-gray-700">Price</h4>
+                                <div class="flex items-center gap-2">
+                                    <input type="number" name="min_price" placeholder="Min"
+                                        value="{{ request()->min_price ?? $minPrice }}"
+                                        class="w-1/2 border px-3 py-1.5 rounded focus:ring-2 focus:ring-orange-500">
+                                    <input type="number" name="max_price" placeholder="Max"
+                                        value="{{ request()->max_price ?? $maxPrice }}"
+                                        class="w-1/2 border px-3 py-1.5 rounded focus:ring-2 focus:ring-orange-500">
+                                </div>
+                            </div>
+
+                            <!-- Rating -->
+                            <div>
+                                <h4 class="font-medium mb-2 text-gray-700">Rating</h4>
+                                <div class="flex flex-col gap-1">
+                                    @for ($i = 5; $i >= 1; $i--)
+                                        <label class="flex items-center gap-2 cursor-pointer text-sm">
+                                            <input type="radio" name="rating" value="{{ $i }}"
+                                                class="form-radio" {{ request()->rating == $i ? 'checked' : '' }}>
+                                            <span class="flex gap-1">
+                                                @for ($j = 0; $j < $i; $j++)
+                                                    <i class="ri-star-fill text-yellow-400"></i>
+                                                @endfor
+                                                @for ($k = $i; $k < 5; $k++)
+                                                    <i class="ri-star-line text-yellow-400"></i>
+                                                @endfor
+                                            </span>
+                                        </label>
+                                    @endfor
+                                </div>
+                            </div>
+
+                            <!-- Buttons -->
+                            <div class="flex gap-2 pt-2">
+                                <button type="submit"
+                                    class="w-1/2 bg-orange-500 hover:bg-orange-600 text-white py-2 rounded transition">Apply</button>
+                                <a href="{{ route('shop') }}"
+                                    class="w-1/2 bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 rounded transition text-center">Reset</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
                 <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-y-4 gap-x-2">
                     @foreach ($products as $product)
                         <div class="bg-white rounded-md overflow-hidden relative border cursor-pointer"
@@ -135,7 +226,8 @@
                                             class="line-through text-gray-400 text-[14px]">&#2547;{{ $product->old_price }}</span>
                                     @endif
                                 </p>
-                                <form method="POST" action="{{ route('checkout.buy-now', $product->id) }}" class="w-auto">
+                                <form method="POST" action="{{ route('checkout.buy-now', $product->id) }}"
+                                    class="w-auto">
                                     @csrf
                                     <input type="hidden" name="quantity" value="1">
                                     <input type="hidden" name="image"
@@ -152,4 +244,28 @@
             </main>
         </div>
     </div>
+    <!-- JS for Mobile Filter -->
+    <script>
+        const openBtn = document.getElementById('openFilter');
+        const closeBtn = document.getElementById('closeFilter');
+        const drawer = document.getElementById('mobileFilterDrawer');
+        const panel = document.getElementById('filterPanel');
+
+        openBtn.addEventListener('click', () => {
+            drawer.classList.remove('hidden');
+            setTimeout(() => panel.classList.remove('translate-x-full'), 10);
+        });
+
+        closeBtn.addEventListener('click', () => {
+            panel.classList.add('translate-x-full');
+            setTimeout(() => drawer.classList.add('hidden'), 300);
+        });
+
+        drawer.addEventListener('click', (e) => {
+            if (e.target === drawer) {
+                panel.classList.add('translate-x-full');
+                setTimeout(() => drawer.classList.add('hidden'), 300);
+            }
+        });
+    </script>
 @endsection

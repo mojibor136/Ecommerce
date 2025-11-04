@@ -101,7 +101,7 @@
                             @endif
 
                             <div class="w-full h-48 overflow-hidden">
-                                <img src="{{ asset('uploads/products/' . $product->images->first()->image) }}"
+                                <img loading="lazy" src="{{ asset('uploads/products/' . $product->images->first()->image) }}"
                                     alt="Smartphone XYZ"
                                     class="w-full h-full object-cover transform hover:scale-105 transition duration-300">
                             </div>

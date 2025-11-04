@@ -69,7 +69,7 @@
                         <div class="flex items-center justify-between border-b border-gray-200 py-4 cart-item"
                             data-id="{{ $buyNow['id'] }}">
                             <div class="flex items-center md:gap-4 gap-3">
-                                <img src="{{ $buyNow['image'] }}" alt="{{ $buyNow['name'] }}"
+                                <img loading="lazy" src="{{ $buyNow['image'] }}" alt="{{ $buyNow['name'] }}"
                                     class="w-[68px] md:h-[68px] h-[86px] object-cover rounded">
                                 <div>
                                     <h3 class="font-medium text-gray-800 line-clamp-1">
@@ -206,7 +206,7 @@
                             <div class="flex items-center justify-between border-b border-gray-200 py-4 cart-item"
                                 data-id="{{ $id }}">
                                 <div class="flex items-center md:gap-4 gap-3">
-                                    <img src="{{ $item['image'] }}" alt="{{ $item['name'] }}"
+                                    <img loading="lazy" src="{{ $item['image'] }}" alt="{{ $item['name'] }}"
                                         class="w-[68px] md:h-[68px] h-[86px] object-cover rounded">
                                     <div>
                                         <h3 class="font-medium text-gray-800 line-clamp-1">
@@ -300,7 +300,7 @@
             </div>
         @else
             <div class="flex flex-col items-center justify-center py-16 bg-gray-50 rounded-lg shadow">
-                <img src="https://cdn-icons-png.flaticon.com/512/2038/2038854.png" alt="Empty Cart"
+                <img loading="lazy" src="https://cdn-icons-png.flaticon.com/512/2038/2038854.png" alt="Empty Cart"
                     class="w-40 h-40 mb-6 animate-bounce">
                 <h2 class="text-2xl font-semibold text-gray-700 mb-2">Your Cart is Empty</h2>
                 <p class="text-gray-500 mb-6 text-center px-4">Looks like you haven't added any products yet. Start

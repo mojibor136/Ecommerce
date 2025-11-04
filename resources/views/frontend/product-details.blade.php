@@ -15,7 +15,7 @@
                             $finalPath = $productPath;
                         }
                     @endphp
-                    <img src="{{ asset($finalPath) }}" alt="{{ $product->name }}" class="w-full h-full max-h-80 object-initial">
+                    <img loading="lazy" src="{{ asset($finalPath) }}" alt="{{ $product->name }}" class="w-full h-full max-h-80 object-initial">
                 @endforeach
             </div>
             <div id="productCounter"
@@ -25,7 +25,7 @@
 
         <div class="md:col-span-4 col-span-12 flex flex-col gap-3 items-center justify-start bg-white hidden md:flex">
             <div id="mainImageContainer" class="w-full border-b border-r border-gray-100 px-3 py-3">
-                <img id="mainImage" src="{{ asset('uploads/products/' . $product->images->first()->image) }}"
+                <img loading="lazy" id="mainImage" src="{{ asset('uploads/products/' . $product->images->first()->image) }}"
                     alt="{{ $product->name }}" class="w-full h-auto object-cover">
             </div>
             <div id="desktopProduct" class="owl-carousel owl-theme flex gap-2 pb-3 px-3 hidden md:block">
@@ -41,7 +41,7 @@
                         }
                     @endphp
 
-                    <img src="{{ asset($finalPath) }}" alt="{{ $product->name }}"
+                    <img loading="lazy" src="{{ asset($finalPath) }}" alt="{{ $product->name }}"
                         class="h-16 w-16 object-cover rounded shadow mx-auto cursor-pointer border transition duration-200"
                         data-variant-id="0" onclick="changeMainImage(this)">
                 @endforeach
@@ -383,7 +383,7 @@
                     @foreach ($reviews as $review)
                         <div class="flex items-start space-x-4 p-4 bg-gray-50 rounded-lg shadow-sm">
                             <div class="flex-shrink-0">
-                                <img class="w-12 h-12 rounded-full object-cover"
+                                <img loading="lazy" class="w-12 h-12 rounded-full object-cover"
                                     src="{{ asset('upload/user/219969.png') }}" alt="Reviewer">
                             </div>
                             <div class="flex-1">
@@ -455,7 +455,7 @@
                         @endif
 
                         <div class="w-full h-48 overflow-hidden">
-                            <img src="{{ asset('uploads/products/' . $product->images->first()->image) }}"
+                            <img loading="lazy" src="{{ asset('uploads/products/' . $product->images->first()->image) }}"
                                 alt="Smartphone XYZ"
                                 class="w-full h-full object-cover transform hover:scale-105 transition duration-300">
                         </div>
