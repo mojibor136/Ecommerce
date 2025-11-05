@@ -149,7 +149,7 @@
                             </div>
                         </div>
 
-                        <input type="hidden" name="payment" id="selectedPaymentMethod" value="cod">
+                        <input type="hidden" name="payment_method" id="selectedPaymentMethod" value="cod">
                     </div>
 
                     <style>
@@ -170,14 +170,18 @@
 
                         paymentCards.forEach(card => {
                             card.addEventListener('click', () => {
+                                // সব কার্ড থেকে active ক্লাস রিমুভ
                                 paymentCards.forEach(c => c.classList.remove('active'));
 
+                                // ক্লিক করা কার্ডে active ক্লাস অ্যাড
                                 card.classList.add('active');
 
+                                // Hidden input এর value আপডেট
                                 hiddenInput.value = card.getAttribute('data-method');
                             });
                         });
 
+                        // ডিফল্ট selected card
                         document.addEventListener('DOMContentLoaded', () => {
                             const defaultCard = document.querySelector('[data-method="cod"]');
                             if (defaultCard) defaultCard.classList.add('active');
@@ -340,7 +344,7 @@
                             </div>
                         </div>
 
-                        <input type="hidden" name="payment" id="selectedPaymentMethod" value="cod">
+                        <input type="hidden" name="payment_method" id="selectedPaymentMethod" value="cod">
                     </div>
 
                     <style>
@@ -361,20 +365,23 @@
 
                         paymentCards.forEach(card => {
                             card.addEventListener('click', () => {
+                                // সব কার্ড থেকে active ক্লাস রিমুভ
                                 paymentCards.forEach(c => c.classList.remove('active'));
 
+                                // ক্লিক করা কার্ডে active ক্লাস অ্যাড
                                 card.classList.add('active');
 
+                                // Hidden input এর value আপডেট
                                 hiddenInput.value = card.getAttribute('data-method');
                             });
                         });
 
+                        // ডিফল্ট selected card
                         document.addEventListener('DOMContentLoaded', () => {
                             const defaultCard = document.querySelector('[data-method="cod"]');
                             if (defaultCard) defaultCard.classList.add('active');
                         });
                     </script>
-
                     <button type="submit"
                         class="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 rounded-lg transition">
                         <i class="ri-lock-line mr-1"></i> Confirm & Place Order

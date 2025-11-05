@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
+use App\Models\Order;
 use Illuminate\Http\Request;
 
 class PaymentController extends Controller
@@ -13,15 +14,24 @@ class PaymentController extends Controller
             'checkoutData' => $request->all(),
         ]);
 
-        $paymentMethod = $request->payment;
+        $paymentMethod = $request->payment_method;
+
+        $amount = session('cart_total') ?? 1000;
 
         if ($paymentMethod == 'cod') {
             return $this->createOrder($request, 'cod');
-        } else {
-            return view('frontend.payment', [
+        } elseif ($paymentMethod == 'nagad') {
+            return view('frontend.payment.nagad', [
                 'paymentMethod' => $paymentMethod,
-                'amount' => session('cart_total') ?? 1000,
+                'amount' => $amount,
             ]);
+        } elseif ($paymentMethod == 'bkash') {
+            return view('frontend.payment.bkash', [
+                'paymentMethod' => $paymentMethod,
+                'amount' => $amount,
+            ]);
+        } else {
+            abort(404, 'Payment method not supported');
         }
     }
 
