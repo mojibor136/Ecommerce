@@ -37,6 +37,7 @@ Route::middleware(['web', ClearBuyNow::class])->group(function () {
         Route::get('/order/tracking', 'tracking')->name('order.tracking');
         Route::get('/category/{slug}', 'categoryProduct')->name('category.product');
         Route::get('/subcategory/{slug}', 'subcategoryProduct')->name('subcategory.product');
+        Route::get('/search/products', 'searchDesktop')->name('search.products');
     });
 
     Route::post('/payment', [PaymentController::class, 'payment'])->name('payment');

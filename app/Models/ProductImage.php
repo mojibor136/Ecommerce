@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class ProductImage extends Model
 {
@@ -16,4 +16,3 @@ class ProductImage extends Model
         return $this->belongsTo(Product::class);
     }
 }
-

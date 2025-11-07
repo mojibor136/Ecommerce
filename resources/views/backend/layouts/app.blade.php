@@ -449,6 +449,39 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     @stack('scripts')
+
+    <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const lenis = new Lenis({
+                duration: 1.2,
+                smooth: true
+            });
+
+            const sidebar = document.getElementById('sidebar');
+            if (sidebar) {
+                sidebar.addEventListener('wheel', (e) => {
+                    e.stopPropagation();
+                }, {
+                    passive: false
+                });
+
+                sidebar.addEventListener('touchmove', (e) => {
+                    e.stopPropagation();
+                }, {
+                    passive: false
+                });
+            }
+
+            function raf(time) {
+                lenis.raf(time);
+                requestAnimationFrame(raf);
+            }
+            requestAnimationFrame(raf);
+        });
+    </script>
+
     <script>
         document.getElementById("menuBtn").addEventListener("click", function() {
             document.getElementById("sidebar").classList.toggle("-translate-x-full");

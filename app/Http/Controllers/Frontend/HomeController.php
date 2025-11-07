@@ -356,4 +356,32 @@ class HomeController extends Controller
     {
         return view('frontend.help-center');
     }
+
+    public function searchDesktop(Request $request)
+    {
+        $query = $request->query('query', '');
+
+        $products = Product::with('images')
+            ->where('name', 'LIKE', "%{$query}%")
+            ->take(10)
+            ->get();
+
+        $data = $products->map(function ($product) {
+
+            $image = $product->images->where('is_main', 1)->first();
+
+            if (! $image) {
+                $image = $product->images->first();
+            }
+
+            return [
+                'id' => $product->id,
+                'name' => $product->name,
+                'price' => $product->new_price,
+                'image' => $image ? $image->image : 'placeholder.jpg',
+            ];
+        });
+
+        return response()->json($data);
+    }
 }

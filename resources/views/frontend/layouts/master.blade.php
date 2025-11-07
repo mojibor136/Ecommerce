@@ -34,6 +34,14 @@
 
         .category-scroll {
             scroll-behavior: smooth;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .search-box {
+            scroll-behavior: smooth;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
         }
     </style>
 </head>
@@ -53,7 +61,7 @@
     </div>
 
     <div class="sticky top-0 z-50 ">
-        <header class="bg-white shadow-sm hidden md:block">
+        <header class="bg-white shadow-sm hidden md:block relative">
             <div class="max-w-6xl mx-auto py-4 flex items-center justify-between">
                 <!-- Logo -->
                 <h1 onclick="window.location.href='/'"
@@ -64,13 +72,19 @@
                 </h1>
 
                 <!-- Search Bar -->
-                <div class="flex items-center justify-center mx-6 w-[500px] lg:w-[600px]">
-                    <input type="text" name="search" placeholder="Search in {{ $setting->name }}..."
+                <div id="searchEngine" class="relative flex items-center justify-center mx-6 w-[500px] lg:w-[600px]">
+                    <input id="searchInput" type="text" name="search"
+                        placeholder="Search in {{ $setting->name }}..."
                         class="w-full px-4 py-2 rounded-l-md border border-gray-300 focus:outline-none focus:border-orange-500 focus:ring-0 transition-colors duration-200">
                     <button
                         class="bg-orange-500 border border-orange-500 text-white px-4 py-2 rounded-r-md hover:bg-orange-600">
                         <i class="ri-search-line"></i>
                     </button>
+
+                    <div id="searchBox" data-lenis-disabled
+                        class="search-box absolute left-0 top-full mt-2 bg-white shadow-md border border-gray-200 rounded-md max-h-80 overflow-y-auto hidden">
+                        <!-- JS will populate products here -->
+                    </div>
                 </div>
 
                 <!-- Cart + Tracking -->
@@ -316,6 +330,83 @@
 
 
     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('searchInput');
+            const searchBox = document.getElementById('searchBox');
+
+            async function handleSearch() {
+                const query = searchInput.value.trim();
+                if (query.length === 0) {
+                    searchBox.classList.add('hidden');
+                    searchBox.innerHTML = '';
+                    return;
+                }
+
+                try {
+                    const response = await fetch(`/search/products?query=${encodeURIComponent(query)}`);
+                    if (!response.ok) throw new Error('Network response was not ok');
+
+                    const products = await response.json();
+
+                    searchBox.innerHTML = '';
+                    if (products.length === 0) {
+                        searchBox.innerHTML =
+                            `<div class="p-4 text-center text-gray-500">Products not found</div>`;
+                    } else {
+                        products.forEach(product => {
+
+                            const imageUrl = product.image ?
+                                `/uploads/products/${product.image}` :
+                                '/uploads/products/placeholder.jpg';
+
+                            const item = document.createElement('div');
+                            item.className =
+                                "flex items-center justify-between p-3 hover:bg-gray-50 cursor-pointer";
+                            item.innerHTML = `
+                        <div class="flex items-center gap-3">
+                            <img src="${imageUrl}" alt="Product" class="w-10 h-10 object-cover rounded-full">
+                            <div>
+                                <p class="text-gray-800 line-clamp-1 mb-0.5">${product.name}</p>
+                                <p class="text-gray-500 text-sm">&#2547;${product.price}</p>
+                            </div>
+                        </div>
+                        <div class="text-gray-500 text-xl">
+                            <i class="ri-arrow-right-s-line"></i>
+                        </div>
+                    `;
+                            searchBox.appendChild(item);
+                        });
+                    }
+                    searchBox.classList.remove('hidden');
+                } catch (error) {
+                    searchBox.innerHTML =
+                        `<div class="p-4 text-center text-red-500">Error loading products</div>`;
+                    searchBox.classList.remove('hidden');
+                    console.error(error);
+                }
+            }
+
+            // Debounce function to limit AJAX calls
+            function debounce(func, delay = 300) {
+                let timeout;
+                return function(...args) {
+                    clearTimeout(timeout);
+                    timeout = setTimeout(() => func.apply(this, args), delay);
+                }
+            }
+
+            searchInput.addEventListener('input', debounce(handleSearch, 300));
+
+            // Hide dropdown on click outside
+            document.addEventListener('click', (e) => {
+                if (!document.getElementById('searchEngine').contains(e.target)) {
+                    searchBox.classList.add('hidden');
+                }
+            });
+        });
+    </script>
+
+    <script>
         function toggleSubcategory(icon) {
             const subList = icon.closest('li').querySelector('ul');
             if (!subList) return;
@@ -358,6 +449,29 @@
 
         const observer = new ResizeObserver(syncCategoryWidth);
         observer.observe(categoryList);
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('searchInput');
+            const searchBox = document.getElementById('searchBox');
+
+            function syncSearchBoxWidth() {
+                if (searchInput && searchBox) {
+                    const width = searchInput.getBoundingClientRect().width;
+                    searchBox.style.width = width + 'px';
+                }
+            }
+
+            setTimeout(() => {
+                requestAnimationFrame(syncSearchBoxWidth);
+            }, 100);
+
+            window.addEventListener('resize', syncSearchBoxWidth);
+
+            const observer = new ResizeObserver(syncSearchBoxWidth);
+            observer.observe(searchInput);
+        });
     </script>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -619,12 +733,23 @@
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
-    <script>
+   
+   <script>
         document.addEventListener("DOMContentLoaded", () => {
             const lenis = new Lenis({
                 duration: 1.2,
                 smooth: true
             });
+
+            const searchBox = document.getElementById('searchBox');
+            if (searchBox) {
+                searchBox.addEventListener('wheel', (e) => {
+                    e.stopPropagation();
+                });
+                searchBox.addEventListener('touchmove', (e) => {
+                    e.stopPropagation(); 
+                });
+            }
 
             function raf(time) {
                 lenis.raf(time);
