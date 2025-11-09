@@ -357,7 +357,7 @@ class HomeController extends Controller
         return view('frontend.help-center');
     }
 
-    public function searchDesktop(Request $request)
+    public function search(Request $request)
     {
         $query = $request->query('query', '');
 
@@ -377,6 +377,7 @@ class HomeController extends Controller
             return [
                 'id' => $product->id,
                 'name' => $product->name,
+                'slug' => $product->slug,
                 'price' => $product->new_price,
                 'image' => $image ? $image->image : 'placeholder.jpg',
             ];

@@ -110,7 +110,7 @@
         </header>
 
         <!-- ================= {{ $setting->name }} MOBILE HEADER ================= -->
-        <header class="bg-white shadow-sm w-full z-50 md:hidden">
+        <header class="bg-white shadow-sm w-full z-50 md:hidden relative">
             <!-- Top Bar: Menu, Logo, Cart -->
             <div class="flex items-center justify-between px-4 py-4">
                 <!-- ☰ Menu Button -->
@@ -137,16 +137,21 @@
 
             <!-- 🔍 Search Bar -->
             <div class="px-4 pb-4">
-                <div class="flex items-center bg-gray-100 rounded bg-white">
-                    <input type="text" placeholder="Search products..."
+                <div id="MobilesearchEngine" class="relative flex items-center bg-gray-100 rounded bg-white">
+                    <input id="MobilesearchInput" type="text" placeholder="Search products..."
                         class="w-full bg-[transparent] px-3 py-2 outline-none rounded-l ring-1 ring-offset-1 ring-gray-200 text-sm text-gray-700 transition-colors duration-200
                 focus:outline-none focus:ring-1 focus:ring-orange-500 focus:ring-offset-1">
                     <button class="bg-orange-500 px-3 py-2 text-white hover:bg-orange-600 rounded-r">
                         <i class="ri-search-line"></i>
                     </button>
+                    <div id="MobilesearchBox" data-lenis-disabled
+                        class="search-box absolute left-0 top-full mt-2 bg-white shadow-md border border-gray-200 rounded-md max-h-96 overflow-y-auto hidden">
+                        <!-- JS will populate products here -->
+                    </div>
                 </div>
             </div>
         </header>
+
 
         <!-- 📂 Mobile Dropdown Menu (Hidden by default) -->
         <div id="mobileMenu"
@@ -361,7 +366,7 @@
 
                             const item = document.createElement('div');
                             item.className =
-                                "flex items-center justify-between p-3 hover:bg-gray-50 cursor-pointer";
+                                "flex items-center justify-between p-3 hover:bg-gray-50 border-b border-gray-50 cursor-pointer";
                             item.innerHTML = `
                         <div class="flex items-center gap-3">
                             <img src="${imageUrl}" alt="Product" class="w-10 h-10 object-cover rounded-full">
@@ -374,6 +379,9 @@
                             <i class="ri-arrow-right-s-line"></i>
                         </div>
                     `;
+                            item.addEventListener('click', () => {
+                                window.location.href = `/product/${product.slug}`;
+                            });
                             searchBox.appendChild(item);
                         });
                     }
@@ -401,6 +409,86 @@
             document.addEventListener('click', (e) => {
                 if (!document.getElementById('searchEngine').contains(e.target)) {
                     searchBox.classList.add('hidden');
+                }
+            });
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const MobilesearchInput = document.getElementById('MobilesearchInput');
+            const MobilesearchBox = document.getElementById('MobilesearchBox');
+
+            async function handleSearch() {
+                const query = MobilesearchInput.value.trim();
+                if (query.length === 0) {
+                    MobilesearchBox.classList.add('hidden');
+                    MobilesearchBox.innerHTML = '';
+                    return;
+                }
+
+                try {
+                    const response = await fetch(`/search/products?query=${encodeURIComponent(query)}`);
+                    if (!response.ok) throw new Error('Network response was not ok');
+
+                    const products = await response.json();
+
+                    MobilesearchBox.innerHTML = '';
+                    if (products.length === 0) {
+                        MobilesearchBox.innerHTML =
+                            `<div class="p-4 text-center text-gray-500">Products not found</div>`;
+                    } else {
+                        products.forEach(product => {
+
+                            const imageUrl = product.image ?
+                                `/uploads/products/${product.image}` :
+                                '/uploads/products/placeholder.jpg';
+
+                            const item = document.createElement('div');
+                            item.className =
+                                "flex items-center justify-between p-3 hover:bg-gray-50 border-b border-gray-50 cursor-pointer";
+                            item.innerHTML = `
+                        <div class="flex items-center gap-3">
+                            <img src="${imageUrl}" alt="Product" class="w-10 h-10 object-cover rounded-full">
+                            <div>
+                                <p class="text-gray-800 line-clamp-1 mb-0.5">${product.name}</p>
+                                <p class="text-gray-500 text-sm">&#2547;${product.price}</p>
+                            </div>
+                        </div>
+                        <div class="text-gray-500 text-xl">
+                            <i class="ri-arrow-right-s-line"></i>
+                        </div>
+                    `;
+                            item.addEventListener('click', () => {
+                                window.location.href = `/product/${product.slug}`;
+                            });
+                            MobilesearchBox.appendChild(item);
+                        });
+                    }
+                    MobilesearchBox.classList.remove('hidden');
+                } catch (error) {
+                    MobilesearchBox.innerHTML =
+                        `<div class="p-4 text-center text-red-500">Error loading products</div>`;
+                    MobilesearchBox.classList.remove('hidden');
+                    console.error(error);
+                }
+            }
+
+            // Debounce function to limit AJAX calls
+            function debounce(func, delay = 300) {
+                let timeout;
+                return function(...args) {
+                    clearTimeout(timeout);
+                    timeout = setTimeout(() => func.apply(this, args), delay);
+                }
+            }
+
+            MobilesearchInput.addEventListener('input', debounce(handleSearch, 300));
+
+            // Hide dropdown on click outside
+            document.addEventListener('click', (e) => {
+                if (!document.getElementById('MobilesearchEngine').contains(e.target)) {
+                    searchBox.classList.add('block');
                 }
             });
         });
@@ -733,8 +821,8 @@
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
-   
-   <script>
+
+    <script>
         document.addEventListener("DOMContentLoaded", () => {
             const lenis = new Lenis({
                 duration: 1.2,
@@ -747,7 +835,7 @@
                     e.stopPropagation();
                 });
                 searchBox.addEventListener('touchmove', (e) => {
-                    e.stopPropagation(); 
+                    e.stopPropagation();
                 });
             }
 

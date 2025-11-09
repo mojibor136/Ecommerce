@@ -15,10 +15,10 @@
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css" rel="stylesheet">
 </head>
 
-<body class="bg-[#FFF6F5] min-h-screen flex flex-col items-center justify-start py-4">
+<body class="bg-[#FFF6F5] min-h-screen flex flex-col items-center justify-start md:py-4 py-2">
 
-    <form action="" class="md:max-w-xl w-full mx-auto px-4">
-        <div class="bg-white px-6 py-6 rounded shadow-lg border-t-4 border-[#E2136E]">
+    <form action="" class="md:max-w-xl w-full mx-auto md:px-4 px-2">
+        <div class="bg-white md:px-6 px-3 py-6 rounded shadow-lg border-t-4 border-[#E2136E]">
 
             <!-- Header Icons -->
             <div class="flex items-center justify-between w-full px-3 py-2 mb-4 border border-gray-200 rounded">
@@ -32,17 +32,17 @@
                 class="bg-white w-full text-center px-3 py-3 mb-8 border border-gray-200 rounded flex justify-between items-center shadow-sm">
                 <div class="flex gap-2 items-center">
                     <img src="{{ asset($setting->favicon) }}" alt="Profile"
-                        class="w-14 h-14 rounded-full border-2 border-[#444] object-cover">
+                        class="md:w-14 md:h-14 h-12 w-12 rounded-full border-2 border-[#222] object-cover">
                     <div class="flex flex-col gap-0.5">
                         <span class="text-gray-800 text-base font-semibold block text-start">{{ $setting->name }}</span>
                         <span class="text-gray-700 text-sm">Invoice ID : FASDFF22</span>
                     </div>
                 </div>
-                <img src="https://www.logo.wine/a/logo/BKash/BKash-bKash-Logo.wine.svg" alt="Bkash Logo" class="h-16">
+                <img src="https://www.logo.wine/a/logo/BKash/BKash-bKash-Logo.wine.svg" alt="Bkash Logo" class="md:h-16 h-14">
             </div>
 
             <!-- Payment Instruction -->
-            <div class="bg-[#E2136E] px-6 py-6 rounded-md text-white">
+            <div class="bg-[#E2136E] md:px-6 md:py-6 p-3 rounded-md text-white">
                 <div class="p-4 rounded border border-white/20 bg-white/10 backdrop-blur-md shadow">
 
                     <!-- Sender Number -->
@@ -54,7 +54,7 @@
                             pattern="[0-9]{11}" maxlength="11" minlength="11"
                             title="ঠিক ১১ সংখ্যার নগদ নাম্বার দিন (যেমনঃ 01XXXXXXXXX)" required
                             class="w-full text-gray-800 text-md rounded border border-white/30 bg-white/20 backdrop-blur-sm 
-px-4 py-2 shadow-sm focus:outline-none focus:ring-0 focus:border-[#444] focus:ring-[#444] focus:ring-offset-1 focus:ring-offset-transparent placeholder-gray-300 transition" />
+px-4 py-2 shadow-sm focus:outline-none focus:ring-0 focus:border-[#222] focus:ring-[#222] focus:ring-offset-1 focus:ring-offset-transparent placeholder-gray-300 transition" />
                     </div>
 
                     <!-- Transaction ID -->
@@ -67,42 +67,42 @@ px-4 py-2 shadow-sm focus:outline-none focus:ring-0 focus:border-[#444] focus:ri
                             placeholder="ঠিক ১০ অক্ষরের Transaction ID দিন" maxlength="10" minlength="10"
                             title="ঠিক ১০ অক্ষরের Transaction ID দিন" required
                             class="w-full text-gray-800 text-md rounded border border-white/30 bg-white/20 backdrop-blur-sm 
-px-4 py-2 shadow-sm focus:outline-none focus:ring-0 focus:border-[#444] focus:ring-[#444] focus:ring-offset-1 focus:ring-offset-transparent placeholder-gray-300 transition" />
+px-4 py-2 shadow-sm focus:outline-none focus:ring-0 focus:border-[#222] focus:ring-[#222] focus:ring-offset-1 focus:ring-offset-transparent placeholder-gray-300 transition" />
                     </div>
                 </div>
 
                 <!-- Instructions -->
                 <div class="w-full mb-6">
                     <ol class="list-decimal list-outside pl-5 text-white text-sm text-left space-y-1">
-                        <li class="border-b border-[#444]/40 p-3 leading-relaxed">
-                            *247# ডায়াল করুন অথবা আপনার <span class="font-semibold text-[#444]">Bkash App</span> ওপেন
+                        <li class="border-b border-[#222]/40 p-3 leading-relaxed">
+                            *247# ডায়াল করুন অথবা আপনার <span class="font-semibold text-[#222]">Bkash App</span> ওপেন
                             করুন।
                         </li>
-                        <li class="border-b border-[#444]/40 p-3 leading-relaxed">
-                            <span class="font-semibold text-[#444]">"Send Money"</span> অপশনটি সিলেক্ট করুন।
+                        <li class="border-b border-[#222]/40 p-3 leading-relaxed">
+                            <span class="font-semibold text-[#222]">"Send Money"</span> অপশনটি সিলেক্ট করুন।
                         </li>
-                        <li class="border-b border-[#444]/40 p-3 leading-relaxed">
+                        <li class="border-b border-[#222]/40 p-3 leading-relaxed">
                             প্রাপক নম্বর দিন:
                             <span id="copyNumber"
-                                class="font-medium text-[#444] select-all cursor-pointer">017XXXXXXXX</span>
+                                class="font-medium text-[#222] select-all cursor-pointer">017XXXXXXXX</span>
                             <button type="button" onclick="copyToClipboard()"
-                                class="ml-2 text-[#444] hover:text-white transition" aria-label="Copy number"
+                                class="ml-2 text-[#222] hover:text-white transition" aria-label="Copy number"
                                 title="Copy number">
                                 <i class="ri-file-copy-line text-lg"></i>
                             </button>
                         </li>
-                        <li class="border-b border-[#444]/40 p-3 leading-relaxed">
-                            পরিমাণ লিখুন: <span class="font-medium text-[#444]">300.00</span> টাকা।
+                        <li class="border-b border-[#222]/40 p-3 leading-relaxed">
+                            পরিমাণ লিখুন: <span class="font-medium text-[#222]">300.00</span> টাকা।
                         </li>
-                        <li class="border-b border-[#444]/40 p-3 leading-relaxed">
-                            রেফারেন্সে লিখুন: <span class="font-medium text-[#444]">Invoice ID বা আপনার নাম</span>।
+                        <li class="border-b border-[#222]/40 p-3 leading-relaxed">
+                            রেফারেন্সে লিখুন: <span class="font-medium text-[#222]">Invoice ID বা আপনার নাম</span>।
                         </li>
-                        <li class="border-b border-[#444]/40 p-3 leading-relaxed">
+                        <li class="border-b border-[#222]/40 p-3 leading-relaxed">
                             পিন দিয়ে ট্রানজেকশন সম্পন্ন করুন।
                         </li>
-                        <li class="border-b border-[#444]/40 p-3 leading-relaxed">
+                        <li class="border-b border-[#222]/40 p-3 leading-relaxed">
                             সফল ট্রানজেকশন শেষে পাওয়া Transaction ID টি উপরের ঘরে লিখে <span
-                                class="font-semibold text-[#444]">"VERIFY"</span> বাটনে ক্লিক করুন।
+                                class="font-semibold text-[#222]">"VERIFY"</span> বাটনে ক্লিক করুন।
                         </li>
                     </ol>
                 </div>

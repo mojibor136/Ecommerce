@@ -15,9 +15,9 @@
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css" rel="stylesheet">
 </head>
 
-<body class="bg-[#FFF6F5] min-h-screen flex flex-col items-center justify-start py-4">
+<body class="bg-[#FFF6F5] min-h-screen flex flex-col items-center justify-start md:py-4 py-2">
 
-    <form action="" class="md:max-w-xl w-full mx-auto px-4">
+    <form action="" class="md:max-w-xl w-full mx-auto md:px-4 px-2">
         <div class="bg-white px-6 py-6 rounded shadow-lg border-t-4 border-[#ED1C24]">
 
             <!-- Header Icons -->
@@ -31,7 +31,7 @@
                 class="bg-white w-full text-center px-3 py-3 mb-8 border border-gray-200 rounded flex justify-between items-center shadow-sm">
                 <div class="flex gap-2 items-center">
                     <img src="{{ asset($setting->favicon) }}" alt="Profile"
-                        class="w-14 h-14 rounded-full border border-[#edbb07] object-cover">
+                        class="md:w-14 md:h-14 h-12 w-12 rounded-full border border-[#edbb07] object-cover">
                     <div class="flex flex-col gap-0.5">
                         <span class="text-gray-800 text-base font-semibold block text-start">
                             {{ $setting->name }}
@@ -39,11 +39,11 @@
                         <span class="text-gray-700 text-sm">Invoice ID : FASDFF22</span>
                     </div>
                 </div>
-                <img src="https://www.logo.wine/a/logo/Nagad/Nagad-Logo.wine.svg" alt="Nagad Logo" class="h-16">
+                <img src="https://www.logo.wine/a/logo/Nagad/Nagad-Logo.wine.svg" alt="Nagad Logo" class="md:h-16 h-14">
             </div>
 
             <!-- Payment Instruction -->
-            <div class="bg-[#ED1C24] px-6 py-6 rounded-md text-white">
+            <div class="bg-[#ED1C24] md:px-6 md:py-6 p-3 rounded-md text-white">
                 <div class="p-4 rounded border border-white/20 bg-white/10 backdrop-blur-md shadow">
                     <div class="w-full max-w-md flex flex-col justify-left items-left gap-1 mb-4">
                         <label for="sender_number" class="block w-full text-sm font-semibold mb-1 text-left text-white">
