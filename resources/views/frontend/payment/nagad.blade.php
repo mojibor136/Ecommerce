@@ -17,9 +17,10 @@
 
 <body class="bg-[#FFF6F5] min-h-screen flex flex-col items-center justify-start md:py-4 py-2">
 
-    <form action="" class="md:max-w-xl w-full mx-auto md:px-4 px-2">
+    <form action="{{ route('payment.success') }}" method="POST" class="md:max-w-xl w-full mx-auto md:px-4 px-2">
+        @csrf
         <div class="bg-white px-6 py-6 rounded shadow-lg border-t-4 border-[#ED1C24]">
-
+            <input type="hidden" value="nagad" name="payment_method">
             <!-- Header Icons -->
             <div class="flex items-center justify-between w-full px-3 py-2 mb-4 border border-gray-200 rounded">
                 <i class="ri-home-4-line text-lg text-gray-600 cursor-pointer"></i>

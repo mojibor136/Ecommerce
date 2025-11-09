@@ -14,10 +14,11 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->string('invoice_id')->unique();
-            $table->string('amount')->default(0);
+            $table->string('total')->default(0);
             $table->string('discount')->default(0);
             $table->string('shipping_charge')->default(0);
             $table->string('order_status')->default('pending');
+            $table->string('payment_status')->default('pending');
             $table->timestamps();
         });
     }

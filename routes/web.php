@@ -41,6 +41,7 @@ Route::middleware(['web', ClearBuyNow::class])->group(function () {
     });
 
     Route::post('/payment', [PaymentController::class, 'payment'])->name('payment');
+    Route::post('/payment/success', [PaymentController::class, 'paymentSuccess'])->name('payment.success');
     Route::post('/cart/add/{product}', [CartController::class, 'add'])->name('cart.add');
     Route::post('/checkout/buy-now/{product}', [CheckoutController::class, 'buyNow'])->name('checkout.buy-now');
     Route::get('/shipping/cart', [CartController::class, 'index'])->name('cart.index');

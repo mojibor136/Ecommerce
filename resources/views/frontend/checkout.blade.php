@@ -18,6 +18,17 @@
             @php $subtotal = $buyNow['price'] * $buyNow['quantity']; @endphp
             <form action="{{ route('payment') }}" method="POST" class="flex flex-col lg:flex-row gap-4">
                 @csrf
+                <input type="hidden" name="product[id]" value="{{ $buyNow['id'] }}">
+                <input type="hidden" name="product[name]" value="{{ $buyNow['name'] }}">
+                <input type="hidden" name="product[price]" value="{{ $buyNow['price'] }}">
+                <input type="hidden" name="product[quantity]" value="{{ $buyNow['quantity'] }}">
+                <input type="hidden" name="product[image]" value="{{ $buyNow['image'] }}">
+                @if (!empty($buyNow['variants']) && is_array($buyNow['variants']))
+                    <input type="hidden" name="product[attributes]"
+                        value='@json($buyNow['variants'])'>
+                @else
+                    <input type="hidden" name="product[attributes]" value="{}">
+                @endif
                 <div class="lg:w-2/3 bg-white shadow rounded-lg md:p-6 p-4">
                     <h2 class="text-lg font-semibold mb-4 flex items-center gap-2">
                         <i class="ri-user-line text-orange-500"></i>Customer Information
@@ -25,31 +36,31 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                         <div>
                             <label class="text-md mb-1 text-gray-600">Full Name</label>
-                            <input type="text" name="name" value="{{ old('name') }}"
+                            <input type="text" name="name" value="{{ old('name') }}" required
                                 class="w-full border border-gray-300 rounded px-3 py-2 text-md focus:border-orange-500 focus:ring-1 focus:ring-orange-500 outline-none"
                                 placeholder="Enter your name">
                         </div>
                         <div>
                             <label class="text-md mb-1 text-gray-600">Email Address</label>
-                            <input type="email" name="email" value="{{ old('email') }}"
+                            <input type="email" name="email" value="{{ old('email') }}" required
                                 class="w-full border border-gray-300 rounded px-3 py-2 text-md focus:border-orange-500 focus:ring-1 focus:ring-orange-500 outline-none"
                                 placeholder="you@example.com">
                         </div>
                         <div>
                             <label class="text-md mb-1 text-gray-600">Phone Number</label>
-                            <input type="tel" name="phone" value="{{ old('phone') }}"
+                            <input type="tel" name="phone" value="{{ old('phone') }}" required
                                 class="w-full border border-gray-300 rounded px-3 py-2 text-md focus:border-orange-500 focus:ring-1 focus:ring-orange-500 outline-none"
                                 placeholder="+8801XXXXXXXXX">
                         </div>
                         <div>
                             <label class="text-md mb-1 text-gray-600">City</label>
-                            <input type="text" name="city" value="{{ old('city') }}"
+                            <input type="text" name="city" value="{{ old('city') }}" required
                                 class="w-full border border-gray-300 rounded px-3 py-2 text-md focus:border-orange-500 focus:ring-1 focus:ring-orange-500 outline-none"
                                 placeholder="Enter city">
                         </div>
                         <div class="md:col-span-2">
                             <label class="text-md mb-1 text-gray-600">Delivery Area</label>
-                            <select name="charge" id="deliveryArea"
+                            <select name="charge" id="deliveryArea" required
                                 class="w-full border border-gray-300 rounded px-3 py-[10px] text-md focus:border-orange-500 focus:ring-1 focus:ring-orange-500 outline-none">
                                 <option value="{{ $inDhakaCharge }}">Inside Dhaka</option>
                                 <option value="{{ $outDhakaCharge }}">Outside Dhaka</option>
@@ -57,7 +68,7 @@
                         </div>
                         <div class="md:col-span-2">
                             <label class="text-md mb-1 text-gray-600">Full Address</label>
-                            <textarea name="address" rows="3"
+                            <textarea name="address" rows="3" required
                                 class="w-full border border-gray-300 rounded px-3 py-2 text-md focus:border-orange-500 focus:ring-1 focus:ring-orange-500 outline-none"
                                 placeholder="House, Road, Area">{{ old('address') }}</textarea>
                         </div>
@@ -198,6 +209,20 @@
             @php $subtotal = 0; @endphp
             <form action="{{ route('payment') }}" method="POST" class="flex flex-col lg:flex-row gap-4">
                 @csrf
+                @foreach ($cart as $id => $item)
+                    <input type="hidden" name="products[{{ $id }}][id]" value="{{ $id }}">
+                    <input type="hidden" name="products[{{ $id }}][name]" value="{{ $item['name'] }}">
+                    <input type="hidden" name="products[{{ $id }}][price]" value="{{ $item['price'] }}">
+                    <input type="hidden" name="products[{{ $id }}][quantity]"
+                        value="{{ $item['quantity'] }}">
+                    <input type="hidden" name="products[{{ $id }}][image]" value="{{ $item['image'] }}">
+                    @if (!empty($item['variants']) && is_array($item['variants']))
+                        <input type="hidden" name="products[{{ $id }}][attributes]"
+                            value='@json($item['variants'])'>
+                    @else
+                        <input type="hidden" name="products[{{ $id }}][attributes]" value="{}">
+                    @endif
+                @endforeach
                 <div class="lg:w-2/3 bg-white shadow rounded-lg md:p-6 p-4">
                     <h2 class="text-lg font-semibold mb-4 flex items-center gap-2">
                         <i class="ri-user-line text-orange-500"></i>Customer Information
@@ -205,31 +230,31 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                         <div>
                             <label class="text-md mb-1 text-gray-600">Full Name</label>
-                            <input type="text" name="name" value="{{ old('name') }}"
+                            <input type="text" name="name" value="{{ old('name') }}" required
                                 class="w-full border border-gray-300 rounded px-3 py-2 text-md focus:border-orange-500 focus:ring-1 focus:ring-orange-500 outline-none"
                                 placeholder="Enter your name">
                         </div>
                         <div>
                             <label class="text-md mb-1 text-gray-600">Email Address</label>
-                            <input type="email" name="email" value="{{ old('email') }}"
+                            <input type="email" name="email" value="{{ old('email') }}" required
                                 class="w-full border border-gray-300 rounded px-3 py-2 text-md focus:border-orange-500 focus:ring-1 focus:ring-orange-500 outline-none"
                                 placeholder="you@example.com">
                         </div>
                         <div>
                             <label class="text-md mb-1 text-gray-600">Phone Number</label>
-                            <input type="tel" name="phone" value="{{ old('phone') }}"
+                            <input type="tel" name="phone" value="{{ old('phone') }}" required
                                 class="w-full border border-gray-300 rounded px-3 py-2 text-md focus:border-orange-500 focus:ring-1 focus:ring-orange-500 outline-none"
                                 placeholder="+8801XXXXXXXXX">
                         </div>
                         <div>
                             <label class="text-md mb-1 text-gray-600">City</label>
-                            <input type="text" name="city" value="{{ old('city') }}"
+                            <input type="text" name="city" value="{{ old('city') }}" required
                                 class="w-full border border-gray-300 rounded px-3 py-2 text-md focus:border-orange-500 focus:ring-1 focus:ring-orange-500 outline-none"
                                 placeholder="Enter city">
                         </div>
                         <div class="md:col-span-2">
                             <label class="text-md mb-1 text-gray-600">Delivery Area</label>
-                            <select name="delivery_area" id="deliveryArea"
+                            <select name="charge" id="deliveryArea" required
                                 class="w-full border border-gray-300 rounded px-3 py-[10px] text-md focus:border-orange-500 focus:ring-1 focus:ring-orange-500 outline-none">
                                 <option value="{{ $inDhakaCharge }}">Inside Dhaka</option>
                                 <option value="{{ $outDhakaCharge }}">Outside Dhaka</option>
@@ -237,7 +262,7 @@
                         </div>
                         <div class="md:col-span-2">
                             <label class="text-md mb-1 text-gray-600">Full Address</label>
-                            <textarea name="address" rows="3"
+                            <textarea name="address" rows="3" required
                                 class="w-full border border-gray-300 rounded px-3 py-2 text-md focus:border-orange-500 focus:ring-1 focus:ring-orange-500 outline-none"
                                 placeholder="House, Road, Area">{{ old('address') }}</textarea>
                         </div>
@@ -284,12 +309,6 @@
                                 <div class="text-right">
                                     <p class="text-gray-800 font-semibold">
                                         ৳{{ number_format($item['price'] * $item['quantity'], 0) }}</p>
-                                    <form action="{{ route('cart.remove', $id) }}" method="POST">
-                                        @csrf
-                                        <button type="submit"
-                                            class="text-xs rounded-3xl hover:underline mt-1 px-3 md:py-0.5 py-1 bg-red-500 text-white">
-                                            Remove</button>
-                                    </form>
                                 </div>
                             </div>
                         @endforeach

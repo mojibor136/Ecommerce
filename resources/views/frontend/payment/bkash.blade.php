@@ -17,9 +17,10 @@
 
 <body class="bg-[#FFF6F5] min-h-screen flex flex-col items-center justify-start md:py-4 py-2">
 
-    <form action="" class="md:max-w-xl w-full mx-auto md:px-4 px-2">
+    <form action="{{ route('payment.success') }}" method="POST" class="md:max-w-xl w-full mx-auto md:px-4 px-2">
+        @csrf
         <div class="bg-white md:px-6 px-3 py-6 rounded shadow-lg border-t-4 border-[#E2136E]">
-
+            <input type="hidden" value="bkash" name="payment_method">
             <!-- Header Icons -->
             <div class="flex items-center justify-between w-full px-3 py-2 mb-4 border border-gray-200 rounded">
                 <i class="ri-home-4-line text-lg text-gray-600 cursor-pointer hover:text-[#E2136E] transition"></i>
@@ -38,7 +39,8 @@
                         <span class="text-gray-700 text-sm">Invoice ID : FASDFF22</span>
                     </div>
                 </div>
-                <img src="https://www.logo.wine/a/logo/BKash/BKash-bKash-Logo.wine.svg" alt="Bkash Logo" class="md:h-16 h-14">
+                <img src="https://www.logo.wine/a/logo/BKash/BKash-bKash-Logo.wine.svg" alt="Bkash Logo"
+                    class="md:h-16 h-14">
             </div>
 
             <!-- Payment Instruction -->

@@ -18,9 +18,10 @@
 
             <!-- Order Info -->
             <div class="bg-gray-50 p-4 rounded-lg mb-6 text-left">
-                <p class="text-gray-700 mb-2"><span class="font-medium">Order ID:</span> #123456789</p>
-                <p class="text-gray-700 mb-2"><span class="font-medium">Total Amount:</span> ৳29,000</p>
-                <p class="text-gray-700"><span class="font-medium">Payment Method:</span> Cash on Delivery</p>
+                <p class="text-gray-700 mb-2"><span class="font-medium">Order ID:</span> #{{ request('invoice_id') }}</p>
+                <p class="text-gray-700 mb-2"><span class="font-medium">Total Amount:</span>
+                    ৳{{ number_format(request('amount'), 2) }}</p>
+                <p class="text-gray-700"><span class="font-medium">Payment Method:</span> {{ request('method') }}</p>
             </div>
 
             <!-- Buttons -->
