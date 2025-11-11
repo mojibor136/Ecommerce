@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Category;
+use App\Models\Order;
 use App\Models\Product;
 use App\Models\Setting;
 use Illuminate\Support\Facades\View;
@@ -41,6 +42,15 @@ class AppServiceProvider extends ServiceProvider
         $minPrice = Product::min('new_price');
         $maxPrice = Product::max('new_price');
 
+        $allOrdersCount = Order::count();
+        $pendingCount = Order::where('order_status', 'pending')->count();
+        $confirmedCount = Order::where('order_status', 'confirmed')->count();
+        $readyCount = Order::where('order_status', 'ready')->count();
+        $shippedCount = Order::where('order_status', 'shipped')->count();
+        $deliveredCount = Order::where('order_status', 'delivered')->count();
+        $cancelledCount = Order::where('order_status', 'cancelled')->count();
+        $refundedCount = Order::where('order_status', 'refunded')->count();
+
         // Share with all views
         View::share([
             'allcategories' => $categories,
@@ -49,6 +59,14 @@ class AppServiceProvider extends ServiceProvider
             'maxPrice' => $maxPrice,
             'inDhakaCharge' => $inDhakaCharge,
             'outDhakaCharge' => $outDhakaCharge,
+            'allOrdersCount' => $allOrdersCount,
+            'pendingCount' => $pendingCount,
+            'confirmedCount' => $confirmedCount,
+            'readyCount' => $readyCount,
+            'shippedCount' => $shippedCount,
+            'deliveredCount' => $deliveredCount,
+            'cancelledCount' => $cancelledCount,
+            'refundedCount' => $refundedCount,
         ]);
     }
 }

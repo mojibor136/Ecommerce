@@ -17,7 +17,7 @@ return new class extends Migration
             $table->enum('type', ['percent', 'fixed'])->default('percent');
             $table->string('value');
             $table->string('min_purchase')->nullable();
-            $table->Integer('product_id')->nullable()->index();
+            $table->Integer('category_id')->nullable()->index();
             $table->date('expiry_date')->nullable();
             $table->boolean('status')->default(1);
             $table->timestamps();

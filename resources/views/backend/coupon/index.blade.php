@@ -1,7 +1,7 @@
 @extends('backend.layouts.app')
 @section('title', 'Coupon Management')
 @section('content')
-    <div class="w-full mb-4">
+    <div class="w-full mb-6">
         <!-- Header -->
         <div class="flex flex-col md:flex-row justify-between items-start md:items-center pb-4 border-b rounded-md mb-4">
             <div class="flex flex-col gap-3 w-full md:w-2/3">
@@ -55,7 +55,7 @@
                         <th class="px-4 py-3 text-left">Type</th>
                         <th class="px-4 py-3 text-left">Value</th>
                         <th class="px-4 py-3 text-left">Min Purchase</th>
-                        <th class="px-4 py-3 text-left">Product</th>
+                        <th class="px-4 py-3 text-left">Category</th>
                         <th class="px-4 py-3 text-left">Expiry</th>
                         <th class="px-4 py-3 text-center">Status</th>
                         <th class="px-4 py-3 text-right pr-8">Actions</th>
@@ -79,7 +79,7 @@
                                 {{ $coupon->min_purchase ? '৳' . number_format($coupon->min_purchase, 2) : '-' }}
                             </td>
                             <td class="px-4 py-3">
-                                {{ $coupon->product ? $coupon->product->name : 'All Products' }}
+                                {{ $coupon->category ? $coupon->category->name : 'All Category' }}
                             </td>
                             <td class="px-4 py-3">
                                 {{ $coupon->expiry_date ? date('d M Y', strtotime($coupon->expiry_date)) : 'No Expiry' }}
@@ -93,20 +93,40 @@
                             </td>
                             <td class="px-4 py-3 text-right whitespace-nowrap">
                                 <div class="flex justify-end items-center gap-2">
+
+                                    <!-- Edit Coupon -->
                                     <a href="{{ route('admin.coupons.edit', $coupon->id) }}"
-                                        class="inline-flex items-center justify-center w-20 h-8 bg-blue-500 hover:bg-blue-600 text-white rounded shadow text-sm">
-                                        <i class="ri-edit-2-line mr-1"></i> Edit
+                                        class="relative group inline-flex items-center justify-center w-9 h-9 bg-blue-500 hover:bg-blue-600 text-white rounded-full shadow transition-all duration-200"
+                                        title="Edit Coupon">
+                                        <i class="ri-edit-2-line text-md"></i>
+
+                                        <!-- Tooltip -->
+                                        <span
+                                            class="absolute -top-8 left-1/2 -translate-x-1/2 scale-0 group-hover:scale-100
+                         transition-transform duration-200 bg-gray-800 text-white text-xs px-2 py-1 rounded shadow whitespace-nowrap">
+                                            Edit
+                                        </span>
                                     </a>
 
+                                    <!-- Delete Coupon -->
                                     <form action="{{ route('admin.coupons.destroy', $coupon->id) }}" method="POST"
                                         onsubmit="return confirm('Are you sure you want to delete this coupon?');">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit"
-                                            class="inline-flex items-center justify-center w-24 h-8 bg-red-500 hover:bg-red-600 text-white rounded shadow text-sm">
-                                            <i class="ri-delete-bin-6-line mr-1"></i> Delete
+                                            class="relative group inline-flex items-center justify-center w-9 h-9 bg-red-500 hover:bg-red-600 text-white rounded-full shadow transition-all duration-200"
+                                            title="Delete Coupon">
+                                            <i class="ri-delete-bin-6-line text-md"></i>
+
+                                            <!-- Tooltip -->
+                                            <span
+                                                class="absolute -top-8 left-1/2 -translate-x-1/2 scale-0 group-hover:scale-100
+                             transition-transform duration-200 bg-gray-800 text-white text-xs px-2 py-1 rounded shadow whitespace-nowrap">
+                                                Delete
+                                            </span>
                                         </button>
                                     </form>
+
                                 </div>
                             </td>
                         </tr>

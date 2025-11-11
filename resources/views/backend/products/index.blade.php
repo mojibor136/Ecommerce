@@ -1,7 +1,7 @@
 @extends('backend.layouts.app')
 @section('title', 'Products Management')
 @section('content')
-    <div class="w-full mb-4">
+    <div class="w-full mb-6">
         <!-- Header -->
         <div class="flex flex-col md:flex-row justify-between items-start md:items-center pb-4 border-b rounded-md mb-4">
             <div class="flex flex-col gap-2 w-full md:w-2/3">
@@ -81,7 +81,7 @@
                         <th class="px-4 py-3 text-left whitespace-nowrap">Name</th>
                         <th class="px-4 py-3 text-left whitespace-nowrap">SKU</th>
                         <th class="px-4 py-3 text-center whitespace-nowrap">Stock</th>
-                        <th class="px-4 py-3 text-center whitespace-nowrap">Price (New)</th>
+                        <th class="px-4 py-3 text-center whitespace-nowrap">Price</th>
                         <th class="px-4 py-3 text-center whitespace-nowrap">Variants</th>
                         <th class="px-4 py-3 text-center whitespace-nowrap">Status</th>
                         <th class="px-4 py-3 text-right pr-8">Actions</th>
@@ -114,8 +114,16 @@
                             <td class="px-4 py-3 text-left whitespace-nowrap">{{ $product->sku }}</td>
                             <td class="px-4 py-3 text-center whitespace-nowrap">
                                 <div class="flex justify-center items-center">
-                                    <div class="w-12 h-6 rounded bg-gray-500 text-white flex justify-center items-center">
+                                    <div class="w-12 h-6 rounded bg-gray-500 text-white flex justify-center items-center 
+                    relative group"
+                                        title="Stock Quantity">
                                         {{ $product->stock }}
+
+                                        <span
+                                            class="absolute bottom-10 left-1/2 -translate-x-1/2 scale-0 group-hover:scale-100 
+                       transition-all duration-200 bg-gray-800 text-white text-xs px-2 py-1 rounded shadow whitespace-nowrap">
+                                            Stock
+                                        </span>
                                     </div>
                                 </div>
                             </td>
@@ -123,34 +131,75 @@
                                 {{ number_format($product->new_price, 2) }}</td>
                             <td class="px-4 py-3 text-center whitespace-nowrap">
                                 <div class="flex justify-center items-center">
-                                    <div class="w-12 h-6 rounded bg-blue-500 text-white flex justify-center items-center">
+                                    <div class="w-12 h-6 rounded bg-blue-500 text-white flex justify-center items-center 
+                    relative group"
+                                        title="Variant Count">
                                         {{ $product->variants->count() }}
+
+                                        <span
+                                            class="absolute bottom-10 left-1/2 -translate-x-1/2 scale-0 group-hover:scale-100
+                       transition-all duration-200 bg-gray-800 text-white text-xs px-2 py-1 rounded shadow whitespace-nowrap">
+                                            Variants count
+                                        </span>
                                     </div>
                                 </div>
                             </td>
                             <td class="px-4 py-3 text-center whitespace-nowrap">
                                 @if ($product->status)
-                                    <span class="px-2 py-1.5 rounded bg-green-500 text-white text-xs">Active</span>
+                                    <span class="px-2 py-1.5 rounded bg-green-500 text-white text-xs relative group"
+                                        title="Active">
+                                        Active
+                                        <span
+                                            class="absolute bottom-8 left-1/2 -translate-x-1/2 scale-0 group-hover:scale-100
+                       transition-all duration-200 bg-gray-800 text-white text-xs px-2 py-1 rounded shadow whitespace-nowrap">
+                                            Product status
+                                        </span>
+                                    </span>
                                 @else
-                                    <span class="px-2 py-1.5 rounded bg-red-500 text-white text-xs">Inactive</span>
+                                    <span class="px-2 py-1.5 rounded bg-red-500 text-white text-xs relative group"
+                                        title="Inactive">
+                                        Inactive
+                                        <span
+                                            class="absolute bottom-8 left-1/2 -translate-x-1/2 scale-0 group-hover:scale-100
+                       transition-all duration-200 bg-gray-800 text-white text-xs px-2 py-1 rounded shadow whitespace-nowrap">
+                                            Product status
+                                        </span>
+                                    </span>
                                 @endif
                             </td>
                             <td class="px-4 py-3 text-right whitespace-nowrap">
-                                <div class="flex justify-end items-center gap-2">
+                                <div class="flex justify-center md:justify-end items-center gap-2">
                                     <a href="{{ route('admin.products.edit', $product->id) }}"
-                                        class="inline-flex items-center justify-center w-20 h-8 bg-blue-500 hover:bg-blue-600 text-white rounded shadow text-sm">
-                                        <i class="ri-edit-2-line mr-1"></i> Edit
+                                        class="inline-flex items-center justify-center w-9 h-9 bg-yellow-500 hover:bg-yellow-600 
+                  text-white rounded-full shadow transition-all duration-200 relative group"
+                                        title="Edit Product">
+                                        <i class="ri-edit-2-line text-md"></i>
+
+                                        <span
+                                            class="absolute bottom-12 left-1/2 -translate-x-1/2 scale-0 group-hover:scale-100
+                       transition-all duration-200 bg-gray-800 text-white text-xs px-2 py-1 rounded shadow whitespace-nowrap">
+                                            Edit
+                                        </span>
                                     </a>
 
                                     <form action="{{ route('admin.products.destroy', $product->id) }}" method="POST"
-                                        onsubmit="return confirm('Are you sure you want to delete this coupon?');">
+                                        onsubmit="return confirm('Are you sure you want to delete this product?');">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit"
-                                            class="inline-flex items-center justify-center w-24 h-8 bg-red-500 hover:bg-red-600 text-white rounded shadow text-sm">
-                                            <i class="ri-delete-bin-6-line mr-1"></i> Delete
+                                            class="inline-flex items-center justify-center w-9 h-9 bg-red-500 hover:bg-red-600 
+                           text-white rounded-full shadow transition-all duration-200 relative group"
+                                            title="Delete Product">
+                                            <i class="ri-delete-bin-6-line text-md"></i>
+
+                                            <span
+                                                class="absolute bottom-12 left-1/2 -translate-x-1/2 scale-0 group-hover:scale-100
+                           transition-all duration-200 bg-gray-800 text-white text-xs px-2 py-1 rounded shadow whitespace-nowrap">
+                                                Delete
+                                            </span>
                                         </button>
                                     </form>
+
                                 </div>
                             </td>
                         </tr>

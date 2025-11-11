@@ -1,7 +1,7 @@
 @extends('backend.layouts.app')
 @section('title', 'Order by Products')
 @section('content')
-    <div class="w-full mb-4">
+    <div class="w-full mb-6">
         <!-- Header -->
         <div class="flex flex-col md:flex-row justify-between items-start md:items-center pb-4 border-b rounded-md mb-4">
             <div class="flex flex-col gap-2 w-full md:w-2/3">
@@ -102,12 +102,20 @@
 
                                     <input type="number" name="orders[{{ $product->id }}]"
                                         value="{{ $product->orders }}" min="0" placeholder="Enter Serial"
-                                        class="w-14 md:w-24 border border-gray-300 rounded px-2 py-1 text-sm focus:ring-2 focus:ring-indigo-500 outline-none"
+                                        class="w-16 md:w-24 h-8 border border-gray-300 rounded px-2 py-1 text-sm focus:ring-2 focus:ring-indigo-500 outline-none"
                                         required>
 
                                     <button type="submit"
-                                        class="bg-green-500 hover:bg-green-600 text-white text-xs font-semibold px-3 py-1.5 rounded">
-                                        Save
+                                        class="bg-green-500 hover:bg-green-600 text-white text-lg font-semibold px-3 py-1 h-8 rounded 
+           relative group"
+                                        title="Save">
+                                        <i class="ri-save-3-line"></i>
+
+                                        <span
+                                            class="absolute bottom-12 left-1/2 -translate-x-1/2 scale-0 group-hover:scale-100 
+               transition-all duration-200 bg-gray-800 text-white text-xs px-2 py-1 rounded shadow whitespace-nowrap">
+                                            Save
+                                        </span>
                                     </button>
                                 </form>
                             </td>

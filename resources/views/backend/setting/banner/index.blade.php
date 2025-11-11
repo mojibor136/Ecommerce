@@ -1,7 +1,7 @@
 @extends('backend.layouts.app')
 @section('title', 'Banner Management')
 @section('content')
-    <div class="w-full mb-4">
+    <div class="w-full mb-6">
         <!-- Header -->
         <div class="flex flex-col md:flex-row justify-between items-start md:items-center pb-4 border-b rounded-md mb-4">
             <div class="flex flex-col gap-3 w-full md:w-2/3">
@@ -73,15 +73,26 @@
                             </td>
                             <td class="px-4 py-3 text-right whitespace-nowrap">
                                 <div class="flex justify-end items-center gap-2">
+
+                                    <!-- Delete Banner -->
                                     <form action="{{ route('admin.banners.destroy', $banner->id) }}" method="POST"
-                                        onsubmit="return confirm('Are you sure you want to delete this coupon?');">
+                                        onsubmit="return confirm('Are you sure you want to delete this banner?');">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit"
-                                            class="inline-flex items-center justify-center w-24 h-8 bg-red-500 hover:bg-red-600 text-white rounded shadow text-sm">
-                                            <i class="ri-delete-bin-6-line mr-1"></i> Delete
+                                            class="relative group inline-flex items-center justify-center w-9 h-9 bg-red-500 hover:bg-red-600 text-white rounded-full shadow transition-all duration-200"
+                                            title="Delete Banner">
+                                            <i class="ri-delete-bin-6-line text-md"></i>
+
+                                            <!-- Tooltip -->
+                                            <span
+                                                class="absolute -top-8 left-1/2 -translate-x-1/2 scale-0 group-hover:scale-100
+                             transition-transform duration-200 bg-gray-800 text-white text-xs px-2 py-1 rounded shadow whitespace-nowrap">
+                                                Delete
+                                            </span>
                                         </button>
                                     </form>
+
                                 </div>
                             </td>
                         </tr>

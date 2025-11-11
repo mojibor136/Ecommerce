@@ -3,6 +3,10 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
+use App\Models\Order;
+use App\Models\Product;
+use App\Models\Subcategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
@@ -11,7 +15,37 @@ class AdminController extends Controller
 {
     public function index()
     {
-        return view('backend.dashboard');
+        $statuses = ['pending', 'confirmed', 'processing', 'shipped', 'delivered', 'cancelled', 'refunded'];
+
+        $ordersCount = [];
+        foreach ($statuses as $status) {
+            $ordersCount[$status] = Order::where('order_status', $status)->count();
+        }
+        $ordersCount['all'] = Order::count();
+
+        $productCount = Product::count();
+        $categoryCount = Category::count();
+        $subcategoryCount = Subcategory::count();
+
+        $dailySales = Order::whereDate('created_at', now())->sum('total');
+        $monthlySales = Order::whereMonth('created_at', now()->month)->sum('total');
+
+        $recentOrders = Order::latest()->take(5)->get();
+
+        $topProducts = Product::withCount(['orderItems as sold_count' => function ($query) {
+            $query->select(\DB::raw('SUM(quantity)'));
+        }])->orderBy('sold_count', 'desc')->take(5)->get();
+
+        return view('backend.dashboard', compact(
+            'ordersCount',
+            'productCount',
+            'categoryCount',
+            'subcategoryCount',
+            'dailySales',
+            'monthlySales',
+            'recentOrders',
+            'topProducts'
+        ));
     }
 
     public function account()

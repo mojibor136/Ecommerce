@@ -1,7 +1,7 @@
 @extends('backend.layouts.app')
 @section('title', 'Inventory Tracking')
 @section('content')
-    <div class="w-full mb-4">
+    <div class="w-full mb-6">
         <!-- Header -->
         <div class="flex flex-col md:flex-row justify-between items-start md:items-center pb-4 border-b rounded-md mb-4">
             <div class="flex flex-col gap-2 w-full md:w-2/3">
@@ -70,8 +70,8 @@
                         <th class="px-4 py-3 text-left">Image</th>
                         <th class="px-4 py-3 text-left">Name</th>
                         <th class="px-4 py-3 text-center">Stock</th>
-                        <th class="px-4 py-3 text-center">Price (New)</th>
-                        <th class="px-4 py-3 text-right">Stock/Actions</th>
+                        <th class="px-4 py-3 text-center">Price</th>
+                        <th class="px-4 py-3 text-right">Actions</th>
                     </tr>
                 </thead>
                 <tbody class="text-sm text-gray-700 divide-y divide-gray-200">
@@ -96,20 +96,40 @@
                                     <form action="{{ route('admin.products.updateStock', ['id' => $product->id]) }}"
                                         method="POST" class="flex gap-1 justify-end">
                                         @csrf
-                                        <input type="number" name="stock_add" min="1" placeholder="Add Stock"
-                                            class="md:w-40 w-28 rounded bg-white text-gray-900 border border-gray-300 px-4 h-9 text-sm sm:text-base outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-200"
+                                        <input type="number" name="stock_add" min="1" value=""
+                                            placeholder="{{ $product->stock }}"
+                                            class="md:w-32 w-20 rounded bg-white text-gray-900 border border-gray-300 px-4 h-8 text-sm sm:text-base outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-200"
                                             required>
                                         <button type="submit"
-                                            class="bg-green-500 hover:bg-green-600 text-white text-xs rounded px-3 h-9">Add</button>
+                                            class="inline-flex items-center justify-center w-12 h-8 bg-green-500 hover:bg-green-600 
+               text-white rounded shadow transition-all duration-200 relative group"
+                                            title="Add Stock">
+                                            <i class="ri-add-fill text-lg"></i>
+
+                                            <span
+                                                class="absolute bottom-12 scale-0 group-hover:scale-100 transition-all duration-200
+                   bg-gray-800 text-white text-xs px-2 py-1 rounded shadow whitespace-nowrap">
+                                                Add Stock
+                                            </span>
+                                        </button>
                                     </form>
 
                                     <form action="{{ route('admin.products.destroy', $product->id) }}" method="POST"
-                                        onsubmit="return confirm('Are you sure you want to delete this coupon?');">
+                                        onsubmit="return confirm('Are you sure you want to delete this product?');">
                                         @csrf
                                         @method('DELETE')
+
                                         <button type="submit"
-                                            class="inline-flex items-center justify-center w-24 h-9 bg-red-500 hover:bg-red-600 text-white rounded shadow text-sm">
-                                            <i class="ri-delete-bin-6-line mr-1"></i> Delete
+                                            class="inline-flex items-center justify-center w-9 h-9 bg-red-500 hover:bg-red-600 
+               text-white rounded-full shadow transition-all duration-200 relative group"
+                                            title="Delete Product">
+                                            <i class="ri-delete-bin-6-line text-md"></i>
+
+                                            <span
+                                                class="absolute bottom-12 scale-0 group-hover:scale-100 transition-all duration-200
+                   bg-gray-800 text-white text-xs px-2 py-1 rounded shadow">
+                                                Delete
+                                            </span>
                                         </button>
                                     </form>
                                 </div>
@@ -147,23 +167,45 @@
                                     <div class="flex justify-end items-center gap-2">
                                         <form
                                             action="{{ route('admin.products.updateStock', ['id' => $product->id, 'variantId' => $variant->id]) }}"
-                                            method="POST" class="flex gap-1 justify-end">
+                                            method="POST" class="flex gap-1 justify-end items-center">
                                             @csrf
-                                            <input type="number" name="stock_add" min="1" placeholder="Add Stock"
-                                                class="md:w-40 w-28 rounded bg-white text-gray-900 border border-gray-300 px-4 h-9 text-sm sm:text-base outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-200"
+
+                                            <input type="number" name="stock_add" min="1" value=""
+                                                placeholder="{{ $variant->stock }}"
+                                                class="md:w-32 w-20 rounded bg-white text-gray-900 border border-gray-300 px-4 h-9 text-sm sm:text-base outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-200"
                                                 required>
+
                                             <button type="submit"
-                                                class="bg-green-500 hover:bg-green-600 text-white text-xs rounded px-3 h-9">Add</button>
+                                                class="inline-flex items-center justify-center w-12 h-9 bg-green-500 hover:bg-green-600 
+               text-white rounded shadow transition-all duration-200 relative group"
+                                                title="Add Stock">
+                                                <i class="ri-add-fill text-lg"></i>
+
+                                                <span
+                                                    class="absolute bottom-12 scale-0 group-hover:scale-100 transition-all duration-200
+                   bg-gray-800 text-white text-xs px-2 py-1 rounded shadow whitespace-nowrap">
+                                                    Add Stock
+                                                </span>
+                                            </button>
                                         </form>
 
                                         <form action="{{ route('admin.products.variant.destroy', $variant->id) }}"
                                             method="POST"
-                                            onsubmit="return confirm('Are you sure you want to delete this coupon?');">
+                                            onsubmit="return confirm('Are you sure you want to delete this variant?');">
                                             @csrf
                                             @method('DELETE')
+
                                             <button type="submit"
-                                                class="inline-flex items-center justify-center w-24 h-9 bg-red-500 hover:bg-red-600 text-white rounded shadow text-sm">
-                                                <i class="ri-delete-bin-6-line mr-1"></i> Delete
+                                                class="inline-flex items-center justify-center w-10 h-10 bg-red-500 hover:bg-red-600 
+                       text-white rounded-full shadow transition-all duration-200 relative group"
+                                                title="Delete Variant">
+                                                <i class="ri-delete-bin-6-line text-lg"></i>
+
+                                                <span
+                                                    class="absolute bottom-12 scale-0 group-hover:scale-100 transition-all duration-200
+                           bg-gray-800 text-white text-xs px-2 py-1 rounded shadow whitespace-nowrap">
+                                                    Delete
+                                                </span>
                                             </button>
                                         </form>
                                     </div>

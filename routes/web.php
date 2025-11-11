@@ -81,6 +81,19 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'web'])->group(funct
         Route::post('/analytics/pixel', 'AnalyticsPixelStore')->name('analytics.pixel.store');
     });
 
+    Route::controller(OrderController::class)->group(function () {
+        Route::get('/orders/pending', 'pending')->name('orders.pending');
+        Route::get('/orders/confirmed', 'confirmed')->name('orders.confirmed');
+        Route::get('/orders/ready', 'ready')->name('orders.ready');
+        Route::get('/orders/shipped', 'shipped')->name('orders.shipped');
+        Route::get('/orders/delivered', 'delivered')->name('orders.delivered');
+        Route::get('/orders/cancelled', 'cancelled')->name('orders.cancelled');
+        Route::get('/orders/refunded', 'refunded')->name('orders.refunded');
+        Route::get('/orders/show/{id}', 'show')->name('orders.show');
+        Route::get('/orders/edit/{id}', 'edit')->name('orders.edit');
+        Route::post('/orders/update/{id}', 'update')->name('orders.update');
+    });
+
     Route::resource('categories', CategoryController::class);
     Route::resource('subcategories', SubcategoryController::class);
     Route::resource('products', ProductController::class);

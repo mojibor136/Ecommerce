@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use App\Models\Coupon;
-use App\Models\Product;
 use Exception;
 use Illuminate\Http\Request;
 
@@ -16,7 +16,7 @@ class CouponController extends Controller
     public function index(Request $request)
     {
         try {
-            $query = Coupon::with('product')->latest();
+            $query = Coupon::with('category')->latest();
 
             if ($request->filled('search')) {
                 $search = $request->search;
@@ -37,9 +37,9 @@ class CouponController extends Controller
     public function create()
     {
         try {
-            $products = Product::all();
+            $categories = Category::all();
 
-            return view('backend.coupon.create', compact('products'));
+            return view('backend.coupon.create', compact('categories'));
         } catch (Exception $e) {
             return redirect()->back()->with('error', 'Failed to load create page: '.$e->getMessage());
         }
@@ -56,7 +56,7 @@ class CouponController extends Controller
                 'type' => 'required|in:percent,fixed',
                 'value' => 'required|numeric|min:0',
                 'min_purchase' => 'nullable|numeric|min:0',
-                'product' => 'nullable|exists:products,id',
+                'category' => 'nullable|exists:categories,id',
                 'expiry_date' => 'nullable|date',
                 'status' => 'required|boolean',
             ]);
@@ -66,7 +66,7 @@ class CouponController extends Controller
                 'type' => $request->type,
                 'value' => $request->value,
                 'min_purchase' => $request->min_purchase,
-                'product_id' => $request->product,
+                'category_id' => $request->category,
                 'expiry_date' => $request->expiry_date,
                 'status' => $request->status,
             ]);
@@ -84,9 +84,9 @@ class CouponController extends Controller
     {
         try {
             $coupon = Coupon::findOrFail($id);
-            $products = Product::all();
+            $categories = Category::all();
 
-            return view('backend.coupon.edit', compact('coupon', 'products'));
+            return view('backend.coupon.edit', compact('coupon', 'categories'));
         } catch (Exception $e) {
             return redirect()->back()->with('error', 'Failed to load edit form: '.$e->getMessage());
         }
@@ -105,7 +105,7 @@ class CouponController extends Controller
                 'type' => 'required|in:percent,fixed',
                 'value' => 'required|numeric|min:0',
                 'min_purchase' => 'nullable|numeric|min:0',
-                'product' => 'nullable|exists:products,id',
+                'category' => 'nullable|exists:categories,id',
                 'expiry_date' => 'nullable|date',
                 'status' => 'required|boolean',
             ]);
@@ -115,7 +115,7 @@ class CouponController extends Controller
                 'type' => $request->type,
                 'value' => $request->value,
                 'min_purchase' => $request->min_purchase,
-                'product_id' => $request->product,
+                'category_id' => $request->category,
                 'expiry_date' => $request->expiry_date,
                 'status' => $request->status,
             ]);

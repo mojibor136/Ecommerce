@@ -74,16 +74,16 @@
                         class="w-full rounded-md border border-gray-300 text-gray-900 px-3 py-2 text-sm sm:text-base focus:ring-2 focus:ring-indigo-500 outline-none transition-all">
                 </div>
 
-                <!-- Apply on Products -->
+                <!-- Apply on Category -->
                 <div class="col-span-2">
-                    <label class="block text-md text-gray-700 mb-1 font-medium">Apply To Products</label>
-                    <select name="product"
+                    <label class="block text-md text-gray-700 mb-1 font-medium">Apply To Category</label>
+                    <select name="category"
                         class="w-full rounded-md bg-white text-gray-900 border border-gray-300 px-3 py-[12px] text-sm sm:text-base focus:ring-2 focus:ring-indigo-500 outline-none transition-all">
-                        <option value="">Select Product (Optional)</option>
-                        @foreach ($products as $product)
-                            <option value="{{ $product->id }}"
-                                {{ $coupon->product_id == $product->id ? 'selected' : '' }}>
-                                {{ $product->name }}
+                        <option value="">Select Category (Optional)</option>
+                        @foreach ($categories as $category)
+                            <option value="{{ $category->id }}"
+                                {{ $coupon->category_id == $category->id ? 'selected' : '' }}>
+                                {{ $category->name }}
                             </option>
                         @endforeach
                     </select>

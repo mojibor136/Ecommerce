@@ -14,13 +14,13 @@ class Coupon extends Model
         'type',
         'value',
         'min_purchase',
-        'product_id',
+        'category_id',
         'expiry_date',
         'status',
     ];
 
-    public function product()
+    public function category()
     {
-        return $this->belongsTo(Product::class);
+        return $this->belongsTo(Category::class);
     }
 }
