@@ -37,14 +37,23 @@
 
                         if (file_exists(public_path($variantPath))) {
                             $finalPath = $variantPath;
+
+                            $variantId = 0;
+                            foreach ($variants as $variant) {
+                                if (in_array($image, $variant['images'])) {
+                                    $variantId = $variant['id'];
+                                    break;
+                                }
+                            }
                         } else {
                             $finalPath = $productPath;
+                            $variantId = 0;
                         }
                     @endphp
 
                     <img loading="lazy" src="{{ asset($finalPath) }}" alt="{{ $product->name }}"
                         class="h-16 w-16 object-cover rounded shadow mx-auto cursor-pointer border transition duration-200"
-                        data-variant-id="0" onclick="changeMainImage(this)">
+                        data-variant-id="{{ $variantId }}" onclick="changeMainImage(this)">
                 @endforeach
             </div>
         </div>
@@ -52,16 +61,38 @@
         <script>
             document.addEventListener("DOMContentLoaded", function() {
                 const mainImage = document.getElementById("mainImage");
+                const finalPriceEl = document.getElementById("finalPrice");
+                const oldPriceEl = document.getElementById("oldPrice");
+                const savePriceEl = document.getElementById("savePrice");
+                const stockEl = document.querySelector('.text-green-600');
+
                 const cartImage = document.getElementById("cartImage");
                 const buyNowImage = document.getElementById("buyNowImage");
 
-                function updateHiddenInputs() {
+                const variants = @json($variants);
+
+                function updateHiddenInputs(variantId = 0) {
                     const currentSrc = mainImage.getAttribute("src");
                     if (cartImage) cartImage.value = currentSrc;
                     if (buyNowImage) buyNowImage.value = currentSrc;
-                }
 
-                updateHiddenInputs();
+                    let variant = variants.find(v => v.id == variantId);
+                    if (variant) {
+                        finalPriceEl.textContent = `৳${variant.new_price.toFixed(2)}`;
+                        oldPriceEl.textContent = variant.old_price ? `৳${parseFloat(variant.old_price).toFixed(2)}` :
+                            '';
+                        savePriceEl.textContent = variant.old_price ?
+                            `Save ৳${(parseFloat(variant.old_price) - variant.new_price).toFixed(2)}` : '';
+                        if (stockEl) stockEl.textContent = `${variant.stock} Available`;
+                    } else {
+                        finalPriceEl.textContent = `৳{{ $product->new_price }}.00`;
+                        @if ($product->old_price)
+                            oldPriceEl.textContent = `৳{{ $product->old_price }}.00`;
+                            savePriceEl.textContent = `Save ৳-{{ $product->old_price - $product->new_price }}.00`;
+                        @endif
+                        if (stockEl) stockEl.textContent = `{{ $product->stock }} Available`;
+                    }
+                }
 
                 const container = document.getElementById("desktopProduct");
 
@@ -74,16 +105,24 @@
                             img.classList.remove("border-2", "border-orange-500");
                             img.classList.add("border", "border-gray-200");
                         });
+
                         target.classList.remove("border", "border-gray-200");
                         target.classList.add("border-2", "border-orange-500");
 
-                        setTimeout(updateHiddenInputs, 100);
+                        const variantId = parseInt(target.getAttribute('data-variant-id'));
+                        updateHiddenInputs(variantId);
                     }
                 });
 
                 document.querySelectorAll("form").forEach(form => {
-                    form.addEventListener("submit", updateHiddenInputs);
+                    form.addEventListener("submit", function() {
+                        const variantId = mainImage.closest('div').querySelector('img.border-2')
+                            ?.getAttribute('data-variant-id') || 0;
+                        updateHiddenInputs(parseInt(variantId));
+                    });
                 });
+
+                updateHiddenInputs();
             });
         </script>
 
@@ -163,15 +202,15 @@
 
             <div class="mb-4">
                 <div class="flex items-center gap-3">
-                    <span class="text-2xl font-bold text-orange-600"
-                        id="finalPrice">৳{{ $product->new_price ?? '0.00' }}</span>
+                    <span class="text-2xl font-bold text-orange-600" id="finalPrice">৳{{ $product->new_price }}.00</span>
                     @if ($product->old_price)
-                        <span class="text-gray-400 line-through text-lg" id="oldPrice">৳{{ $product->old_price }}</span>
+                        <span class="text-gray-400 line-through text-lg"
+                            id="oldPrice">৳{{ $product->old_price }}.00</span>
                     @endif
                     @if ($product->old_price && $product->new_price < $product->old_price)
                         <span class="text-sm text-green-600 font-medium px-2 py-1 rounded bg-green-100 animate-pulse"
                             id="savePrice">
-                            Save ৳{{ $product->old_price - $product->new_price }}
+                            Save ৳-{{ $product->old_price - $product->new_price }}.00
                         </span>
                     @endif
                 </div>
@@ -274,7 +313,7 @@
 
                     if (oldPrice > 0 && oldPrice > basePrice) {
                         oldPriceEl.textContent = `৳${(oldPrice * qty).toFixed(2)}`;
-                        savePriceEl.textContent = `Save ৳${((oldPrice - basePrice) * qty).toFixed(2)}`;
+                        savePriceEl.textContent = `Save ৳-${((oldPrice - basePrice) * qty).toFixed(2)}`;
                     }
                 }
 
