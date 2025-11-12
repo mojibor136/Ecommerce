@@ -20,7 +20,7 @@
     </style>
 </head>
 
-<body class="bg-gradient-to-br from-blue-900 via-indigo-800 to-purple-700 min-h-screen flex items-center justify-center">
+<body class="bg-gradient-to-br from-blue-900 via-indigo-800 to-purple-700 min-h-screen my-4 flex items-center justify-center">
 
     <!-- Overlay Pattern -->
     <div

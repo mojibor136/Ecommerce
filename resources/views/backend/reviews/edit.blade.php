@@ -24,6 +24,10 @@
             vertical-align: middle;
         }
 
+        .select2-container--default .select2-results__option--highlighted span {
+            color: #ffffff !important;
+        }
+
         .select2-container .select2-selection--single {
             height: 40px !important;
             padding: 4px 10px;
@@ -138,7 +142,7 @@
                 @csrf
                 @method('PUT')
 
-                <div class="col-span-2">
+                <div class="col-span-2" id="product-select-edit">
                     <label class="block text-md text-gray-700 mb-1 sm:mb-2 font-medium">Select Product</label>
                     <select name="product_id" id="productSelect"
                         class="w-full rounded-md border border-gray-300 text-gray-900 px-3 py-[11px] text-sm sm:text-base focus:ring-2 focus:ring-indigo-500 outline-none">
@@ -206,18 +210,38 @@
             </form>
         </div>
     </div>
-
+@endsection
+@push('scripts')
     <script>
         $(document).ready(function() {
             function formatProduct(option) {
                 if (!option.id) return option.text;
                 var image = $(option.element).data('image');
-                if (!image)
+                var name = $(option.element).data('name');
+
+                if (!image) {
                     image =
-                    "https://cdni.iconscout.com/illustration/premium/thumb/product-is-empty-illustration-svg-download-png-6430781.png";
-                var $option = $('<span><img src="' + image +
-                    '" style="width:35px; height:35px; border-radius:4px; margin-right:8px;" /> ' + option
-                    .text + '</span>');
+                        "https://cdni.iconscout.com/illustration/premium/thumb/product-is-empty-illustration-svg-download-png-6430781.png";
+                }
+
+                var $option = $(`
+                <div style="
+                    display: flex; 
+                    align-items: center; 
+                    gap: 10px;
+                ">
+                    <img src="${image}" 
+                         alt="${name}"
+                         style="
+                             width: 45px; 
+                             height: 45px; 
+                             border-radius: 50%; 
+                             object-fit: cover;
+                             border:1px solid #777;
+                         ">
+                    <span style="font-size: 14px; color: #374151;">${name}</span>
+                </div>
+            `);
                 return $option;
             }
 
@@ -238,17 +262,17 @@
                     var cardHTML = `
                     <div class="selected-product-card">
                         <img src="${image}" alt="${name}">
-                        <div>
+                        <div style="display:flex; flex-direction:column;">
                             <h5>${name}</h5>
                             <span>Selected product for review</span>
                         </div>
                     </div>
                 `;
-                    $('#selectedProductCard').html(cardHTML);
+                    $('#selectedProductCard').html(cardHTML).removeClass('hidden');
                 } else {
-                    $('#selectedProductCard').html('');
+                    $('#selectedProductCard').addClass('hidden').html('');
                 }
             });
         });
     </script>
-@endsection
+@endpush

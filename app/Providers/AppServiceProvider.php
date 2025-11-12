@@ -45,7 +45,7 @@ class AppServiceProvider extends ServiceProvider
         $allOrdersCount = Order::count();
         $pendingCount = Order::where('order_status', 'pending')->count();
         $confirmedCount = Order::where('order_status', 'confirmed')->count();
-        $readyCount = Order::where('order_status', 'ready')->count();
+        $readyCount = Order::where('order_status', 'Ready to Ship')->count();
         $shippedCount = Order::where('order_status', 'shipped')->count();
         $deliveredCount = Order::where('order_status', 'delivered')->count();
         $cancelledCount = Order::where('order_status', 'cancelled')->count();

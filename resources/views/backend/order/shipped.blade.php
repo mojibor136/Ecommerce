@@ -98,10 +98,13 @@
             @endforeach
         </div>
 
-        <div class="w-full mb-4" x-data="{ open: false }">
+        <form id="orderForm" method="POST" class="w-full mb-4" x-data="{ open: false }">
+            @csrf
+            <input type="hidden" name="ids[]" id="ids">
+
             <div class="flex items-center gap-2">
                 <!-- Add Order Button -->
-                <button
+                <button type="button" onclick="window.location.href='{{ route('admin.orders.create') }}'"
                     class="relative inline-flex items-center bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md shadow font-medium transition-all duration-200 group"
                     title="Add New Order">
                     <i class="ri-add-line mr-2"></i> Add Order
@@ -112,7 +115,7 @@
                 </button>
 
                 <!-- Print Button -->
-                <button
+                <button onclick="submitForm('{{ route('admin.orders.print') }}')"
                     class="relative inline-flex items-center bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md shadow font-medium transition-all duration-200 group"
                     title="Print Order">
                     <i class="ri-printer-line mr-2"></i> Print
@@ -123,7 +126,7 @@
                 </button>
 
                 <!-- Delete Button -->
-                <button
+                <button type="button" onclick="submitForm('{{ route('admin.orders.destroy') }}')"
                     class="relative inline-flex items-center bg-[#E83330] hover:bg-[#E83330] text-white px-4 py-2 rounded-md shadow font-medium transition-all duration-200 group"
                     title="Delete Order">
                     <i class="ri-delete-bin-6-line mr-2"></i> Delete
@@ -133,7 +136,7 @@
                     </span>
                 </button>
             </div>
-        </div>
+        </form>
 
         <!-- Orders Table -->
         <div class="overflow-x-auto bg-white rounded shadow">
@@ -147,18 +150,19 @@
                         <th class="px-4 py-3 text-center whitespace-nowrap">Amount</th>
                         <th class="px-4 py-3 text-center whitespace-nowrap">Orders</th>
                         <th class="px-4 py-3 text-center whitespace-nowrap">Payment</th>
+                        <th class="px-4 py-3 text-center whitespace-nowrap">Tracking</th>
                         <th class="px-4 py-3 text-right pr-8">Actions</th>
                     </tr>
                 </thead>
                 <tbody class="text-sm text-gray-700 divide-y divide-gray-200">
                     @foreach ($orders as $index => $order)
                         <tr class="hover:bg-gray-50 transition-colors cursor-pointer"
-                            onclick="const cb=this.querySelector('input[type=checkbox]'); cb.checked = !cb.checked">
+                            onclick="const cb=this.querySelector('input[type=checkbox]'); cb.checked = !cb.checked; updateSelectedIds();">
 
                             <td class="px-4 py-3 text-center whitespace-nowrap">
                                 <input type="checkbox" name="orders[]" value="{{ $order->id }}"
-                                    class="w-[16px] h-[16px] text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
-                                    onclick="event.stopPropagation()">
+                                    class="order-checkbox w-[16px] h-[16px] text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
+                                    onclick="event.stopPropagation(); updateSelectedIds();">
                             </td>
 
                             <td class="px-4 py-3 text-left whitespace-nowrap font-medium text-gray-800">
@@ -224,6 +228,11 @@
                                 @endif
                             </td>
 
+                            <td class="px-4 py-3 text-center whitespace-nowrap">
+                                <span class="px-2 py-1.5 rounded bg-green-500 text-white text-xs"><i
+                                        class="ri-truck-line"></i>Tracking</span>
+                            </td>
+
                             <td class="px-4 py-3 text-right whitespace-nowrap">
                                 <div class="flex justify-center md:justify-end items-center gap-2">
                                     <!-- View -->
@@ -236,19 +245,6 @@
                                         <span
                                             class="absolute bottom-full mb-1 left-1/2 -translate-x-1/2 text-xs bg-gray-800 text-white px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-all duration-200 whitespace-nowrap">
                                             View Order
-                                        </span>
-                                    </div>
-
-                                    <!-- Edit -->
-                                    <div class="relative group">
-                                        <a href="{{ route('admin.orders.edit', $order->id) }}"
-                                            class="inline-flex items-center justify-center w-9 h-9 bg-green-500 hover:bg-green-600 
-                text-white rounded-full shadow transition-all duration-200">
-                                            <i class="ri-edit-2-line text-md"></i>
-                                        </a>
-                                        <span
-                                            class="absolute bottom-full mb-1 left-1/2 -translate-x-1/2 text-xs bg-gray-800 text-white px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-all duration-200 whitespace-nowrap">
-                                            Edit Order
                                         </span>
                                     </div>
 
@@ -284,3 +280,45 @@
         </div>
     </div>
 @endsection
+@push('scripts')
+    <script>
+        function updateSelectedIds() {
+            const checkboxes = document.querySelectorAll('.order-checkbox:checked');
+            const ids = Array.from(checkboxes).map(cb => cb.value);
+            document.getElementById('ids').value = JSON.stringify(ids);
+        }
+
+        function submitForm(action) {
+            const form = document.getElementById('orderForm');
+            const ids = document.getElementById('ids').value;
+
+            if (!ids || ids === '[]') {
+                alert('Please select at least one order first!');
+                return;
+            }
+
+            form.action = action;
+            form.method = 'POST';
+            form.submit();
+        }
+
+        function changeStatus(status, action) {
+            const form = document.getElementById('orderForm');
+            const ids = document.getElementById('ids').value;
+
+            if (!ids || ids === '[]') {
+                alert('Please select at least one order first!');
+                return;
+            }
+
+            form.action = action;
+            form.method = 'POST';
+            let statusInput = document.createElement('input');
+            statusInput.type = 'hidden';
+            statusInput.name = 'status';
+            statusInput.value = status;
+            form.appendChild(statusInput);
+            form.submit();
+        }
+    </script>
+@endpush

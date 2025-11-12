@@ -98,12 +98,13 @@
             @endforeach
         </div>
 
-        <div class="w-full mb-4" x-data="{ open: false }">
-            <!-- Main Button -->
-            <div class="flex items-center gap-2">
+        <form id="orderForm" method="POST" class="w-full mb-4" x-data="{ open: false }">
+            @csrf
+            <input type="hidden" name="ids[]" id="ids">
 
+            <div class="flex items-center gap-2">
                 <!-- Status Change Button -->
-                <button @click="open = true"
+                <button type="button" @click="open = true"
                     class="relative inline-flex items-center bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-md shadow font-medium transition-all duration-200 group"
                     title="Change Status">
                     <i class="ri-refresh-line mr-2"></i> Status Change
@@ -114,7 +115,7 @@
                 </button>
 
                 <!-- Add Order Button -->
-                <button
+                <button type="button" onclick="window.location.href='{{ route('admin.orders.create') }}'"
                     class="relative inline-flex items-center bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md shadow font-medium transition-all duration-200 group"
                     title="Add New Order">
                     <i class="ri-add-line mr-2"></i> Add Order
@@ -125,7 +126,7 @@
                 </button>
 
                 <!-- Delete Button -->
-                <button
+                <button type="button" onclick="submitForm('{{ route('admin.orders.destroy') }}')"
                     class="relative inline-flex items-center bg-[#E83330] hover:bg-[#E83330] text-white px-4 py-2 rounded-md shadow font-medium transition-all duration-200 group"
                     title="Delete Order">
                     <i class="ri-delete-bin-6-line mr-2"></i> Delete
@@ -136,25 +137,25 @@
                 </button>
             </div>
 
-            <!-- Modal / Popup -->
+            <!-- Status Modal -->
             <div x-show="open" x-transition
                 class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
                 <div @click.away="open = false"
                     class="bg-white rounded-lg shadow-lg w-[450px] max-w-full p-6 flex flex-col gap-4 relative">
 
-                    <!-- Close Button -->
-                    <button @click="open = false" class="absolute top-3 right-3 text-gray-500 hover:text-gray-700">
+                    <button @click="open = false" type="button"
+                        class="absolute top-3 right-3 text-gray-500 hover:text-gray-700">
                         <i class="ri-close-line text-xl"></i>
                     </button>
 
-                    <h3 class="text-lg font-bold text-gray-800 block text-center">Change Status</h3>
+                    <h3 class="text-lg font-bold text-gray-800 text-center">Change Status</h3>
 
                     <div class="flex flex-wrap w-full gap-2">
                         @php
                             $statuses = [
                                 'pending' => 'bg-yellow-500',
                                 'confirmed' => 'bg-blue-500',
-                                'processing' => 'bg-indigo-500',
+                                'Ready to Ship' => 'bg-indigo-500',
                                 'shipped' => 'bg-purple-500',
                                 'delivered' => 'bg-green-500',
                                 'cancelled' => 'bg-red-500',
@@ -163,7 +164,8 @@
                         @endphp
 
                         @foreach ($statuses as $status => $color)
-                            <button @click="alert('Change status to {{ $status }}')"
+                            <button type="button"
+                                onclick="changeStatus('{{ $status }}', '{{ route('admin.orders.status') }}')"
                                 class="{{ $color }} text-white flex-1 h-10 min-w-[100px] rounded shadow hover:opacity-90 transition-all duration-150 text-sm font-medium text-center">
                                 {{ ucfirst($status) }}
                             </button>
@@ -171,7 +173,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </form>
 
         <!-- Orders Table -->
         <div class="overflow-x-auto bg-white rounded shadow">
@@ -191,12 +193,12 @@
                 <tbody class="text-sm text-gray-700 divide-y divide-gray-200">
                     @foreach ($orders as $index => $order)
                         <tr class="hover:bg-gray-50 transition-colors cursor-pointer"
-                            onclick="const cb=this.querySelector('input[type=checkbox]'); cb.checked = !cb.checked">
+                            onclick="const cb=this.querySelector('input[type=checkbox]'); cb.checked = !cb.checked; updateSelectedIds();">
 
                             <td class="px-4 py-3 text-center whitespace-nowrap">
                                 <input type="checkbox" name="orders[]" value="{{ $order->id }}"
-                                    class="w-[16px] h-[16px] text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
-                                    onclick="event.stopPropagation()">
+                                    class="order-checkbox w-[16px] h-[16px] text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
+                                    onclick="event.stopPropagation(); updateSelectedIds();">
                             </td>
 
                             <td class="px-4 py-3 text-left whitespace-nowrap font-medium text-gray-800">
@@ -322,3 +324,45 @@
         </div>
     </div>
 @endsection
+@push('scripts')
+    <script>
+        function updateSelectedIds() {
+            const checkboxes = document.querySelectorAll('.order-checkbox:checked');
+            const ids = Array.from(checkboxes).map(cb => cb.value);
+            document.getElementById('ids').value = JSON.stringify(ids);
+        }
+
+        function submitForm(action) {
+            const form = document.getElementById('orderForm');
+            const ids = document.getElementById('ids').value;
+
+            if (!ids || ids === '[]') {
+                alert('Please select at least one order first!');
+                return;
+            }
+
+            form.action = action;
+            form.method = 'POST';
+            form.submit();
+        }
+
+        function changeStatus(status, action) {
+            const form = document.getElementById('orderForm');
+            const ids = document.getElementById('ids').value;
+
+            if (!ids || ids === '[]') {
+                alert('Please select at least one order first!');
+                return;
+            }
+
+            form.action = action;
+            form.method = 'POST';
+            let statusInput = document.createElement('input');
+            statusInput.type = 'hidden';
+            statusInput.name = 'status';
+            statusInput.value = status;
+            form.appendChild(statusInput);
+            form.submit();
+        }
+    </script>
+@endpush
