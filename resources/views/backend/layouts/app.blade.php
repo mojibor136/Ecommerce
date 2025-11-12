@@ -162,7 +162,7 @@
                                 <li>
                                     <a href="{{ route('admin.orders.index') }}"
                                         class="flex items-center py-2 pl-6 text-[15px] rounded 
-                    {{ request()->routeIs('admin.orders.*') ? 'bg-[#3b3f5c] text-white' : 'text-gray-300 hover:text-white hover:bg-[#3b3f5c]' }}">
+                    {{ request()->routeIs('admin.orders.index') ? 'bg-[#3b3f5c] text-white' : 'text-gray-300 hover:text-white hover:bg-[#3b3f5c]' }}">
                                         <i class="ri-list-check mr-2 text-gray-400"></i>All Orders
                                     </a>
                                 </li>

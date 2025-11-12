@@ -38,8 +38,10 @@ class OrderController extends Controller
 
             if ($request->has('product')) {
                 $products[] = $request->product;
+                dd($request->all());
             } elseif ($request->has('products')) {
                 $products = $request->products;
+                dd($request->all());
             }
 
             $total = +$request->charge - $request->discount;

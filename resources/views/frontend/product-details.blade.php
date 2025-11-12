@@ -15,7 +15,8 @@
                             $finalPath = $productPath;
                         }
                     @endphp
-                    <img loading="lazy" src="{{ asset($finalPath) }}" alt="{{ $product->name }}" class="w-full h-full max-h-80 object-initial">
+                    <img loading="lazy" src="{{ asset($finalPath) }}" alt="{{ $product->name }}"
+                        class="w-full h-full max-h-80 object-initial">
                 @endforeach
             </div>
             <div id="productCounter"
