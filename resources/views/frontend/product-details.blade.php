@@ -64,7 +64,8 @@
                 const finalPriceEl = document.getElementById("finalPrice");
                 const oldPriceEl = document.getElementById("oldPrice");
                 const savePriceEl = document.getElementById("savePrice");
-                const stockEl = document.querySelector('.text-green-600');
+                const stockEl = document.querySelector('.stock');
+                const quantity = document.querySelector('.quantity-input');
 
                 const cartImage = document.getElementById("cartImage");
                 const buyNowImage = document.getElementById("buyNowImage");
@@ -85,19 +86,34 @@
                     if (buyNowVariantId) buyNowVariantId.value = variantId;
 
                     let variant = variants.find(v => v.id == variantId);
+
+                    const currentQty = quantity ? parseInt(quantity.value) : 1;
+
                     if (variant) {
                         finalPriceEl.textContent = `৳${variant.new_price.toFixed(2)}`;
+                        finalPriceEl.dataset.basePrice = variant.new_price;
                         oldPriceEl.textContent = variant.old_price ? `৳${parseFloat(variant.old_price).toFixed(2)}` :
                             '';
                         savePriceEl.textContent = variant.old_price ?
                             `Save ৳${(parseFloat(variant.old_price) - variant.new_price).toFixed(2)}` : '';
                         if (stockEl) stockEl.textContent = `${variant.stock} Available`;
+                        if (quantity) {
+                            quantity.max = variant.stock;
+                            if (currentQty > variant.stock) quantity.value = variant.stock;
+                            else quantity.value = currentQty;
+                        }
                     } else {
                         finalPriceEl.textContent = `৳{{ $product->new_price }}.00`;
+                        finalPriceEl.dataset.basePrice = {{ $product->new_price }};
                         @if ($product->old_price)
                             oldPriceEl.textContent = `৳{{ $product->old_price }}.00`;
                             savePriceEl.textContent = `Save ৳-{{ $product->old_price - $product->new_price }}.00`;
                         @endif
+                        if (quantity) {
+                            quantity.max = `{{ $product->stock }}`;
+                            if (currentQty > {{ $product->stock }}) quantity.value = {{ $product->stock }};
+                            else quantity.value = currentQty;
+                        }
                         if (stockEl) stockEl.textContent = `{{ $product->stock }} Available`;
                     }
                 }
@@ -162,7 +178,7 @@
 
             <div class="flex items-center mb-2">
                 <span class="font-medium text-gray-800 mr-2">Stock:</span>
-                <span class="text-green-600 font-semibold">5 Available</span>
+                <span class="text-green-600 font-semibold stock">0 Available</span>
             </div>
 
             @php
@@ -206,7 +222,7 @@
                 <div class="flex items-center border border-gray-300 rounded overflow-hidden">
                     <button type="button"
                         class="px-3 py-1 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold quantity-decrease">-</button>
-                    <input type="number" min="1" max="{{ $product->stock }}" value="1"
+                    <input type="number" min="1" value="1"
                         class="w-16 text-center border-gray-300 focus:outline-none quantity-input">
                     <button type="button"
                         class="px-3 py-1 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold quantity-increase">+</button>
@@ -215,9 +231,10 @@
 
             <div class="mb-4">
                 <div class="flex items-center gap-3">
-                    <span class="text-2xl font-bold text-orange-600" id="finalPrice">৳{{ $product->new_price }}.00</span>
+                    <span class="text-2xl font-bold text-orange-600" data-base-price="{{ $product->new_price }}"
+                        id="finalPrice">৳{{ $product->new_price }}.00</span>
                     @if ($product->old_price)
-                        <span class="text-gray-400 line-through text-lg"
+                        <span class="text-gray-400 line-through text-lg" data-old-price="{{ $product->old_price }}"
                             id="oldPrice">৳{{ $product->old_price }}.00</span>
                     @endif
                     @if ($product->old_price && $product->new_price < $product->old_price)
@@ -307,13 +324,19 @@
                 const quantityInput = document.querySelector('.quantity-input[type="number"]');
                 const decreaseBtn = document.querySelector('.quantity-decrease');
                 const increaseBtn = document.querySelector('.quantity-increase');
-                const maxStock = parseInt(quantityInput.max);
-                const basePrice = {{ $product->new_price ?? 0 }};
-                const oldPrice = {{ $product->old_price ?? 0 }};
 
                 const finalPriceEl = document.getElementById('finalPrice');
                 const oldPriceEl = document.getElementById('oldPrice');
                 const savePriceEl = document.getElementById('savePrice');
+
+                function getCurrentStock() {
+                    const stockEl = document.querySelector('.stock');
+                    if (!stockEl) return 0;
+
+                    const stockText = stockEl.textContent || '';
+                    const match = stockText.match(/\d+/); // শুধু number নেবে
+                    return match ? parseInt(match[0]) : 0;
+                }
 
                 function updateFormQuantity(value) {
                     document.querySelectorAll('form input.quantity-input[type="hidden"]').forEach(hidden => {
@@ -323,6 +346,9 @@
                 }
 
                 function updatePriceDisplay(qty) {
+                    const basePrice = parseFloat(finalPriceEl.getAttribute('data-base-price')) || 0;
+                    const oldPrice = parseFloat(oldPriceEl.getAttribute('data-old-price')) || 0;
+
                     const totalPrice = basePrice * qty;
                     finalPriceEl.textContent = `৳${totalPrice.toFixed(2)}`;
 
@@ -332,29 +358,43 @@
                     }
                 }
 
-                updateFormQuantity(parseInt(quantityInput.value));
+                function syncQuantityInput() {
+                    const maxStock = getCurrentStock();
+                    let val = parseInt(quantityInput.value) || 1;
+                    if (val > maxStock) val = maxStock;
+                    if (val < 1) val = 1;
+                    quantityInput.value = val;
+                    updateFormQuantity(val);
+                }
 
                 decreaseBtn.addEventListener('click', () => {
-                    let val = parseInt(quantityInput.value);
+                    let val = parseInt(quantityInput.value) || 1;
                     if (val > 1) val--;
                     quantityInput.value = val;
                     updateFormQuantity(val);
                 });
 
                 increaseBtn.addEventListener('click', () => {
-                    let val = parseInt(quantityInput.value);
+                    const maxStock = getCurrentStock();
+                    let val = parseInt(quantityInput.value) || 1;
                     if (val < maxStock) val++;
                     quantityInput.value = val;
                     updateFormQuantity(val);
                 });
 
                 quantityInput.addEventListener('input', () => {
-                    let val = parseInt(quantityInput.value);
-                    if (isNaN(val) || val < 1) val = 1;
-                    if (val > maxStock) val = maxStock;
-                    quantityInput.value = val;
-                    updateFormQuantity(val);
+                    syncQuantityInput();
                 });
+
+                // যখন variant select হবে তখন maxStock আবার sync হবে
+                const variantContainer = document.getElementById('desktopProduct');
+                variantContainer.addEventListener('click', (e) => {
+                    if (e.target.tagName === 'IMG') {
+                        setTimeout(syncQuantityInput, 50); // stock update হওয়ার পরে
+                    }
+                });
+
+                syncQuantityInput(); // initial sync
             });
         </script>
 

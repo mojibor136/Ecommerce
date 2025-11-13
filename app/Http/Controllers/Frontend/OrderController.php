@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Payment;
+use App\Models\Product;
+use App\Models\ProductVariant;
 use App\Models\Shipping;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -92,6 +94,8 @@ class OrderController extends Controller
             $order->total = $total;
             $order->save();
 
+            $this->reduceStock($order->id);
+
             DB::commit();
 
             if ($request->payment_method == 'cod') {
@@ -108,6 +112,37 @@ class OrderController extends Controller
             DB::rollBack();
 
             return back()->with('error', 'Order creation failed. Please try again.');
+        }
+    }
+
+    protected function reduceStock($orderId)
+    {
+        $orderItems = OrderItem::where('order_id', $orderId)->get();
+
+        foreach ($orderItems as $item) {
+            if ($item->variant_id > 0) {
+                $variant = ProductVariant::find($item->variant_id);
+                if ($variant) {
+                    if ($item->quantity > $variant->stock) {
+                        throw new \Exception("Insufficient stock for variant: {$variant->id}");
+                    }
+                    $variant->stock -= $item->quantity;
+                    $variant->save();
+                } else {
+                    throw new \Exception("Variant not found: {$item->variant_id}");
+                }
+            } else {
+                $product = Product::find($item->product_id);
+                if ($product) {
+                    if ($item->quantity > $product->stock) {
+                        throw new \Exception("Insufficient stock for product: {$product->id}");
+                    }
+                    $product->stock -= $item->quantity;
+                    $product->save();
+                } else {
+                    throw new \Exception("Product not found: {$item->product_id}");
+                }
+            }
         }
     }
 }
