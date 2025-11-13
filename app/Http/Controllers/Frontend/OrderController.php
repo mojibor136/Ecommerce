@@ -38,10 +38,8 @@ class OrderController extends Controller
 
             if ($request->has('product')) {
                 $products[] = $request->product;
-                dd($request->all());
             } elseif ($request->has('products')) {
                 $products = $request->products;
-                dd($request->all());
             }
 
             $total = +$request->charge - $request->discount;
@@ -59,6 +57,7 @@ class OrderController extends Controller
                 OrderItem::create([
                     'order_id' => $order->id,
                     'product_id' => $product['id'],
+                    'variant_id' => $product['variant_id'],
                     'product_name' => $product['name'],
                     'price' => $product['price'],
                     'product_image' => $product['image'],

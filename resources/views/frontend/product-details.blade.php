@@ -69,12 +69,20 @@
                 const cartImage = document.getElementById("cartImage");
                 const buyNowImage = document.getElementById("buyNowImage");
 
+                const cartVariantId = document.getElementById("cartVariantId");
+                const buyNowVariantId = document.getElementById("buyNowVariantId");
+
                 const variants = @json($variants);
+                const container = document.getElementById("desktopProduct");
+
 
                 function updateHiddenInputs(variantId = 0) {
-                    const currentSrc = mainImage.getAttribute("src");
+                    const currentSrc = mainImage?.getAttribute("src") ?? "";
                     if (cartImage) cartImage.value = currentSrc;
                     if (buyNowImage) buyNowImage.value = currentSrc;
+
+                    if (cartVariantId) cartVariantId.value = variantId;
+                    if (buyNowVariantId) buyNowVariantId.value = variantId;
 
                     let variant = variants.find(v => v.id == variantId);
                     if (variant) {
@@ -94,7 +102,9 @@
                     }
                 }
 
-                const container = document.getElementById("desktopProduct");
+                window.addEventListener("load", () => {
+                    updateHiddenInputs();
+                });
 
                 container.addEventListener("click", function(e) {
                     const target = e.target;
@@ -115,10 +125,13 @@
                 });
 
                 document.querySelectorAll("form").forEach(form => {
-                    form.addEventListener("submit", function() {
-                        const variantId = mainImage.closest('div').querySelector('img.border-2')
-                            ?.getAttribute('data-variant-id') || 0;
-                        updateHiddenInputs(parseInt(variantId));
+                    form.addEventListener("submit", function(e) {
+                        const selectedImage = container.querySelector('img.border-2');
+                        if (selectedImage) {
+                            const variantId = parseInt(selectedImage.getAttribute('data-variant-id')) ||
+                                0;
+                            updateHiddenInputs(variantId);
+                        }
                     });
                 });
 
@@ -221,6 +234,7 @@
                     @csrf
                     <input type="hidden" name="image" id="cartImage">
                     <input type="hidden" name="variant[]" class="cart-variant">
+                    <input type="hidden" id="cartVariantId" name="cartVariantId">
                     <input id="quantity" type="hidden" name="quantity" value="1" class="quantity-input">
                     <button type="submit"
                         class="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2.5 rounded transition duration-200">
@@ -231,6 +245,7 @@
                 <form method="POST" action="{{ route('checkout.buy-now', $product->id) }}" class="w-full sm:w-1/2">
                     @csrf
                     <input type="hidden" name="image" id="buyNowImage">
+                    <input type="hidden" id="buyNowVariantId" name="buyNowVariantId">
                     <input type="hidden" name="variant[]" class="buy-now-variant">
                     <input id="quantity" type="hidden" name="quantity" value="1" class="quantity-input">
                     <button type="submit"

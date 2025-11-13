@@ -16,6 +16,7 @@ class CheckoutController extends Controller
     public function buyNow(Request $request, Product $product)
     {
         $quantity = (int) $request->input('quantity', 1);
+        $variant_id = $request->input('buyNowVariantId', 0);
 
         $variantsArray = $request->input('variant', []);
 
@@ -30,6 +31,7 @@ class CheckoutController extends Controller
             'price' => $product->new_price,
             'image' => $request->input('image'),
             'variants' => $variants,
+            'variant_id' => $variant_id,
         ];
 
         session()->put('buy_now', $buyNowData);

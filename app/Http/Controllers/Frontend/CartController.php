@@ -13,6 +13,7 @@ class CartController extends Controller
         $cart = session()->get('cart', []);
 
         $quantity = $request->input('quantity', 1);
+        $variant_id = $request->input('cartVariantId', 0);
 
         $variants = array_filter($request->input('variant', []), function ($value) {
             return ! is_null($value) && $value !== '';
@@ -27,6 +28,7 @@ class CartController extends Controller
                 'price' => $product->new_price,
                 'image' => $request->image,
                 'variants' => $variants,
+                'variant_id' => $variant_id,
             ];
         }
 

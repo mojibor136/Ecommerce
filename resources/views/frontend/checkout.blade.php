@@ -22,10 +22,10 @@
                 <input type="hidden" name="product[name]" value="{{ $buyNow['name'] }}">
                 <input type="hidden" name="product[price]" value="{{ $buyNow['price'] }}">
                 <input type="hidden" name="product[quantity]" value="{{ $buyNow['quantity'] }}">
+                <input type="hidden" name="product[variant_id]" value="{{ $buyNow['variant_id'] }}">
                 <input type="hidden" name="product[image]" value="{{ $buyNow['image'] }}">
                 @if (!empty($buyNow['variants']) && is_array($buyNow['variants']))
-                    <input type="hidden" name="product[attributes]"
-                        value='@json($buyNow['variants'])'>
+                    <input type="hidden" name="product[attributes]" value='@json($buyNow['variants'])'>
                 @else
                     <input type="hidden" name="product[attributes]" value="{}">
                 @endif
@@ -215,6 +215,8 @@
                     <input type="hidden" name="products[{{ $id }}][price]" value="{{ $item['price'] }}">
                     <input type="hidden" name="products[{{ $id }}][quantity]"
                         value="{{ $item['quantity'] }}">
+                    <input type="hidden" name="products[{{ $id }}][variant_id]"
+                        value="{{ $item['variant_id'] }}">
                     <input type="hidden" name="products[{{ $id }}][image]" value="{{ $item['image'] }}">
                     @if (!empty($item['variants']) && is_array($item['variants']))
                         <input type="hidden" name="products[{{ $id }}][attributes]"

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->integer('order_id')->index();
             $table->integer('product_id')->index();
+            $table->integer('variant_id')->index();
             $table->string('product_name');
             $table->string('product_image')->nullable();
             $table->integer('quantity')->default(1);
