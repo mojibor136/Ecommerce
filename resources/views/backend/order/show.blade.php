@@ -105,7 +105,7 @@
                 class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 text-gray-700 text-center w-full sm:w-auto">
                 Back to Orders
             </a>
-            <a href="{{ route('admin.orders.print', $order->id) }}" target="_blank"
+            <a href="{{ route('admin.orders.invoice', $order->id) }}" target="_blank"
                 class="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 text-center w-full sm:w-auto">
                 Print Invoice
             </a>

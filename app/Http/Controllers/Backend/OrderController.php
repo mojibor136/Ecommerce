@@ -172,6 +172,11 @@ class OrderController extends Controller
         return view('backend.order.show', compact('order', 'subtotal', 'total', 'shipping', 'discount'));
     }
 
+    public function invoice($id)
+    {
+        return view('backend.order.invoice');
+    }
+
     public function steadFast(Request $request)
     {
         dd($request->all());

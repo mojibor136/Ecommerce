@@ -90,6 +90,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'web'])->group(funct
         Route::get('/orders/cancelled', 'cancelled')->name('orders.cancelled');
         Route::get('/orders/refunded', 'refunded')->name('orders.refunded');
         Route::get('/orders/show/{id}', 'show')->name('orders.show');
+        Route::get('/orders/invoice/{id}', 'invoice')->name('orders.invoice');
         Route::get('/orders/edit/{id}', 'edit')->name('orders.edit');
         Route::post('/orders/destroy/', 'destroy')->name('orders.destroy');
         Route::post('/orders/status/', 'status')->name('orders.status');
