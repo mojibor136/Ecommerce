@@ -77,20 +77,20 @@ class OrderController extends Controller
         return view('backend.order.create', compact('products'));
     }
 
-    public function store(Request $request)
-    {
-        dd($request->all());
-    }
+    // public function store(Request $request)
+    // {
+    //     dd($request->all());
+    // }
 
-    public function edit($id)
-    {
-        return view('backend.order.edit');
-    }
+    // public function edit($id)
+    // {
+    //     return view('backend.order.edit');
+    // }
 
-    public function update(Request $request, $id)
-    {
-        dd($request->all());
-    }
+    // public function update(Request $request, $id)
+    // {
+    //     dd($request->all());
+    // }
 
     public function status(Request $request)
     {
@@ -153,6 +153,23 @@ class OrderController extends Controller
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Something went wrong! '.$e->getMessage());
         }
+    }
+
+    public function show($id)
+    {
+        $order = Order::with(['items.product', 'shipping'])->findOrFail($id);
+
+        $subtotal = $order->items->sum(function ($item) {
+            return $item->price * $item->quantity;
+        });
+
+        $shipping = $order->shipping_charge;
+
+        $discount = $order->discount;
+
+        $total = $subtotal + $shipping - $discount;
+
+        return view('backend.order.show', compact('order', 'subtotal', 'total', 'shipping', 'discount'));
     }
 
     public function steadFast(Request $request)

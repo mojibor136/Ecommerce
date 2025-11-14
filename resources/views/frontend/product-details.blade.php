@@ -24,12 +24,12 @@
             </div>
         </div>
 
-        <div class="md:col-span-4 col-span-12 flex flex-col gap-3 items-center justify-start bg-white hidden md:flex">
-            <div id="mainImageContainer" class="w-full border-b border-r border-gray-100 px-3 py-3">
+        <div class="md:col-span-4 col-span-12 flex flex-col gap-3 items-center justify-start bg-white flex">
+            <div id="mainImageContainer" class="w-full border-b border-r border-gray-100 px-3 py-3 hidden md:block">
                 <img loading="lazy" id="mainImage" src="{{ asset('uploads/products/' . $product->images->first()->image) }}"
                     alt="{{ $product->name }}" class="w-full h-auto object-cover">
             </div>
-            <div id="desktopProduct" class="owl-carousel owl-theme flex gap-2 pb-3 px-3 hidden md:block">
+            <div id="desktopProduct" class="owl-carousel owl-theme flex gap-2 pb-1 md:pb-3 md:pt-0 pt-2 px-3">
                 @foreach ($allImages as $image)
                     @php
                         $productPath = 'uploads/products/' . $image;
