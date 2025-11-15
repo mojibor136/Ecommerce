@@ -19,6 +19,22 @@
         }
 
         @media print {
+
+            @page{
+                margin:0;
+                padding:0;
+                size:a4;
+            }
+
+            html,
+            body {
+                margin: 0 !important;
+                padding: 0 !important;
+                background: #fff !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
             .no-print {
                 display: none;
             }
@@ -34,7 +50,7 @@
     $logo = $setting->icon;
 @endphp
 
-<body class="bg-gray-100 text-gray-800">
+<body class="bg-gray-100 text-gray-800 print-m-0">
 
     <div class="no-print text-center fixed right-8 bottom-8">
         <button onclick="window.print()"
