@@ -172,9 +172,45 @@ class OrderController extends Controller
         return view('backend.order.show', compact('order', 'subtotal', 'total', 'shipping', 'discount'));
     }
 
-    public function invoice($id)
+    public function invoice(Request $request)
     {
-        return view('backend.order.invoice');
+        $request->validate([
+            'ids' => 'required',
+        ]);
+
+        try {
+
+            $rawIds = $request->ids;
+            $decodedIds = [];
+
+            if (is_array($rawIds)) {
+                foreach ($rawIds as $value) {
+                    $json = json_decode($value, true);
+
+                    if (is_array($json)) {
+                        $decodedIds = array_merge($decodedIds, $json);
+                    } else {
+                        $decodedIds[] = $value;
+                    }
+                }
+            } else {
+                $json = json_decode($rawIds, true);
+                if (is_array($json)) {
+                    $decodedIds = $json;
+                } else {
+                    $decodedIds = [$rawIds];
+                }
+            }
+
+            $decodedIds = array_unique($decodedIds);
+
+            $orders = Order::with(['shipping', 'items'])->whereIn('id', $decodedIds)->get();
+
+            return view('backend.order.invoice', compact('orders'));
+
+        } catch (\Exception $e) {
+            return back()->with('error', $e->getMessage());
+        }
     }
 
     public function steadFast(Request $request)

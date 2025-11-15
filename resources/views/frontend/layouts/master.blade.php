@@ -12,6 +12,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     @php
         $favicon = $setting->favicon;
+        $logo = $setting->icon;
     @endphp
     @if ($favicon && file_exists(public_path($favicon)))
         <link rel="icon" href="{{ asset($favicon) }}" type="image/png">
@@ -66,9 +67,7 @@
                 <!-- Logo -->
                 <h1 onclick="window.location.href='/'"
                     class="text-2xl font-bold text-orange-600 flex items-center gap-1 cursor-pointer">
-                    <img class="max-w-48 w-auto h-16"
-                        src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Daraz_Logo.png/1200px-Daraz_Logo.png"
-                        alt="">
+                    <img class="max-w-48 w-auto h-16" src="{{ asset($logo) }}" alt="">
                 </h1>
 
                 <!-- Search Bar -->
@@ -241,9 +240,7 @@
 
                 <!-- Brand Info -->
                 <div>
-                    <img class="max-w-48 w-auto h-20 mb-4"
-                        src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Daraz_Logo.png/1200px-Daraz_Logo.png"
-                        alt="">
+                    <img class="max-w-48 w-auto h-20 mb-4" src="{{ asset($logo) }}" alt="">
                     <p class="text-sm text-gray-400 leading-relaxed mb-4">
                         Your trusted online store for smart gadgets, electronics, fashion and more.
                         Shop confidently — fast delivery, secure payment, and 24/7 customer support.

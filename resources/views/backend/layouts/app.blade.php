@@ -16,6 +16,7 @@
     <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet">
     @php
         $favicon = $setting->favicon;
+        $logo = $setting->icon;
     @endphp
     @if ($favicon && file_exists(public_path($favicon)))
         <link rel="icon" href="{{ asset($favicon) }}" type="image/png">
