@@ -168,13 +168,13 @@
                                         <i class="ri-list-check mr-2 text-gray-400"></i>All Orders
                                     </a>
                                 </li>
-                                {{-- <li>
+                                <li>
                                     <a href="{{ route('admin.orders.create') }}"
                                         class="flex items-center py-2 pl-6 text-[15px] rounded 
                     {{ request()->routeIs('admin.orders.create') ? 'bg-[#3b3f5c] text-white' : 'text-gray-300 hover:text-white hover:bg-[#3b3f5c]' }}">
                                         <i class="ri-add-box-line mr-2 text-green-400"></i>Create Order
                                     </a>
-                                </li> --}}
+                                </li>
                             </ul>
                         </li>
 

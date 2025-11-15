@@ -278,7 +278,7 @@
                                             View Order
                                         </span>
                                     </div>
-{{-- 
+
                                     <!-- Edit -->
                                     <div class="relative group">
                                         <a href="{{ route('admin.orders.edit', $order->id) }}"
@@ -290,7 +290,7 @@
                                             class="absolute bottom-full mb-1 left-1/2 -translate-x-1/2 text-xs bg-gray-800 text-white px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-all duration-200 whitespace-nowrap">
                                             Edit Order
                                         </span>
-                                    </div> --}}
+                                    </div>
 
                                     <!-- Delete -->
                                     <div class="relative group">

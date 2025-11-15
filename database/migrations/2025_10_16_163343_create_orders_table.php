@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->string('invoice_id')->unique();
+            $table->string('tracking_id')->unique();
             $table->string('total')->default(0);
             $table->string('discount')->default(0);
             $table->string('shipping_charge')->default(0);
