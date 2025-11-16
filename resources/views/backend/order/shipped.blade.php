@@ -98,19 +98,30 @@
             @endforeach
         </div>
 
-        <form id="orderForm" method="POST" class="w-full mb-4" x-data="{ open: false }">
+        <form id="orderForm" method="POST" x-data="{ open: false }">
             @csrf
             <input type="hidden" name="ids[]" id="ids">
 
-            <div class="flex items-center gap-2">
-                <!-- Add Order Button -->
-                <button type="button" onclick="window.location.href='{{ route('admin.orders.create') }}'"
-                    class="relative inline-flex items-center bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md shadow font-medium transition-all duration-200 group"
-                    title="Add New Order">
-                    <i class="ri-add-line mr-2"></i> Add Order
+            <div class="flex items-center gap-2 mb-4">
+                <!-- Status Change Button -->
+                <button type="button" @click="open = true"
+                    class="relative inline-flex items-center bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-md shadow font-medium transition-all duration-200 group"
+                    title="Change Status">
+                    <i class="ri-refresh-line mr-2"></i> Status Change
                     <span
-                        class="absolute -top-8 left-1/2 -translate-x-1/2 scale-0 group-hover:scale-100 transition-all duration-200 bg-gray-800 text-white text-xs px-2 py-1 rounded shadow whitespace-nowrap">
-                        Add a new order
+                        class="absolute -top-8 left-1/2 -translate-x-1/2 scale-0 group-hover:scale-100 origin-bottom transition-all duration-200 bg-gray-800 text-white text-xs px-2 py-1 rounded shadow whitespace-nowrap">
+                        Change the order status
+                    </span>
+                </button>
+
+                <!-- Delete Button -->
+                <button type="button" onclick="submitForm('{{ route('admin.orders.destroy') }}')"
+                    class="relative inline-flex items-center bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md shadow font-medium transition-all duration-200 group"
+                    title="Delete Order">
+                    <i class="ri-delete-bin-6-line mr-2"></i> Delete
+                    <span
+                        class="absolute -top-8 left-1/2 -translate-x-1/2 scale-0 group-hover:scale-100 origin-bottom transition-all duration-200 bg-gray-800 text-white text-xs px-2 py-1 rounded shadow whitespace-nowrap">
+                        Delete selected orders
                     </span>
                 </button>
 
@@ -124,17 +135,43 @@
                         Print this order
                     </span>
                 </button>
+            </div>
 
-                <!-- Delete Button -->
-                <button type="button" onclick="submitForm('{{ route('admin.orders.destroy') }}')"
-                    class="relative inline-flex items-center bg-[#E83330] hover:bg-[#E83330] text-white px-4 py-2 rounded-md shadow font-medium transition-all duration-200 group"
-                    title="Delete Order">
-                    <i class="ri-delete-bin-6-line mr-2"></i> Delete
-                    <span
-                        class="absolute -top-8 left-1/2 -translate-x-1/2 scale-0 group-hover:scale-100 transition-all duration-200 bg-gray-800 text-white text-xs px-2 py-1 rounded shadow whitespace-nowrap">
-                        Delete this order
-                    </span>
-                </button>
+            <!-- Status Modal -->
+            <div x-show="open" x-transition
+                class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+                <div @click.away="open = false"
+                    class="bg-white rounded-lg shadow-lg w-[450px] max-w-full p-6 flex flex-col gap-4 relative">
+
+                    <button @click="open = false" type="button"
+                        class="absolute top-3 right-3 text-gray-500 hover:text-gray-700">
+                        <i class="ri-close-line text-xl"></i>
+                    </button>
+
+                    <h3 class="text-lg font-bold text-gray-800 text-center">Change Status</h3>
+
+                    <div class="flex flex-wrap w-full gap-2">
+                        @php
+                            $statuses = [
+                                'pending' => 'bg-yellow-500',
+                                'confirmed' => 'bg-blue-500',
+                                'Ready to Ship' => 'bg-indigo-500',
+                                'shipped' => 'bg-purple-500',
+                                'delivered' => 'bg-green-500',
+                                'cancelled' => 'bg-red-500',
+                                'refunded' => 'bg-gray-600',
+                            ];
+                        @endphp
+
+                        @foreach ($statuses as $status => $color)
+                            <button type="button"
+                                onclick="changeStatus('{{ $status }}', '{{ route('admin.orders.status') }}')"
+                                class="{{ $color }} text-white flex-1 h-10 min-w-[100px] rounded shadow hover:opacity-90 transition-all duration-150 text-sm font-medium text-center">
+                                {{ ucfirst($status) }}
+                            </button>
+                        @endforeach
+                    </div>
+                </div>
             </div>
         </form>
 

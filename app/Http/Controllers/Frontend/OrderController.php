@@ -11,6 +11,7 @@ use App\Models\ProductVariant;
 use App\Models\Shipping;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class OrderController extends Controller
 {
@@ -19,13 +20,20 @@ class OrderController extends Controller
         DB::beginTransaction();
 
         try {
+
+            Log::info('Creating Order...');
+
             $order = Order::create([
                 'order_status' => 'pending',
                 'payment_status' => 'pending',
                 'shipping_charge' => $request->charge,
                 'total' => '0',
                 'discount' => '0',
+                'tracking_id' => '0',
+                'courier_method' => 'Any',
             ]);
+
+            Log::info('Order Created', ['order_id' => $order->id]);
 
             Shipping::create([
                 'order_id' => $order->id,
@@ -69,10 +77,7 @@ class OrderController extends Controller
                 ]);
             }
 
-            if (
-                isset($request->payment_method) &&
-                in_array($request->payment_method, ['bkash', 'nagad'])
-            ) {
+            if (isset($request->payment_method) && in_array($request->payment_method, ['bkash', 'nagad'])) {
                 $payment = Payment::create([
                     'order_id' => $order->id,
                     'transaction_id' => $request->transaction_id,
@@ -109,9 +114,16 @@ class OrderController extends Controller
             }
 
         } catch (\Exception $e) {
+
             DB::rollBack();
 
-            return back()->with('error', 'Order creation failed. Please try again.');
+            Log::error('Order Creation Failed', [
+                'error' => $e->getMessage(),
+                'line' => $e->getLine(),
+                'file' => $e->getFile(),
+            ]);
+
+            return back()->with('error', 'Order creation failed: '.$e->getMessage());
         }
     }
 

@@ -125,27 +125,31 @@
                     </span>
                 </button>
 
-                <!-- SteadFast Button -->
-                <button type="button" onclick="submitForm('{{ route('admin.orders.steadFast') }}')"
-                    class="relative inline-flex items-center bg-[#00A486] hover:bg-[#009678] text-white px-4 py-2 rounded-md shadow font-medium transition-all duration-200 group"
-                    title="Send via SteadFast">
-                    <i class="ri-truck-line mr-2"></i> SteadFast
-                    <span
-                        class="absolute -top-8 left-1/2 -translate-x-1/2 scale-0 group-hover:scale-100 origin-bottom transition-all duration-200 bg-gray-800 text-white text-xs px-2 py-1 rounded shadow whitespace-nowrap">
-                        Send to SteadFast courier
-                    </span>
-                </button>
+                @if ($steadfastStatus == 1)
+                    <!-- SteadFast Button -->
+                    <button type="button" onclick="submitForm('{{ route('admin.orders.steadFast') }}')"
+                        class="relative inline-flex items-center bg-[#00A486] hover:bg-[#009678] text-white px-4 py-2 rounded-md shadow font-medium transition-all duration-200 group"
+                        title="Send via SteadFast">
+                        <i class="ri-truck-line mr-2"></i> SteadFast
+                        <span
+                            class="absolute -top-8 left-1/2 -translate-x-1/2 scale-0 group-hover:scale-100 origin-bottom transition-all duration-200 bg-gray-800 text-white text-xs px-2 py-1 rounded shadow whitespace-nowrap">
+                            Send to SteadFast courier
+                        </span>
+                    </button>
+                @endif
 
-                <!-- Redx Button -->
-                <button type="button" onclick="submitForm('{{ route('admin.orders.redx') }}')"
-                    class="relative inline-flex items-center bg-[#E83330] hover:bg-[#C92F2D] text-white px-4 py-2 rounded-md shadow font-medium transition-all duration-200 group"
-                    title="Send via Redx">
-                    <i class="ri-motorbike-line mr-2"></i> Redx
-                    <span
-                        class="absolute -top-8 left-1/2 -translate-x-1/2 scale-0 group-hover:scale-100 origin-bottom transition-all duration-200 bg-gray-800 text-white text-xs px-2 py-1 rounded shadow whitespace-nowrap">
-                        Send to Redx courier
-                    </span>
-                </button>
+                @if ($redxStatus == 1)
+                    <!-- Redx Button -->
+                    <button type="button" onclick="submitForm('{{ route('admin.orders.redx') }}')"
+                        class="relative inline-flex items-center bg-[#E83330] hover:bg-[#C92F2D] text-white px-4 py-2 rounded-md shadow font-medium transition-all duration-200 group"
+                        title="Send via Redx">
+                        <i class="ri-motorbike-line mr-2"></i> Redx
+                        <span
+                            class="absolute -top-8 left-1/2 -translate-x-1/2 scale-0 group-hover:scale-100 origin-bottom transition-all duration-200 bg-gray-800 text-white text-xs px-2 py-1 rounded shadow whitespace-nowrap">
+                            Send to Redx courier
+                        </span>
+                    </button>
+                @endif
             </div>
 
             <!-- Status Modal -->

@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Models\Category;
+use App\Models\Courier;
 use App\Models\Order;
+use App\Models\PaymentGateway;
 use App\Models\Product;
 use App\Models\Setting;
 use Illuminate\Support\Facades\View;
@@ -24,6 +26,14 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+
+        $redxStatus = Courier::where('type', 'redx')->value('status');
+        $steadfastStatus = Courier::where('type', 'steadfast')->value('status');
+
+        // 🔥 Payment Gateway Status
+        $bkashStatus = PaymentGateway::where('type', 'bkash')->value('status');
+        $nagadStatus = PaymentGateway::where('type', 'nagad')->value('status');
+
         // All categories with subcategories
         $categories = Category::with(['subcategories' => function ($query) {
             $query->where('status', 1)->orderBy('name', 'asc');
@@ -67,6 +77,10 @@ class AppServiceProvider extends ServiceProvider
             'deliveredCount' => $deliveredCount,
             'cancelledCount' => $cancelledCount,
             'refundedCount' => $refundedCount,
+            'redxStatus' => $redxStatus,
+            'steadfastStatus' => $steadfastStatus,
+            'bkashStatus' => $bkashStatus,
+            'nagadStatus' => $nagadStatus,
         ]);
     }
 }

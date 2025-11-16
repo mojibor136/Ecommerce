@@ -137,29 +137,34 @@
 
                     <h3 class="text-md font-semibold mb-3 flex items-center gap-2"><i
                             class="ri-bank-card-line text-orange-500"></i>Payment Method</h3>
-                    <div class="space-y-3 mb-6">
+                  <div class="space-y-3 mb-6">
                         <h2 class="font-semibold text-gray-800 mb-2">Select Payment Method</h2>
-
                         <div class="grid grid-cols-3 gap-2">
                             <div class="payment-card border border-gray-300 rounded-lg px-2 cursor-pointer text-center transition-all duration-300 hover:scale-95"
-                                data-method="cod">
+                                data-method="cod" onclick="selectPayment('cod')">
+
                                 <img src="https://cdn-icons-png.freepik.com/512/5278/5278605.png" alt="Cash on Delivery"
                                     class="w-24 h-12 mx-auto">
                             </div>
 
-                            <div class="payment-card border border-gray-300 rounded-lg px-2 cursor-pointer text-center transition-all duration-300 hover:scale-95"
-                                data-method="bkash">
+                            <div class="payment-card border border-gray-300 rounded-lg px-2 text-center transition-all duration-300 
+                                {{ $bkashStatus == 1 ? 'cursor-pointer hover:scale-95' : 'opacity-40 cursor-not-allowed' }}"
+                                data-method="bkash"
+                                @if ($bkashStatus == 1) onclick="selectPayment('bkash')" @endif>
+
                                 <img src="https://www.logo.wine/a/logo/BKash/BKash-bKash-Logo.wine.svg" alt="bKash"
                                     class="w-24 h-12 mx-auto">
                             </div>
 
-                            <div class="payment-card border border-gray-300 rounded-lg px-2 cursor-pointer text-center transition-all duration-300 hover:scale-95"
-                                data-method="nagad">
+                            <div class="payment-card border border-gray-300 rounded-lg px-2 text-center transition-all duration-300 
+                                {{ $nagadStatus == 1 ? 'cursor-pointer hover:scale-95' : 'opacity-40 cursor-not-allowed' }}"
+                                data-method="nagad"
+                                @if ($nagadStatus == 1) onclick="selectPayment('nagad')" @endif>
+
                                 <img src="https://www.logo.wine/a/logo/Nagad/Nagad-Logo.wine.svg" alt="Nagad"
                                     class="w-24 h-12 mx-auto">
                             </div>
                         </div>
-
                         <input type="hidden" name="payment_method" id="selectedPaymentMethod" value="cod">
                     </div>
 
@@ -344,27 +349,32 @@
 
                     <div class="space-y-3 mb-6">
                         <h2 class="font-semibold text-gray-800 mb-2">Select Payment Method</h2>
-
                         <div class="grid grid-cols-3 gap-2">
                             <div class="payment-card border border-gray-300 rounded-lg px-2 cursor-pointer text-center transition-all duration-300 hover:scale-95"
-                                data-method="cod">
+                                data-method="cod" onclick="selectPayment('cod')">
+
                                 <img src="https://cdn-icons-png.freepik.com/512/5278/5278605.png" alt="Cash on Delivery"
                                     class="w-24 h-12 mx-auto">
                             </div>
 
-                            <div class="payment-card border border-gray-300 rounded-lg px-2 cursor-pointer text-center transition-all duration-300 hover:scale-95"
-                                data-method="bkash">
+                            <div class="payment-card border border-gray-300 rounded-lg px-2 text-center transition-all duration-300 
+                                {{ $bkashStatus == 1 ? 'cursor-pointer hover:scale-95' : 'opacity-40 cursor-not-allowed' }}"
+                                data-method="bkash"
+                                @if ($bkashStatus == 1) onclick="selectPayment('bkash')" @endif>
+
                                 <img src="https://www.logo.wine/a/logo/BKash/BKash-bKash-Logo.wine.svg" alt="bKash"
                                     class="w-24 h-12 mx-auto">
                             </div>
 
-                            <div class="payment-card border border-gray-300 rounded-lg px-2 cursor-pointer text-center transition-all duration-300 hover:scale-95"
-                                data-method="nagad">
+                            <div class="payment-card border border-gray-300 rounded-lg px-2 text-center transition-all duration-300 
+                                {{ $nagadStatus == 1 ? 'cursor-pointer hover:scale-95' : 'opacity-40 cursor-not-allowed' }}"
+                                data-method="nagad"
+                                @if ($nagadStatus == 1) onclick="selectPayment('nagad')" @endif>
+
                                 <img src="https://www.logo.wine/a/logo/Nagad/Nagad-Logo.wine.svg" alt="Nagad"
                                     class="w-24 h-12 mx-auto">
                             </div>
                         </div>
-
                         <input type="hidden" name="payment_method" id="selectedPaymentMethod" value="cod">
                     </div>
 
