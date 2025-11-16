@@ -89,7 +89,9 @@
                                 @endif
                             </td>
                             <td class="px-4 py-2">{{ $product->name }}</td>
-                            <td class="px-4 py-2 text-center">{{ $product->stock }}</td>
+                            <td class="px-4 py-2 text-center {{ $product->stock == 0 ? 'text-red-600 font-bold' : '' }}">
+                                {{ $product->stock }}
+                            </td>
                             <td class="px-4 py-2 text-center">৳{{ number_format($product->new_price, 2) }}</td>
                             <td class="px-4 py-2 text-right">
                                 <div class="flex justify-end items-center gap-2">
@@ -159,7 +161,10 @@
                                         </span>
                                     @endif
                                 </td>
-                                <td class="px-4 py-2 text-center">{{ $variant->stock }}</td>
+                                <td
+                                    class="px-4 py-2 text-center {{ $variant->stock == 0 ? 'text-red-600 font-bold' : '' }}">
+                                    {{ $variant->stock }}
+                                </td>
                                 <td class="px-4 py-2 text-center">
                                     ৳{{ number_format($variant->new_price ?? $product->new_price, 2) }}
                                 </td>
