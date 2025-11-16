@@ -8,7 +8,7 @@ use Illuminate\Support\Str;
 class Order extends Model
 {
     protected $fillable = [
-        'invoice_id',  'total', 'discount', 'tracking_id' , 'shipping_charge', 'order_status', 'payment_status',
+        'invoice_id',  'total', 'discount', 'tracking_id' , 'courier_method' , 'shipping_charge', 'order_status', 'payment_status',
     ];
 
     public function items()

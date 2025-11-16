@@ -292,6 +292,7 @@ class OrderController extends Controller
 
                 if (isset($res['status']) && $res['status'] == 200) {
                     $order->order_status = 'shipped';
+                    $order->courier_method = 'Steadfast';
                     $order->tracking_id = $res['consignment']['tracking_code'];
                     $order->save();
                 } else {
@@ -337,6 +338,7 @@ class OrderController extends Controller
 
                         if ($status === 'success' && $tracking) {
                             $orders[$index]->order_status = 'shipped';
+                            $orders[$index]->courier_method = 'Steadfast';
                             $orders[$index]->tracking_id = $tracking;
                             $orders[$index]->save();
                         }
@@ -361,8 +363,91 @@ class OrderController extends Controller
         }
     }
 
-    public function pathao(Request $request)
+    public function redx(Request $request)
     {
-        dd($request->all());
+        $request->validate([
+            'ids' => 'required',
+        ]);
+
+        try {
+            $rawIds = $request->ids;
+            $decodedIds = [];
+
+            if (is_array($rawIds)) {
+                foreach ($rawIds as $value) {
+                    $json = json_decode($value, true);
+                    if (is_array($json)) {
+                        $decodedIds = array_merge($decodedIds, $json);
+                    } else {
+                        $decodedIds[] = $value;
+                    }
+                }
+            } else {
+                $json = json_decode($rawIds, true);
+                if (is_array($json)) {
+                    $decodedIds = $json;
+                } else {
+                    $decodedIds = [$rawIds];
+                }
+            }
+
+            $decodedIds = array_unique($decodedIds);
+
+            if (count($decodedIds) > 1) {
+                return back()->with('error', 'RedX only supports single parcel creation. Please select one order at a time.');
+            }
+
+            $orderId = $decodedIds[0];
+            if ($orderId <= 0) {
+                return back()->with('error', 'Invalid order selected for RedX parcel.');
+            }
+
+            $order = Order::with(['shipping', 'items', 'payment'])->find($orderId);
+
+            if (! $order) {
+                return back()->with('error', 'Order not found.');
+            }
+
+            $redxToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiaWF0IjoxNzM1NTMxNjU2LCJpc3MiOiJ0OTlnbEVnZTBUTm5MYTNvalh6MG9VaGxtNEVoamNFMyIsInNob3BfaWQiOjEsInVzZXJfaWQiOjZ9.zpKfyHK6zPBVaTrYevnCqnUA-e2jFKQJ7lK-z4aOx2g';
+            $baseUrl = 'https://sandbox.redx.com.bd/v1.0.0-beta';
+            $parcelData = [
+                'customer_name' => $order->shipping->name,
+                'customer_phone' => $order->shipping->phone,
+                'delivery_area' => $order->shipping->area ?? 'Unknown',
+                'delivery_area_id' => $order->shipping->area_id ?? 1,
+                'customer_address' => $order->shipping->address,
+                'merchant_invoice_id' => $order->id.'-'.time(),
+                'cash_collection_amount' => $order->total,
+                'parcel_weight' => $order->weight ?? 500,
+                'instruction' => $order->note ?? '',
+                'value' => $order->total,
+                'parcel_details_json' => $order->items->map(fn ($item) => [
+                    'name' => $item->product->name,
+                    'category' => $item->product->category->name ?? 'General',
+                    'value' => $item->price,
+                ]),
+            ];
+
+            $response = Http::withHeaders([
+                'API-ACCESS-TOKEN' => "Bearer {$redxToken}",
+                'Content-Type' => 'application/json',
+            ])->post($baseUrl.'/parcel', $parcelData);
+
+            $res = $response->json();
+
+            if (isset($res['tracking_id'])) {
+                $order->tracking_id = $res['tracking_id'];
+                $order->order_status = 'shipped';
+                $order->courier_method = 'RedX';
+                $order->save();
+
+                return back()->with('success', 'RedX parcel created successfully. Tracking ID: '.$res['tracking_id']);
+            } else {
+                return back()->with('error', $res['message'] ?? 'Failed to create RedX parcel.');
+            }
+
+        } catch (\Exception $e) {
+            return back()->with('error', 'Exception: '.$e->getMessage());
+        }
     }
 }

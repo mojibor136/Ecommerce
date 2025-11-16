@@ -14,10 +14,10 @@ class CourierController extends Controller
      */
     public function index()
     {
-        $pathao = Courier::where('type', 'pathao')->first();
+        $redx = Courier::where('type', 'redx')->first();
         $steadfast = Courier::where('type', 'steadfast')->first();
 
-        return view('backend.courier.index', compact('pathao', 'steadfast'));
+        return view('backend.courier.index', compact('redx', 'steadfast'));
     }
 
     /**

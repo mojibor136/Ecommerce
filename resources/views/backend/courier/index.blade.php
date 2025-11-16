@@ -26,10 +26,10 @@
         <div class="w-full bg-white rounded shadow px-6 py-6">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-                <!-- PATHAO -->
+                <!-- Redx -->
                 <div class="border border-gray-300 bg-white rounded-lg overflow-hidden shadow-sm">
                     <div class="flex justify-between items-center px-4 py-3" style="background-color: #E0002D;">
-                        <span class="text-white text-xl font-semibold">Pathao</span>
+                        <span class="text-white text-xl font-semibold">Redx</span>
                         <i class="ri-motorbike-fill text-3xl"></i>
                     </div>
 
@@ -37,21 +37,21 @@
                         class="grid grid-cols-1 gap-3 px-4 py-4">
                         @csrf
 
-                        <input type="hidden" name="type" id="pathao" value="pathao">
+                        <input type="hidden" name="type" id="redx" value="redx">
 
-                        @foreach (['API Key' => 'api_key', 'Secret Key' => 'secret_key', 'Base URL' => 'url', 'Token' => 'token'] as $label => $name)
+                        @foreach (['Client Id' => 'api_key', 'Client Secret' => 'secret_key', 'Base URL' => 'url', 'Token' => 'token'] as $label => $name)
                             <div>
                                 <label class="block text-md text-gray-600 mb-1 font-medium">{{ $label }}</label>
                                 <input type="{{ $name === 'url' ? 'url' : 'text' }}" name="{{ $name }}"
-                                    placeholder="Enter {{ $label }}" value="{{ old($name, $pathao?->$name) }}"
+                                    placeholder="Enter {{ $label }}" value="{{ old($name, $redx?->$name) }}"
                                     class="w-full rounded-md border border-gray-300 text-gray-700 px-3 py-2 focus:ring-2 focus:ring-[#E0002D] outline-none transition-all">
                             </div>
                         @endforeach
 
                         <!-- Toggle -->
                         <div class="flex items-center justify-between">
-                            <label class="text-gray-700 font-medium">Enable Pathao</label>
-                            <input type="checkbox" name="status" {{ isset($pathao) && $pathao->status ? 'checked' : '' }}
+                            <label class="text-gray-700 font-medium">Enable Redx</label>
+                            <input type="checkbox" name="status" {{ isset($redx) && $redx->status ? 'checked' : '' }}
                                 class="toggle-checkbox h-5 w-10 rounded-full bg-gray-300 checked:bg-[#E0002D] transition duration-200">
                         </div>
 

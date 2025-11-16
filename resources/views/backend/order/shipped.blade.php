@@ -145,6 +145,7 @@
                     <tr>
                         <th class="px-4 py-3 text-center">#</th>
                         <th class="px-4 py-3 text-left whitespace-nowrap">Invoice ID</th>
+                        <th class="px-4 py-3 text-left whitespace-nowrap">Courier</th>
                         <th class="px-4 py-3 text-left whitespace-nowrap">Customer</th>
                         <th class="px-4 py-3 text-left whitespace-nowrap">Products</th>
                         <th class="px-4 py-3 text-center whitespace-nowrap">Amount</th>
@@ -167,6 +168,13 @@
 
                             <td class="px-4 py-3 text-left whitespace-nowrap font-medium text-gray-800">
                                 {{ $order->invoice_id }}
+                            </td>
+
+                            <td class="px-4 py-3 text-left whitespace-nowrap font-medium text-gray-800"
+                                @if ($order->courier_method == 'RedX') style="color: #E0002D;"
+                                    @elseif($order->courier_method == 'Steadfast') 
+                                       style="color: #10B981;" @endif>
+                                {{ $order->courier_method }}
                             </td>
 
                             <td class="px-4 py-3 text-left whitespace-nowrap font-medium text-gray-800">
@@ -229,8 +237,22 @@
                             </td>
 
                             <td class="px-4 py-3 text-center whitespace-nowrap">
-                                <span class="px-2 py-1.5 rounded bg-green-500 text-white text-xs"><i
-                                        class="ri-truck-line"></i>Tracking</span>
+                                @if ($order->courier_method == 'RedX' && $order->tracking_id)
+                                    <a href="https://redx.com.bd/track-global-parcel/?trackingId{{ $order->tracking_id }}"
+                                        target="_blank" class="px-2 py-1.5 rounded text-white text-xs"
+                                        style="background-color: #E0002D;">
+                                        <i class="ri-truck-line"></i> Tracking
+                                    </a>
+                                @elseif($order->courier_method == 'Steadfast' && $order->tracking_id)
+                                    <a href="https://steadfast.com.bd/t/{{ $order->tracking_id }}" target="_blank"
+                                        class="px-2 py-1.5 rounded text-white text-xs" style="background-color: #10B981;">
+                                        <i class="ri-truck-line"></i> Tracking
+                                    </a>
+                                @else
+                                    <span class="px-2 py-1.5 rounded bg-gray-400 text-white text-xs">
+                                        <i class="ri-truck-line"></i> Tracking
+                                    </span>
+                                @endif
                             </td>
 
                             <td class="px-4 py-3 text-right whitespace-nowrap">

@@ -94,7 +94,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'web'])->group(funct
         Route::get('/orders/edit/{id}', 'edit')->name('orders.edit');
         Route::post('/orders/destroy/', 'destroy')->name('orders.destroy');
         Route::post('/orders/status/', 'status')->name('orders.status');
-        Route::post('/orders/pathao/', 'pathao')->name('orders.pathao');
+        Route::post('/orders/redx/', 'redx')->name('orders.redx');
         Route::post('/orders/steadFast/', 'steadFast')->name('orders.steadFast');
         Route::post('/orders/update/{id}', 'update')->name('orders.update');
     });
