@@ -118,7 +118,7 @@
                 <button type="button" onclick="window.location.href='{{ route('admin.orders.create') }}'"
                     class="relative inline-flex items-center bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md shadow font-medium transition-all duration-200 group"
                     title="Add New Order">
-                    <i class="ri-add-line mr-2"></i> Add Order
+                    <i class="ri-add-line mr-2"></i> Create Order
                     <span
                         class="absolute -top-8 left-1/2 -translate-x-1/2 scale-0 group-hover:scale-100 transition-all duration-200 bg-gray-800 text-white text-xs px-2 py-1 rounded shadow whitespace-nowrap">
                         Add a new order

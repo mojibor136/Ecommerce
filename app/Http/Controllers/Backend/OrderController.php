@@ -130,7 +130,12 @@ class OrderController extends Controller
 
     public function edit($id)
     {
+
         $order = Order::with(['shipping', 'items'])->findOrFail($id);
+
+        if ($order->status !== 'pending') {
+            return redirect()->back()->with('error', 'Only pending orders can be edited.');
+        }
 
         return view('backend.order.edit', compact('order'));
     }

@@ -70,7 +70,7 @@
         </div>
 
         <!-- SHIPPING FORM -->
-        <form action="" method="POST">
+        <form action="{{ route('admin.orders.update' , $order->id) }}" method="POST">
             @csrf
             @method('PUT')
 
