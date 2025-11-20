@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use App\Models\Courier;
 use App\Models\Order;
 use App\Models\Product;
@@ -68,39 +69,84 @@ class OrderController extends Controller
         return view('backend.order.refunded', compact('orders'));
     }
 
-    public function create()
+    public function create(Request $request)
     {
-        return redirect()
-            ->back()
-            ->with('error', '⚠️ Order Creation system is currently running. Please try again later.');
+        $allcategories = Category::all();
 
-        $products = Product::with([
-            'images' => fn ($q) => $q->where('is_main', 1),
-            'variants.images',
-            'category',
-            'subcategory',
-        ])->get();
+        $query = Product::with('images');
 
-        return view('backend.order.create', compact('products'));
-    }
+        if ($request->has('categories') && is_array($request->categories)) {
+            $query->whereIn('category_id', $request->categories);
+        }
 
-    public function store(Request $request)
-    {
-        dd($request->all());
+        if ($request->filled('min_price')) {
+            $query->where('new_price', '>=', $request->min_price);
+        }
+        if ($request->filled('max_price')) {
+            $query->where('new_price', '<=', $request->max_price);
+        }
+
+        if ($request->filled('rating')) {
+            $rating = (float) $request->rating;
+
+            $query->whereHas('activeReviews', function ($q) use ($rating) {
+                $q->where('rating', '>=', $rating);
+            })
+                ->withAvg('activeReviews', 'rating')
+                ->having('active_reviews_avg_rating', '>=', $rating);
+        }
+
+        if ($request->filled('sort')) {
+            switch ($request->sort) {
+                case 'price_low':
+                    $query->orderBy('new_price', 'asc');
+                    break;
+                case 'price_high':
+                    $query->orderBy('new_price', 'desc');
+                    break;
+                case 'rating':
+                    $query->withAvg('activeReviews', 'rating')
+                        ->orderByDesc('active_reviews_avg_rating');
+                    break;
+                default:
+                    $query->orderBy('orders', 'asc');
+            }
+        } else {
+            $query->orderBy('orders', 'asc');
+        }
+
+        $products = $query->get();
+
+        $minPrice = Product::min('new_price');
+        $maxPrice = Product::max('new_price');
+
+        return view('frontend.shop', compact(
+            'products',
+            'allcategories',
+            'minPrice',
+            'maxPrice'
+        ));
     }
 
     public function edit($id)
     {
-        return redirect()
-            ->back()
-            ->with('error', '⚠️ Order Creation system is currently running. Please try again later.');
+        $order = Order::with(['shipping', 'items'])->findOrFail($id);
 
-        return view('backend.order.edit');
+        return view('backend.order.edit', compact('order'));
     }
 
     public function update(Request $request, $id)
     {
-        dd($request->all());
+        $order = Order::with('shipping')->findOrFail($id);
+
+        $order->shipping->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'address' => $request->address,
+        ]);
+
+        return back()->with('success', 'Shipping updated successfully!');
     }
 
     public function status(Request $request)

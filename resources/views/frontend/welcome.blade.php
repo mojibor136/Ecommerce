@@ -5,9 +5,28 @@
         $randomCategories = $allcategories->shuffle()->take(9);
     @endphp
 
+    <style>
+        @keyframes cardFadeUp {
+            0% {
+                opacity: 0;
+                transform: translateY(20px) scale(0.98);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .product-card {
+            opacity: 0;
+            animation: cardFadeUp 0.6s ease forwards;
+        }
+    </style>
+
     <div class="w-full md:py-2 py-0 mb-4">
         <div class="max-w-6xl mx-auto grid grid-cols-12 gap-2">
-            <div class="col-span-3 bg-white shadow relative hidden md:block">
+            <div class="col-span-3 bg-white relative hidden md:block">
                 <ul id="categoryList" class="grid grid-cols-1 max-h-[330px]">
                     @foreach ($randomCategories as $category)
                         <li class="group relative">
@@ -37,7 +56,8 @@
                 <div id="banner"
                     class="owl-carousel owl-theme w-full md:h-[330px] h-auto bg-gray-100 overflow-hidden flex items-center">
                     @foreach ($mainBanner as $banner)
-                        <img loading="lazy" src="{{ asset($banner->image) }}" alt="Banner" class="w-full h-full object-cover">
+                        <img loading="lazy" src="{{ asset($banner->image) }}" alt="Banner"
+                            class="w-full h-full object-cover">
                     @endforeach
                 </div>
             </div>
@@ -206,7 +226,8 @@
 
     <div class="max-w-6xl mx-auto md:px-0 px-2 mb-6">
         @foreach ($offerBanner->random(1) as $banner)
-            <img loading="lazy" src="{{ asset($banner->image) }}" alt="Banner 1" class="w-full h-full md:h-72 object-fill">
+            <img loading="lazy" src="{{ asset($banner->image) }}" alt="Banner 1"
+                class="w-full h-full md:h-72 object-fill">
         @endforeach
     </div>
 
@@ -215,7 +236,7 @@
             <h2 class="text-lg font-semibold text-gray-800 mb-3">Featured Products</h2>
             <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
                 @foreach ($products as $product)
-                    <div class="bg-white rounded-md overflow-hidden relative border cursor-pointer"
+                    <div class="bg-white rounded-md overflow-hidden relative border cursor-pointer product-card"
                         onclick="window.location='{{ route('product.details', $product->slug) }}'">
                         @if ($product->old_price && $product->new_price)
                             @php
@@ -294,7 +315,8 @@
 
     <div class="max-w-6xl mx-auto md:px-0 px-2 mb-6">
         @foreach ($offerBanner->random(1) as $banner)
-            <img loading="lazy" src="{{ asset($banner->image) }}" alt="Banner 1" class="w-full h-full md:h-72 object-fill">
+            <img loading="lazy" src="{{ asset($banner->image) }}" alt="Banner 1"
+                class="w-full h-full md:h-72 object-fill">
         @endforeach
     </div>
 
@@ -330,7 +352,8 @@
                                 @endif
                             @endif
                             <div class="w-full h-48 overflow-hidden">
-                                <img loading="lazy" src="{{ asset('uploads/products/' . $product->images->first()->image) }}"
+                                <img loading="lazy"
+                                    src="{{ asset('uploads/products/' . $product->images->first()->image) }}"
                                     alt="{{ $product->name }}"
                                     class="w-full h-full object-cover transform hover:scale-105 transition duration-300">
                             </div>
@@ -383,4 +406,15 @@
             @endforeach
         </div>
     </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const cards = document.querySelectorAll(".product-card");
+
+            cards.forEach((card, index) => {
+                card.style.animationDelay = (index * 0.3) + "s";
+            });
+        });
+    </script>
+
 @endsection
