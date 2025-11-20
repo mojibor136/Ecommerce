@@ -102,7 +102,7 @@
             @csrf
             <input type="hidden" name="ids[]" id="ids">
 
-            <div class="flex items-center gap-2">
+            <div class="flex flex-wrap items-center gap-2">
                 <!-- Status Change Button -->
                 <button type="button" @click="open = true"
                     class="relative inline-flex items-center bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-md shadow font-medium transition-all duration-200 group"
@@ -135,6 +135,19 @@
                         Delete this order
                     </span>
                 </button>
+
+                <div
+                    class="ml-auto w-full sm:w-auto flex items-center border rounded-md overflow-hidden h-10
+        focus-within:border-blue-500 transition-colors duration-200">
+                    <!-- Input Field -->
+                    <input id="searchInput" type="text" placeholder="Invoice & Tracking ID...."
+                        class="flex-1 px-4 h-full outline-none border-none text-gray-700">
+                    <!-- Search Button with Remix Icon -->
+                    <button type="button" onclick="searchOrder()"
+                        class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 flex items-center justify-center">
+                        <i class="ri-search-line text-lg"></i>
+                    </button>
+                </div>
             </div>
 
             <!-- Status Modal -->
@@ -331,6 +344,19 @@
     </div>
 @endsection
 @push('scripts')
+    <script>
+        function searchOrder() {
+            let q = document.getElementById('searchInput').value.trim();
+
+            if (q === "") {
+                alert("Please enter invoice or tracking ID");
+                return;
+            }
+
+            window.location.href = "{{ route('admin.orders.pending') }}" + "?search=" + q;
+        }
+    </script>
+
     <script>
         function updateSelectedIds() {
             const checkboxes = document.querySelectorAll('.order-checkbox:checked');

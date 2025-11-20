@@ -13,58 +13,148 @@ use Illuminate\Support\Facades\Log;
 
 class OrderController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $orders = Order::with(['items', 'shipping'])->latest()->get();
+        $query = Order::with(['items', 'shipping'])->latest();
+
+        if ($request->has('search') && $request->search != '') {
+            $search = $request->search;
+
+            $query->where(function ($q) use ($search) {
+                $q->where('invoice_id', 'like', "%{$search}%")
+                    ->orWhere('tracking_id', 'like', "%{$search}%");
+            });
+        }
+
+        $orders = $query->get();
 
         return view('backend.order.index', compact('orders'));
     }
 
-    public function pending()
+    public function pending(Request $request)
     {
-        $orders = Order::with(['items', 'shipping'])->where('order_status', 'pending')->latest()->get();
+        $query = Order::with(['items', 'shipping'])
+            ->where('order_status', 'pending')
+            ->latest();
+
+        if ($request->has('search') && $request->search != '') {
+            $search = $request->search;
+
+            $query->where(function ($q) use ($search) {
+                $q->where('invoice_id', 'like', "%{$search}%")
+                    ->orWhere('tracking_id', 'like', "%{$search}%");
+            });
+        }
+
+        $orders = $query->get();
 
         return view('backend.order.pending', compact('orders'));
     }
 
-    public function confirmed()
+    public function confirmed(Request $request)
     {
-        $orders = Order::with(['items', 'shipping'])->where('order_status', 'confirmed')->latest()->get();
+        $query = Order::with(['items', 'shipping'])->where('order_status', 'confirmed')->latest();
+
+        if ($request->has('search') && $request->search != '') {
+            $search = $request->search;
+
+            $query->where(function ($q) use ($search) {
+                $q->where('invoice_id', 'like', "%{$search}%")
+                    ->orWhere('tracking_id', 'like', "%{$search}%");
+            });
+        }
+
+        $orders = $query->get();
 
         return view('backend.order.confirmed', compact('orders'));
     }
 
-    public function ready()
+    public function ready(Request $request)
     {
-        $orders = Order::with(['items', 'shipping'])->where('order_status', 'Ready to Ship')->latest()->get();
+        $query = Order::with(['items', 'shipping'])->where('order_status', 'Ready to Ship')->latest();
+
+        if ($request->has('search') && $request->search != '') {
+            $search = $request->search;
+
+            $query->where(function ($q) use ($search) {
+                $q->where('invoice_id', 'like', "%{$search}%")
+                    ->orWhere('tracking_id', 'like', "%{$search}%");
+            });
+        }
+
+        $orders = $query->get();
 
         return view('backend.order.ready', compact('orders'));
     }
 
-    public function shipped()
+    public function shipped(Request $request)
     {
-        $orders = Order::with(['items', 'shipping'])->where('order_status', 'shipped')->latest()->get();
+        $query = Order::with(['items', 'shipping'])->where('order_status', 'shipped')->latest();
+
+        if ($request->has('search') && $request->search != '') {
+            $search = $request->search;
+
+            $query->where(function ($q) use ($search) {
+                $q->where('invoice_id', 'like', "%{$search}%")
+                    ->orWhere('tracking_id', 'like', "%{$search}%");
+            });
+        }
+
+        $orders = $query->get();
 
         return view('backend.order.shipped', compact('orders'));
     }
 
-    public function delivered()
+    public function delivered(Request $request)
     {
-        $orders = Order::with(['items', 'shipping'])->where('order_status', 'delivered')->latest()->get();
+        $query = Order::with(['items', 'shipping'])->where('order_status', 'delivered')->latest();
+
+        if ($request->has('search') && $request->search != '') {
+            $search = $request->search;
+
+            $query->where(function ($q) use ($search) {
+                $q->where('invoice_id', 'like', "%{$search}%")
+                    ->orWhere('tracking_id', 'like', "%{$search}%");
+            });
+        }
+
+        $orders = $query->get();
 
         return view('backend.order.delivered', compact('orders'));
     }
 
-    public function cancelled()
+    public function cancelled(Request $request)
     {
-        $orders = Order::with(['items', 'shipping'])->where('order_status', 'cancelled')->latest()->get();
+        $query = Order::with(['items', 'shipping'])->where('order_status', 'cancelled')->latest();
+
+        if ($request->has('search') && $request->search != '') {
+            $search = $request->search;
+
+            $query->where(function ($q) use ($search) {
+                $q->where('invoice_id', 'like', "%{$search}%")
+                    ->orWhere('tracking_id', 'like', "%{$search}%");
+            });
+        }
+
+        $orders = $query->get();
 
         return view('backend.order.cancelled', compact('orders'));
     }
 
-    public function refunded()
+    public function refunded(Request $request)
     {
-        $orders = Order::with(['items', 'shipping'])->where('order_status', 'refunded')->latest()->get();
+        $query = Order::with(['items', 'shipping'])->where('order_status', 'refunded')->latest();
+
+        if ($request->has('search') && $request->search != '') {
+            $search = $request->search;
+
+            $query->where(function ($q) use ($search) {
+                $q->where('invoice_id', 'like', "%{$search}%")
+                    ->orWhere('tracking_id', 'like', "%{$search}%");
+            });
+        }
+
+        $orders = $query->get();
 
         return view('backend.order.refunded', compact('orders'));
     }
@@ -133,7 +223,7 @@ class OrderController extends Controller
 
         $order = Order::with(['shipping', 'items'])->findOrFail($id);
 
-        if ($order->status !== 'pending') {
+        if ($order->order_status !== 'pending') {
             return redirect()->back()->with('error', 'Only pending orders can be edited.');
         }
 

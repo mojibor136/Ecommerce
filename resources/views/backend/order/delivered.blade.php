@@ -102,39 +102,54 @@
             @csrf
             <input type="hidden" name="ids[]" id="ids">
 
-            <div class="flex items-center gap-2">
-                <!-- Create Order Button -->
-                <button type="button" onclick="window.location.href='{{ route('admin.orders.create') }}'"
-                    class="relative inline-flex items-center bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md shadow font-medium transition-all duration-200 group"
-                    title="Add New Order">
-                    <i class="ri-add-line mr-2"></i> Create Order
-                    <span
-                        class="absolute -top-8 left-1/2 -translate-x-1/2 scale-0 group-hover:scale-100 transition-all duration-200 bg-gray-800 text-white text-xs px-2 py-1 rounded shadow whitespace-nowrap">
-                        Add a new order
-                    </span>
-                </button>
+            <div class="flex flex-wrap items-center gap-2 mb-4">
+                <!-- Button Group -->
+                <div class="flex flex-wrap items-center gap-2 flex-1">
+                    <!-- Create Order Button -->
+                    <button type="button" onclick="window.location.href='{{ route('admin.orders.create') }}'"
+                        class="relative inline-flex items-center bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md shadow font-medium transition-all duration-200 group"
+                        title="Add New Order">
+                        <i class="ri-add-line mr-2"></i> Create Order
+                        <span
+                            class="absolute -top-8 left-1/2 -translate-x-1/2 scale-0 group-hover:scale-100 transition-all duration-200 bg-gray-800 text-white text-xs px-2 py-1 rounded shadow whitespace-nowrap">
+                            Add a new order
+                        </span>
+                    </button>
 
-                <!-- Print Button -->
-                <button onclick="submitForm('{{ route('admin.orders.invoice') }}')"
-                    class="relative inline-flex items-center bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md shadow font-medium transition-all duration-200 group"
-                    title="Print Order">
-                    <i class="ri-printer-line mr-2"></i> Print
-                    <span
-                        class="absolute -top-8 left-1/2 -translate-x-1/2 scale-0 group-hover:scale-100 transition-all duration-200 bg-gray-800 text-white text-xs px-2 py-1 rounded shadow whitespace-nowrap">
-                        Print this order
-                    </span>
-                </button>
+                    <!-- Print Button -->
+                    <button type="button" onclick="submitForm('{{ route('admin.orders.invoice') }}')"
+                        class="relative inline-flex items-center bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md shadow font-medium transition-all duration-200 group"
+                        title="Print Order">
+                        <i class="ri-printer-line mr-2"></i> Print
+                        <span
+                            class="absolute -top-8 left-1/2 -translate-x-1/2 scale-0 group-hover:scale-100 transition-all duration-200 bg-gray-800 text-white text-xs px-2 py-1 rounded shadow whitespace-nowrap">
+                            Print this order
+                        </span>
+                    </button>
 
-                <!-- Delete Button -->
-                <button type="button" onclick="submitForm('{{ route('admin.orders.destroy') }}')"
-                    class="relative inline-flex items-center bg-[#E83330] hover:bg-[#E83330] text-white px-4 py-2 rounded-md shadow font-medium transition-all duration-200 group"
-                    title="Delete Order">
-                    <i class="ri-delete-bin-6-line mr-2"></i> Delete
-                    <span
-                        class="absolute -top-8 left-1/2 -translate-x-1/2 scale-0 group-hover:scale-100 transition-all duration-200 bg-gray-800 text-white text-xs px-2 py-1 rounded shadow whitespace-nowrap">
-                        Delete this order
-                    </span>
-                </button>
+                    <!-- Delete Button -->
+                    <button type="button" onclick="submitForm('{{ route('admin.orders.destroy') }}')"
+                        class="relative inline-flex items-center bg-[#E83330] hover:bg-[#E83330] text-white px-4 py-2 rounded-md shadow font-medium transition-all duration-200 group"
+                        title="Delete Order">
+                        <i class="ri-delete-bin-6-line mr-2"></i> Delete
+                        <span
+                            class="absolute -top-8 left-1/2 -translate-x-1/2 scale-0 group-hover:scale-100 transition-all duration-200 bg-gray-800 text-white text-xs px-2 py-1 rounded shadow whitespace-nowrap">
+                            Delete this order
+                        </span>
+                    </button>
+                </div>
+
+                <!-- Search Bar -->
+                <div
+                    class="w-full sm:w-auto flex items-center border rounded-md overflow-hidden h-10
+            focus-within:border-blue-500 transition-colors duration-200 mt-2 sm:mt-0">
+                    <input id="searchInput" type="text" placeholder="Invoice & Tracking ID...."
+                        class="flex-1 px-4 h-full outline-none border-none text-gray-700">
+                    <button type="button" onclick="searchOrder()"
+                        class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 flex items-center justify-center">
+                        <i class="ri-search-line text-lg"></i>
+                    </button>
+                </div>
             </div>
         </form>
 
@@ -303,6 +318,19 @@
     </div>
 @endsection
 @push('scripts')
+    <script>
+        function searchOrder() {
+            let q = document.getElementById('searchInput').value.trim();
+
+            if (q === "") {
+                alert("Please enter invoice or tracking ID");
+                return;
+            }
+
+            window.location.href = "{{ route('admin.orders.delivered') }}" + "?search=" + q;
+        }
+    </script>
+
     <script>
         function updateSelectedIds() {
             const checkboxes = document.querySelectorAll('.order-checkbox:checked');

@@ -12,7 +12,7 @@
         </div>
 
         <!-- Summary Cards -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-3">
             <!-- Orders -->
             <div class="bg-white p-5 rounded shadow hover:shadow-lg transition flex justify-between items-center">
                 <div>
@@ -51,7 +51,7 @@
         </div>
 
         <!-- Sales Cards -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 mb-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 mb-3">
             <!-- Daily Sales -->
             <div class="bg-white p-5 rounded shadow hover:shadow-lg transition flex justify-between items-center">
                 <div>

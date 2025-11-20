@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\AnalyticsTracking;
 use App\Models\Category;
 use App\Models\Courier;
 use App\Models\Order;
@@ -26,6 +27,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+
+        $pixelTracking = AnalyticsTracking::where('type', 'pixel')->first();
+        $gtmTracking = AnalyticsTracking::where('type', 'gtm')->first();
 
         $redxStatus = Courier::where('type', 'redx')->value('status');
         $steadfastStatus = Courier::where('type', 'steadfast')->value('status');
@@ -81,6 +85,8 @@ class AppServiceProvider extends ServiceProvider
             'steadfastStatus' => $steadfastStatus,
             'bkashStatus' => $bkashStatus,
             'nagadStatus' => $nagadStatus,
+            'pixelTracking' => $pixelTracking,
+            'gtmTracking' => $gtmTracking,
         ]);
     }
 }
