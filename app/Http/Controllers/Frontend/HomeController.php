@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Frontend;
 use App\Http\Controllers\Controller;
 use App\Models\Banner;
 use App\Models\Category;
+use App\Models\Order;
 use App\Models\Product;
 use App\Models\Subcategory;
 use Illuminate\Http\Request;
@@ -108,6 +109,26 @@ class HomeController extends Controller
         return view('frontend.tracking');
     }
 
+    public function trackCheck(Request $request)
+    {
+        $request->validate([
+            'order_id' => 'required',
+        ]);
+
+        $id = $request->order_id;
+
+        $order = Order::with('shipping')
+            ->where('tracking_id', $id)
+            ->orWhere('invoice_id', $id)
+            ->first();
+
+        if (! $order) {
+            return back()->with('error', 'No order found with this ID!');
+        }
+
+        return back()->with('order', $order);
+    }
+
     public function shop(Request $request)
     {
         $allcategories = Category::all();
@@ -167,13 +188,63 @@ class HomeController extends Controller
         ));
     }
 
-    public function deals()
+    public function deals(Request $request)
     {
-        $products = Product::where('hot_deal', 1)
-            ->orderBy('updated_at', 'desc')
-            ->get();
+        $allcategories = Category::all();
 
-        return view('frontend.deals', compact('products'));
+        $query = Product::with('images')->where('hot_deal', 1);
+
+        if ($request->has('categories') && is_array($request->categories)) {
+            $query->whereIn('category_id', $request->categories);
+        }
+
+        if ($request->filled('min_price')) {
+            $query->where('new_price', '>=', $request->min_price);
+        }
+        if ($request->filled('max_price')) {
+            $query->where('new_price', '<=', $request->max_price);
+        }
+
+        if ($request->filled('rating')) {
+            $rating = (float) $request->rating;
+
+            $query->whereHas('activeReviews', function ($q) use ($rating) {
+                $q->where('rating', '>=', $rating);
+            })
+                ->withAvg('activeReviews', 'rating')
+                ->having('active_reviews_avg_rating', '>=', $rating);
+        }
+
+        if ($request->filled('sort')) {
+            switch ($request->sort) {
+                case 'price_low':
+                    $query->orderBy('new_price', 'asc');
+                    break;
+                case 'price_high':
+                    $query->orderBy('new_price', 'desc');
+                    break;
+                case 'rating':
+                    $query->withAvg('activeReviews', 'rating')
+                        ->orderByDesc('active_reviews_avg_rating');
+                    break;
+                default:
+                    $query->orderBy('orders', 'asc');
+            }
+        } else {
+            $query->orderBy('orders', 'asc');
+        }
+
+        $products = $query->get();
+
+        $minPrice = Product::min('new_price');
+        $maxPrice = Product::max('new_price');
+
+        return view('frontend.deals', compact(
+            'products',
+            'allcategories',
+            'minPrice',
+            'maxPrice'
+        ));
     }
 
     public function categoryProduct(Request $request, $slug)

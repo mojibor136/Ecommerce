@@ -40,6 +40,9 @@ Route::middleware(['web', ClearBuyNow::class])->group(function () {
         Route::get('/search/products', 'search')->name('search.products');
     });
 
+    Route::post('/order-tracking-check', [HomeController::class, 'trackCheck'])
+        ->name('order.tracking.check');
+
     Route::post('/payment', [PaymentController::class, 'payment'])->name('payment');
     Route::post('/payment/success', [PaymentController::class, 'paymentSuccess'])->name('payment.success');
     Route::post('/cart/add/{product}', [CartController::class, 'add'])->name('cart.add');

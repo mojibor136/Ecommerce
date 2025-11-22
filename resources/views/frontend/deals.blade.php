@@ -4,7 +4,8 @@
     <div class="bg-gray-50 py-4 px-4">
         <div class="max-w-6xl mx-auto grid grid-cols-12 gap-4">
             <!-- ================= Sidebar Filters ================= -->
-            <aside class="col-span-12 md:col-span-3 hidden md:block bg-white h-fit rounded-lg shadow p-4 sticky top-4"
+            <form action="{{ route('deals') }}" method="GET"
+                class="col-span-12 md:col-span-3 hidden md:block bg-white h-fit rounded-lg shadow p-4 sticky top-4"
                 id="categoryList">
                 <h3 class="text-lg font-semibold mb-4">Filter Products</h3>
 
@@ -16,7 +17,8 @@
                             <li>
                                 <label class="flex items-center gap-2 cursor-pointer">
                                     <input type="checkbox" name="categories[]" value="{{ $category->id }}"
-                                        class="form-checkbox">
+                                        class="form-checkbox"
+                                        {{ in_array($category->id, request()->categories ?? []) ? 'checked' : '' }}>
                                     <span>{{ $category->name }}</span>
                                 </label>
                             </li>
@@ -28,9 +30,11 @@
                 <div class="mb-6">
                     <h4 class="font-medium mb-2 text-gray-700">Price</h4>
                     <div class="flex items-center gap-2">
-                        <input type="number" name="min_price" placeholder="Min" value="{{ $minPrice ?? 0 }}"
+                        <input type="number" name="min_price" placeholder="Min"
+                            value="{{ request()->min_price ?? $minPrice }}"
                             class="w-1/2 border px-3 py-1.5 rounded focus:outline-none focus:ring-2 focus:ring-orange-500">
-                        <input type="number" name="max_price" placeholder="Max" value="{{ $maxPrice ?? 0 }}"
+                        <input type="number" name="max_price" placeholder="Max"
+                            value="{{ request()->max_price ?? $maxPrice }}"
                             class="w-1/2 border px-3 py-1.5 rounded focus:outline-none focus:ring-2 focus:ring-orange-500">
                     </div>
                 </div>
@@ -41,7 +45,8 @@
                     <div class="flex flex-col gap-1">
                         @for ($i = 5; $i >= 1; $i--)
                             <label class="flex items-center gap-2 cursor-pointer text-sm">
-                                <input type="radio" name="rating" value="{{ $i }}" class="form-radio">
+                                <input type="radio" name="rating" value="{{ $i }}" class="form-radio"
+                                    {{ request()->rating == $i ? 'checked' : '' }}>
                                 <span class="flex gap-1">
                                     @for ($j = 0; $j < $i; $j++)
                                         <i class="ri-star-fill text-yellow-400"></i>
@@ -57,11 +62,12 @@
 
                 <!-- Filter Buttons -->
                 <div class="flex gap-2 mt-4">
-                    <button
+                    <button type="submit"
                         class="w-1/2 bg-orange-500 hover:bg-orange-600 text-white py-2 rounded transition">Apply</button>
-                    <button class="w-1/2 bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 rounded transition">Reset</button>
+                    <a href="{{ route('deals') }}"
+                        class="w-1/2 bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 rounded transition text-center">Reset</a>
                 </div>
-            </aside>
+            </form>
 
             <!-- ================= Products Grid ================= -->
             <main class="col-span-12 md:col-span-9">
@@ -101,7 +107,8 @@
                             @endif
 
                             <div class="w-full h-48 overflow-hidden">
-                                <img loading="lazy" src="{{ asset('uploads/products/' . $product->images->first()->image) }}"
+                                <img loading="lazy"
+                                    src="{{ asset('uploads/products/' . $product->images->first()->image) }}"
                                     alt="Smartphone XYZ"
                                     class="w-full h-full object-cover transform hover:scale-105 transition duration-300">
                             </div>

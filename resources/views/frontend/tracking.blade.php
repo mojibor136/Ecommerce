@@ -1,65 +1,112 @@
 @extends('frontend.layouts.master')
 @section('title', 'Order Tracking')
+
 @section('content')
     <div class="bg-gray-50 md:py-10 py-4 px-4">
         <div class="w-full max-w-lg mx-auto bg-white rounded-lg shadow-lg p-6">
+
             <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">Track Your Order</h2>
 
-            <!-- Order Tracking Form -->
-            <form id="orderTrackingForm" class="space-y-4">
+            {{-- Error message --}}
+            @if (session('error'))
+                <div class="bg-red-100 border border-red-300 text-red-700 px-4 py-2 rounded mb-4">
+                    {{ session('error') }}
+                </div>
+            @endif
+
+            <!-- Tracking Form -->
+            <form action="{{ route('order.tracking.check') }}" method="POST" class="space-y-4">
+                @csrf
+
                 <div>
-                    <label for="order_id" class="block text-gray-700 font-medium mb-2">Order ID</label>
-                    <input type="text" id="order_id" name="order_id" placeholder="Enter your Order ID"
-                        class="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500">
+                    <label for="order_id" class="block text-gray-700 font-medium mb-2">
+                        Order ID or Invoice ID
+                    </label>
+
+                    <input type="text" id="order_id" name="order_id" placeholder="Enter your Order/Invoice ID"
+                        class="w-full rounded-md bg-white text-gray-900 border px-3 sm:px-4 py-2
+                        text-sm sm:text-base outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-200 border-gray-300">
                 </div>
 
-                <button type="submit"
-                    class="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2.5 rounded-md transition duration-200">
+                <button type="submit" class="w-full bg-orange-500 text-white font-semibold py-2.5 rounded-md">
                     Track Order
                 </button>
             </form>
 
-            <!-- Order Details Section -->
-            <div id="orderDetails" class="mt-6 hidden bg-gray-50 border border-gray-200 rounded-lg p-4">
-                <h3 class="text-lg font-semibold text-gray-800 mb-3">Order Details</h3>
-                <p class=" mb-1 block"><span class="font-medium">Order ID:</span> <span id="detailOrderId"></span></p>
-                <p class=" mb-1 block"><span class="font-medium">Customer Name:</span> <span id="detailCustomerName"></span>
-                </p>
-                <p class=" mb-1 block"><span class="font-medium">Shipping Address:</span> <span id="detailShipping"></span>
-                </p>
-                <p class=" mb-1 block"><span class="font-medium">Order Status:</span> <span id="detailStatus"></span></p>
-                <p class=" mb-1 block"><span class="font-medium">Total Amount:</span> <span id="detailTotal"></span></p>
-                <a href="{{ route('home') }}"
-                    class="bg-orange-500 hover:bg-orange-600 text-white font-medium mt-4 block text-center py-3 px-6 rounded-lg transition">
-                    Continue Shopping
-                </a>
-            </div>
+            {{-- Show Order Details if exists --}}
+            @if (session('order'))
+                @php $order = session('order'); @endphp
+                <div class="mt-6 bg-gray-50 border border-gray-200 rounded-lg p-4">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Order Details</h3>
+
+                    <div class="bg-white border border-gray-200 rounded-xl p-5 shadow-sm space-y-4">
+
+                        <!-- Order ID -->
+                        <div class="flex items-center gap-3">
+                            <i class="ri-hashtag# ri-hashtag text-xl text-gray-600"></i>
+                            <p class="text-gray-700">
+                                <b class="text-gray-900">Order ID:</b> {{ $order->id }}
+                            </p>
+                        </div>
+
+                        <!-- Invoice ID -->
+                        <div class="flex items-center gap-3">
+                            <i class="ri-file-list-3-line text-xl text-gray-600"></i>
+                            <p class="text-gray-700">
+                                <b class="text-gray-900">Invoice ID:</b> {{ $order->invoice_id }}
+                            </p>
+                        </div>
+
+                        <!-- Customer -->
+                        <div class="flex items-center gap-3">
+                            <i class="ri-user-3-line text-xl text-gray-600"></i>
+                            <p class="text-gray-700">
+                                <b class="text-gray-900">Customer:</b> {{ $order->shipping->name }}
+                            </p>
+                        </div>
+
+                        <!-- Address -->
+                        <div class="flex items-center gap-3">
+                            <i class="ri-map-pin-line text-xl text-gray-600"></i>
+                            <p class="text-gray-700">
+                                <b class="text-gray-900">Address:</b> {{ $order->shipping->address }}
+                            </p>
+                        </div>
+
+                        <!-- Status with Color Badge -->
+                        <div class="flex items-center gap-3">
+                            <i class="ri-timer-flash-line text-xl text-gray-600"></i>
+
+                            @php
+                                $statusColor = match ($order->order_status) {
+                                    'pending' => 'bg-yellow-100 text-yellow-700',
+                                    'processing' => 'bg-blue-100 text-blue-700',
+                                    'shipped' => 'bg-purple-100 text-purple-700',
+                                    'delivered' => 'bg-green-100 text-green-700',
+                                    'cancelled' => 'bg-red-100 text-red-700',
+                                    default => 'bg-gray-100 text-gray-700',
+                                };
+                            @endphp
+
+                            <p class="text-gray-700">
+                                <b class="text-gray-900">Order Status:</b>
+                                <span class="px-2 py-1 rounded-md text-sm font-semibold capitalize {{ $statusColor }}">
+                                    {{ $order->order_status }}
+                                </span>
+                            </p>
+                        </div>
+
+                        <!-- Amount -->
+                        <div class="flex items-center gap-3">
+                            <i class="ri-money-dollar-circle-line text-xl text-gray-600"></i>
+                            <p class="text-gray-700">
+                                <b class="text-gray-900">Total Amount:</b> {{ number_format($order->total, 2) }} ৳
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            @endif
+
         </div>
     </div>
-
-    <script>
-        // Example JS to show how order details can be filled
-        const form = document.getElementById('orderTrackingForm');
-        const detailsBox = document.getElementById('orderDetails');
-
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const orderId = document.getElementById('order_id').value;
-
-            if (!orderId) {
-                alert('Please enter an Order ID');
-                return;
-            }
-
-            // Example: manually filling data for now
-            // Later connect this with AJAX to backend API
-            document.getElementById('detailOrderId').textContent = orderId;
-            document.getElementById('detailCustomerName').textContent = "John Doe";
-            document.getElementById('detailShipping').textContent = "123, Dhaka, Bangladesh";
-            document.getElementById('detailStatus').textContent = "Processing";
-            document.getElementById('detailTotal').textContent = "৳2500";
-
-            detailsBox.classList.remove('hidden');
-        });
-    </script>
 @endsection
