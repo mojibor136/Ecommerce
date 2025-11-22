@@ -54,9 +54,12 @@ class PaymentController extends Controller
 
         session()->forget(['checkoutData', 'cart', 'buy_now']);
 
+        $order->load('items');
+
         return redirect()->route('order.success', [
             'invoice_id' => $order->invoice_id,
             'amount' => $order->total,
+            'order' => $order,
             'method' => ($checkoutData['payment_method'] == 'cod') ? 'Cash on Delivery' : $checkoutData['payment_method'],
         ])->with('success', 'Your order has been placed successfully!');
     }

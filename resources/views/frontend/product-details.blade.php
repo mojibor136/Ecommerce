@@ -253,7 +253,7 @@
                     <input type="hidden" name="variant[]" class="cart-variant">
                     <input type="hidden" id="cartVariantId" name="cartVariantId">
                     <input id="quantity" type="hidden" name="quantity" value="1" class="quantity-input">
-                    <button type="submit"
+                    <button type="submit" id="addToCartBtn"
                         class="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2.5 rounded transition duration-200">
                         Add to Cart
                     </button>
@@ -272,6 +272,78 @@
                 </form>
             </div>
         </div>
+
+        @if (isset($product))
+            <script>
+                (function() {
+
+                    var value = {{ $product->new_price }};
+                    var ids = ['{{ $product->id }}'];
+                    var quantity = 1;
+
+                    // --- GTM ---
+                    if (window.dataLayer) {
+                        dataLayer.push({
+                            event: 'ViewContent',
+                            content_ids: ids,
+                            content_name: '{{ $product->name }}',
+                            content_type: 'product',
+                            value: value,
+                            currency: 'BDT',
+                            quantity: quantity
+                        });
+                    }
+
+                    // --- Pixel ---
+                    if (typeof fbq === 'function') {
+                        fbq('track', 'ViewContent', {
+                            content_ids: ids,
+                            content_name: '{{ $product->name }}',
+                            content_type: 'product',
+                            value: value,
+                            currency: 'BDT',
+                            quantity: quantity
+                        });
+                    }
+
+                })();
+            </script>
+        @endif
+
+        @if (isset($product))
+            <script>
+                document.getElementById('addToCartBtn').addEventListener('click', function() {
+
+                    var qty = parseInt(document.querySelector('.quantity-input').value) || 1;
+                    var value = {{ $product->new_price }} * qty;
+
+                    // --- GTM ---
+                    if (window.dataLayer) {
+                        dataLayer.push({
+                            event: 'AddToCart',
+                            content_ids: ['{{ $product->id }}'],
+                            content_name: '{{ $product->name }}',
+                            content_type: 'product',
+                            value: value,
+                            currency: 'BDT',
+                            quantity: qty
+                        });
+                    }
+
+                    // --- Pixel ---
+                    if (typeof fbq === 'function') {
+                        fbq('track', 'AddToCart', {
+                            content_ids: ['{{ $product->id }}'],
+                            content_name: '{{ $product->name }}',
+                            content_type: 'product',
+                            value: value,
+                            currency: 'BDT',
+                            quantity: qty
+                        });
+                    }
+                });
+            </script>
+        @endif
 
         <script>
             document.addEventListener('DOMContentLoaded', function() {

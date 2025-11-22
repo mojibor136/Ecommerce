@@ -137,7 +137,7 @@
 
                     <h3 class="text-md font-semibold mb-3 flex items-center gap-2"><i
                             class="ri-bank-card-line text-orange-500"></i>Payment Method</h3>
-                  <div class="space-y-3 mb-6">
+                    <div class="space-y-3 mb-6">
                         <h2 class="font-semibold text-gray-800 mb-2">Select Payment Method</h2>
                         <div class="grid grid-cols-3 gap-2">
                             <div class="payment-card border border-gray-300 rounded-lg px-2 cursor-pointer text-center transition-all duration-300 hover:scale-95"
@@ -396,18 +396,14 @@
 
                         paymentCards.forEach(card => {
                             card.addEventListener('click', () => {
-                                // সব কার্ড থেকে active ক্লাস রিমুভ
                                 paymentCards.forEach(c => c.classList.remove('active'));
 
-                                // ক্লিক করা কার্ডে active ক্লাস অ্যাড
                                 card.classList.add('active');
 
-                                // Hidden input এর value আপডেট
                                 hiddenInput.value = card.getAttribute('data-method');
                             });
                         });
 
-                        // ডিফল্ট selected card
                         document.addEventListener('DOMContentLoaded', () => {
                             const defaultCard = document.querySelector('[data-method="cod"]');
                             if (defaultCard) defaultCard.classList.add('active');
@@ -434,6 +430,63 @@
             </div>
         @endif
     </div>
+
+    <!-- GTM + Pixel: InitiateCheckout -->
+    
+    @if ($buyNow)
+        <script>
+            (function() {
+                var value = {{ $buyNow['price'] * $buyNow['quantity'] }};
+                var ids = @json([$buyNow['id']]);
+
+                if (window.dataLayer) {
+                    dataLayer.push({
+                        event: 'InitiateCheckout',
+                        value: value,
+                        currency: 'BDT',
+                        content_ids: ids,
+                        content_type: 'product'
+                    });
+                }
+
+                if (typeof fbq === 'function') {
+                    fbq('track', 'InitiateCheckout', {
+                        value: value,
+                        currency: 'BDT',
+                        content_ids: ids,
+                        content_type: 'product'
+                    });
+                }
+            })();
+        </script>
+    @elseif(count($cart) > 0)
+        <script>
+            (function() {
+                var value = {{ collect($cart)->sum(fn($item) => $item['price'] * $item['quantity']) }};
+                var ids = @json(array_column($cart, 'id'));
+
+                if (window.dataLayer) {
+                    dataLayer.push({
+                        event: 'InitiateCheckout',
+                        value: value,
+                        currency: 'BDT',
+                        content_ids: ids,
+                        content_type: 'product'
+                    });
+                }
+
+                if (typeof fbq === 'function') {
+                    fbq('track', 'InitiateCheckout', {
+                        value: value,
+                        currency: 'BDT',
+                        content_ids: ids,
+                        content_type: 'product'
+                    });
+                }
+
+            })();
+        </script>
+    @endif
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>

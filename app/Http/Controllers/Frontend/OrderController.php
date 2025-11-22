@@ -21,8 +21,6 @@ class OrderController extends Controller
 
         try {
 
-            Log::info('Creating Order...');
-
             $order = Order::create([
                 'order_status' => 'pending',
                 'payment_status' => 'pending',
@@ -32,8 +30,6 @@ class OrderController extends Controller
                 'tracking_id' => '0',
                 'courier_method' => 'Any',
             ]);
-
-            Log::info('Order Created', ['order_id' => $order->id]);
 
             Shipping::create([
                 'order_id' => $order->id,
@@ -104,10 +100,14 @@ class OrderController extends Controller
             DB::commit();
 
             if ($request->payment_method == 'cod') {
+
+                $order->load('items');
+
                 return redirect()->route('order.success', [
                     'invoice_id' => $order->invoice_id,
                     'amount' => $order->total,
                     'method' => 'Cash on Delivery',
+                    'order' => $order,
                 ])->with('success', 'Order created successfully!');
             } else {
                 return $order;

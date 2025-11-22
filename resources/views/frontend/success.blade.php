@@ -37,4 +37,45 @@
             </div>
         </div>
     </div>
+
+    @if (!empty($order))
+        <script>
+            (function() {
+
+                var ids = [
+                    @foreach ($order->items as $item)
+                        '{{ $item->product_id }}',
+                    @endforeach
+                ];
+
+                var totalItems = {{ $order->items->sum('quantity') }};
+                var value = {{ $order->total }};
+
+                // --- GTM ---
+                if (window.dataLayer) {
+                    dataLayer.push({
+                        event: 'Purchase',
+                        transaction_id: '{{ $order->invoice_id }}',
+                        value: value,
+                        currency: 'BDT',
+                        content_ids: ids,
+                        content_type: 'product',
+                        num_items: totalItems
+                    });
+                }
+
+                // --- Pixel ---
+                if (typeof fbq === 'function') {
+                    fbq('track', 'Purchase', {
+                        value: value,
+                        currency: 'BDT',
+                        content_ids: ids,
+                        content_type: 'product',
+                        num_items: totalItems
+                    });
+                }
+
+            })();
+        </script>
+    @endif
 @endsection
