@@ -287,7 +287,7 @@
     <!-- =================== {{ $setting->name }} FOOTER =================== -->
 
     <!-- =================== {{ $setting->name }} FOOTER =================== -->
-    <footer class="bg-gray-900 text-gray-300 pt-12 pb-6">
+    <footer class="bg-gray-900 text-gray-300 pt-12 pb-6 md:mb-0 mb-14">
         <div class="max-w-6xl mx-auto px-4">
 
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-10">
