@@ -32,7 +32,7 @@
                         <li class="group relative">
                             <div onclick="window.location.href='{{ route('category.product', $category->slug) }}'"
                                 class="flex items-center font-medium justify-between px-4 py-1 hover:bg-gray-100 cursor-pointer transition">
-                                <span class="text-gray-800 text-[14.5px]">{{ $category->name }}</span>
+                                <span class="text-gray-800 text-[14.5px] capitalize">{{ $category->name }}</span>
                                 @if ($category->subcategories->count() > 0)
                                     <i class="ri-arrow-right-s-line text-gray-400 text-lg font-normal"></i>
                                 @endif
@@ -42,7 +42,7 @@
                                     <div class="bg-white">
                                         @foreach ($category->subcategories as $subcategory)
                                             <li onclick="window.location.href='{{ route('subcategory.product', $subcategory->slug) }}'"
-                                                class="px-4 py-2 hover:bg-gray-100 text-sm text-gray-700 cursor-pointer">
+                                                class="px-4 py-2 hover:bg-gray-100 text-sm text-gray-700 cursor-pointer capitalize">
                                                 {{ $subcategory->name }}
                                             </li>
                                         @endforeach
@@ -86,7 +86,7 @@
                         <img loading="lazy" src="{{ asset($category->image) }}" alt="{{ $category->name }}"
                             class="w-16 h-14 object-contain mb-2">
                         <span
-                            class="text-sm font-medium text-gray-700 text-center line-clamp-2">{{ $category->name }}</span>
+                            class="text-sm font-medium text-gray-700 text-center capitalize line-clamp-2">{{ $category->name }}</span>
                     </div>
                 @endforeach
             </div>
@@ -104,7 +104,7 @@
                         class="flex flex-col items-center justify-start py-3 hover:shadow transition cursor-pointer">
                         <img loading="lazy" src="{{ asset($category->image) }}" alt="{{ $category->name }}"
                             class="w-14 h-12 object-contain mb-2 border border-gray-50 rounded">
-                        <span class="text-xs font-medium text-gray-700 text-center line-clamp-2">
+                        <span class="text-xs font-medium capitalize text-gray-700 text-center line-clamp-2">
                             {{ $category->name }}
                         </span>
                     </div>
@@ -175,7 +175,7 @@
                                 <i class="ri-shopping-cart-line text-md"></i>
                             </button>
                         </div>
-                        <h3 class="text-gray-700 font-semibold text-center text-[14.5px] line-clamp-2 mb-1">
+                        <h3 class="text-gray-700 font-semibold text-center capitalize text-[14.5px] line-clamp-2 mb-1">
                             {{ $product->name }}</h3>
                         <div class="flex items-center text-[14.5px]">
                             @php
@@ -271,7 +271,7 @@
                         </div>
 
                         <div class="px-2.5 py-1 pb-2.5 flex flex-col items-left">
-                            <h3 class="text-gray-700 font-medium text-left text-[14.5px] line-clamp-2">
+                            <h3 class="text-gray-700 font-medium capitalize text-left text-[14.5px] line-clamp-2">
                                 {{ $product->name }}
                             </h3>
                             <div class="flex items-center text-[14.5px]">
@@ -361,7 +361,7 @@
                             </div>
 
                             <div class="px-2.5 py-1 pb-2.5 flex flex-col items-left">
-                                <h3 class="text-gray-700 font-medium text-left text-[14.5px] line-clamp-2">
+                                <h3 class="text-gray-700 font-medium capitalize text-left text-[14.5px] line-clamp-2">
                                     {{ $product->name }}</h3>
                                 <div class="flex items-center text-[14.5px]">
                                     @for ($i = 1; $i <= 5; $i++)

@@ -73,6 +73,7 @@ class ProductController extends Controller
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'status' => 'required|in:0,1',
             'type' => 'required|in:0,1',
+            'hot_deal' => 'required|in:0,1',
         ];
 
         if ($request->type == 1) {

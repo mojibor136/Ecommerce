@@ -245,23 +245,53 @@
                         Your trusted online store for smart gadgets, electronics, fashion and more.
                         Shop confidently — fast delivery, secure payment, and 24/7 customer support.
                     </p>
+
+                    @php
+                        $socialStyles = [
+                            'Facebook' => [
+                                'icon' => 'ri-facebook-fill',
+                                'hover' => 'hover:bg-blue-600',
+                            ],
+                            'Instagram' => [
+                                'icon' => 'ri-instagram-line',
+                                'hover' => 'hover:bg-pink-500',
+                            ],
+                            'Twitter' => [
+                                'icon' => 'ri-twitter-x-line',
+                                'hover' => 'hover:bg-blue-400',
+                            ],
+                            'YouTube' => [
+                                'icon' => 'ri-youtube-fill',
+                                'hover' => 'hover:bg-red-600',
+                            ],
+                            'LinkedIn' => [
+                                'icon' => 'ri-linkedin-fill',
+                                'hover' => 'hover:bg-blue-700',
+                            ],
+                            'Pinterest' => [
+                                'icon' => 'ri-pinterest-fill',
+                                'hover' => 'hover:bg-red-500',
+                            ],
+                            'WhatsApp API' => [
+                                'icon' => 'ri-whatsapp-line',
+                                'hover' => 'hover:bg-green-500',
+                            ],
+                        ];
+                    @endphp
+
                     <div class="flex gap-3 mt-4">
-                        <a href="{{ $setting->facebook ?? '#' }}" target="_blank"
-                            class="w-10 h-10 flex items-center justify-center bg-gray-800 rounded-full hover:bg-orange-500 transition">
-                            <i class="ri-facebook-fill text-white text-lg"></i>
-                        </a>
-                        <a href="#"
-                            class="w-10 h-10 flex items-center justify-center bg-gray-800 rounded-full hover:bg-pink-500 transition">
-                            <i class="ri-instagram-line text-white text-lg"></i>
-                        </a>
-                        <a href="#"
-                            class="w-10 h-10 flex items-center justify-center bg-gray-800 rounded-full hover:bg-blue-400 transition">
-                            <i class="ri-twitter-x-line text-white text-lg"></i>
-                        </a>
-                        <a href="#"
-                            class="w-10 h-10 flex items-center justify-center bg-gray-800 rounded-full hover:bg-red-600 transition">
-                            <i class="ri-youtube-fill text-white text-lg"></i>
-                        </a>
+                        @foreach ($socials as $item)
+                            @php
+                                $style = $socialStyles[$item->name] ?? null;
+                            @endphp
+
+                            @if ($style)
+                                <a href="{{ $item->link }}" target="_blank"
+                                    class="w-10 h-10 flex items-center justify-center bg-gray-800 rounded-full transition {{ $style['hover'] }}">
+                                    <i class="{{ $style['icon'] }} text-white text-lg"></i>
+                                </a>
+                            @endif
+                        @endforeach
                     </div>
                 </div>
 
@@ -269,11 +299,11 @@
                 <div>
                     <h3 class="text-lg font-semibold text-white mb-3">Top Categories</h3>
                     <ul class="space-y-2 text-sm">
-                        <li><a href="#" class="hover:text-orange-400 transition">Smartphones</a></li>
-                        <li><a href="#" class="hover:text-orange-400 transition">Laptops & PCs</a></li>
-                        <li><a href="#" class="hover:text-orange-400 transition">Smartwatches</a></li>
-                        <li><a href="#" class="hover:text-orange-400 transition">Accessories</a></li>
-                        <li><a href="#" class="hover:text-orange-400 transition">Gaming Products</a></li>
+                        @foreach ($topCategories as $category)
+                            <li><a href="{{ route('category.product', $category->slug) }}"
+                                    class="hover:text-orange-400 transition">{{ $category->name }}</a>
+                            </li>
+                        @endforeach
                     </ul>
                 </div>
 
