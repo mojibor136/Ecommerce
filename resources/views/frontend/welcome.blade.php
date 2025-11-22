@@ -39,12 +39,14 @@
                             </div>
                             @if ($category->subcategories->count() > 0)
                                 <ul class="absolute top-0 left-full hidden group-hover:block bg-white w-[220px] z-20">
-                                    @foreach ($category->subcategories as $subcategory)
-                                        <li onclick="window.location.href='{{ route('subcategory.product', $subcategory->slug) }}'"
-                                            class="px-4 py-2 hover:bg-gray-100 text-sm text-gray-700 cursor-pointer">
-                                            {{ $subcategory->name }}
-                                        </li>
-                                    @endforeach
+                                    <div class="bg-white">
+                                        @foreach ($category->subcategories as $subcategory)
+                                            <li onclick="window.location.href='{{ route('subcategory.product', $subcategory->slug) }}'"
+                                                class="px-4 py-2 hover:bg-gray-100 text-sm text-gray-700 cursor-pointer">
+                                                {{ $subcategory->name }}
+                                            </li>
+                                        @endforeach
+                                    </div>
                                 </ul>
                             @endif
                         </li>
