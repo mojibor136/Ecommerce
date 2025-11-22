@@ -414,6 +414,85 @@
         </div>
     </footer>
 
+    <!-- Bottom Navbar -->
+    <nav class="fixed bottom-0 left-0 w-full bg-white/70 backdrop-blur-md border-t border-white/20 shadow-md z-50 block md:hidden">
+        <ul class="flex justify-around">
+            <!-- Home -->
+            <li class="flex-1">
+                <a href="{{ route('home') }}"
+                    class="nav-item flex flex-col items-center justify-center py-2 relative text-gray-700">
+                    <i class="ri-home-5-line text-2xl"></i>
+                    <span class="text-xs">Home</span>
+                    <span class="nav-indicator absolute bottom-0 w-0 h-[2px] bg-orange-500 transition-all"></span>
+                </a>
+            </li>
+
+            <!-- Shop -->
+            <li class="flex-1">
+                <a href="{{ route('shop') }}"
+                    class="nav-item flex flex-col items-center justify-center py-2 relative text-gray-700">
+                    <i class="ri-store-line text-2xl"></i>
+                    <span class="text-xs">Shop</span>
+                    <span class="nav-indicator absolute bottom-0 w-0 h-[2px] bg-orange-500 transition-all"></span>
+                </a>
+            </li>
+
+            <!-- Cart -->
+            <li class="flex-1">
+                <a href="{{ route('cart.index') }}"
+                    class="nav-item flex flex-col items-center justify-center py-2 relative text-gray-700">
+                    <i class="ri-shopping-cart-line text-2xl"></i>
+                    <span class="text-xs">Cart</span>
+                    <span class="nav-indicator absolute bottom-0 w-0 h-[2px] bg-orange-500 transition-all"></span>
+                </a>
+            </li>
+
+            <!-- Track -->
+            <li class="flex-1">
+                <a href="{{ route('order.tracking') }}"
+                    class="nav-item flex flex-col items-center justify-center py-2 relative text-gray-700">
+                    <i class="ri-map-pin-line text-2xl"></i>
+                    <span class="text-xs">Track</span>
+                    <span class="nav-indicator absolute bottom-0 w-0 h-[2px] bg-orange-500 transition-all"></span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Active State Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const navItems = document.querySelectorAll('.nav-item');
+
+            navItems.forEach(item => {
+                if (item.href === window.location.href) {
+                    item.classList.add('text-orange-500');
+                    item.querySelector('.nav-indicator').classList.add('w-full');
+                }
+            });
+
+            navItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    navItems.forEach(i => {
+                        i.classList.remove('text-orange-500');
+                        i.querySelector('.nav-indicator').classList.remove('w-full');
+                    });
+
+                    item.classList.add('text-orange-500');
+                    item.querySelector('.nav-indicator').classList.add('w-full');
+                });
+            });
+        });
+    </script>
+
+    <style>
+        .nav-item:hover i,
+        .nav-item:hover span {
+            color: #f97316;
+            transform: translateY(-2px);
+            transition: all 0.3s ease;
+        }
+    </style>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -931,22 +1010,43 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/izitoast/dist/css/iziToast.min.css">
     <script src="https://cdn.jsdelivr.net/npm/izitoast/dist/js/iziToast.min.js"></script>
 
+    <!-- Location Detect Button (hidden or visible as per design) -->
+    <button id="detectLocation" class="hidden">Detect Location</button>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
 
-            if (sessionStorage.getItem('shippingCharge')) {
-                return;
-            }
+            // যদি sessionStorage-এ shippingCharge থাকে, আর permission নেওয়ার দরকার নেই
+            if (sessionStorage.getItem('shippingCharge')) return;
 
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
-            } else {
-                iziToast.warning({
-                    title: 'Not Supported',
-                    message: "Your browser doesn't support Geolocation.",
-                    position: 'topRight'
-                });
-            }
+            const detectBtn = document.getElementById('detectLocation');
+
+            // Auto-click hidden button on desktop, mobile require user interaction
+            const tryAutoDetect = () => {
+                // Desktop / HTTPS supported browsers
+                if (navigator.geolocation && !/Mobi|Android/i.test(navigator.userAgent)) {
+                    detectBtn.click();
+                }
+            };
+
+            detectBtn.addEventListener('click', function() {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(successCallback, errorCallback, {
+                        enableHighAccuracy: true,
+                        timeout: 10000,
+                        maximumAge: 0
+                    });
+                } else {
+                    iziToast.warning({
+                        title: 'Not Supported',
+                        message: "Your browser doesn't support Geolocation.",
+                        position: 'topRight'
+                    });
+                }
+            });
+
+            // Auto trigger for desktop
+            tryAutoDetect();
 
             function successCallback(position) {
                 const latitude = position.coords.latitude;
@@ -955,11 +1055,19 @@
             }
 
             function errorCallback(error) {
-                iziToast.warning({
-                    title: 'Location Needed',
-                    message: 'Please enable your location to continue.',
-                    position: 'topRight'
-                });
+                if (error.code === error.PERMISSION_DENIED) {
+                    iziToast.error({
+                        title: 'Permission Needed',
+                        message: 'Please allow location from your browser settings.',
+                        position: 'topRight'
+                    });
+                } else {
+                    iziToast.warning({
+                        title: 'Location Failed',
+                        message: 'Unable to get your location.',
+                        position: 'topRight'
+                    });
+                }
             }
 
             function checkIfInsideDhaka(lat, lon) {
@@ -999,7 +1107,6 @@
 
                 sessionStorage.setItem('shippingCharge', charge);
                 sessionStorage.setItem('shippingArea', area);
-                sessionStorage.setItem('locationMessageShown', 'true');
 
                 fetch("{{ route('set.shipping.charge') }}", {
                     method: 'POST',
@@ -1008,8 +1115,8 @@
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
                     },
                     body: JSON.stringify({
-                        charge: charge,
-                        area: area
+                        charge,
+                        area
                     })
                 });
             }
