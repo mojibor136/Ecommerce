@@ -413,7 +413,8 @@
     </footer>
 
     <!-- Bottom Navbar -->
-    <nav class="fixed bottom-0 left-0 w-full bg-white/70 backdrop-blur-md border-t border-white/20 shadow-md z-50 block md:hidden">
+    <nav
+        class="nav-btn-section fixed bottom-0 left-0 w-full bg-white/70 backdrop-blur-md border-t border-white/20 shadow-md z-50 block md:hidden">
         <ul class="flex justify-around">
             <!-- Home -->
             <li class="flex-1">
@@ -456,6 +457,22 @@
             </li>
         </ul>
     </nav>
+
+    <script>
+        const navSection = document.querySelector('.nav-btn-section');
+        const openFilter = document.getElementById('openFilter');
+        const closeFilter = document.getElementById('closeFilter');
+
+        // OPEN = hide nav-btn-section
+        openFilter.addEventListener('click', () => {
+            navSection.classList.add('hidden');
+        });
+
+        // CLOSE = show nav-btn-section
+        closeFilter.addEventListener('click', () => {
+            navSection.classList.remove('hidden');
+        });
+    </script>
 
     <!-- Active State Script -->
     <script>
