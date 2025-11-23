@@ -3,21 +3,42 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
+use App\Mail\OrderMail;
+use App\Models\GmailSmtp;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Payment;
 use App\Models\Product;
 use App\Models\ProductVariant;
+use App\Models\Setting;
 use App\Models\Shipping;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class OrderController extends Controller
 {
     public function createOrder(Request $request)
     {
         DB::beginTransaction();
+
+        $smtp = GmailSmtp::where('status', 1)->first();
+        $setting = Setting::first();
+
+        if ($smtp) {
+            config([
+                'mail.default' => 'smtp',
+                'mail.mailers.smtp.transport' => 'smtp',
+                'mail.mailers.smtp.host' => $smtp->host,
+                'mail.mailers.smtp.port' => $smtp->port,
+                'mail.mailers.smtp.username' => $smtp->email,
+                'mail.mailers.smtp.password' => $smtp->password,
+                'mail.mailers.smtp.encryption' => strtolower($smtp->encryption),
+                'mail.from.address' => $smtp->email,
+                'mail.from.name' => $setting->name,
+            ]);
+        }
 
         try {
 
@@ -102,6 +123,12 @@ class OrderController extends Controller
             if ($request->payment_method == 'cod') {
 
                 $order->load('items');
+
+                try {
+                    Mail::to($request->email)->send(new OrderMail($order));
+                } catch (\Exception $e) {
+                    Log::error('Order Mail Failed: '.$e->getMessage());
+                }
 
                 return redirect()->route('order.success', [
                     'invoice_id' => $order->invoice_id,

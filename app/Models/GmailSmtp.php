@@ -14,6 +14,7 @@ class GmailSmtp extends Model
         'password',
         'host',
         'port',
+        'encryption',
         'status',
     ];
 }

@@ -2,6 +2,7 @@
 @section('title', 'SMS Gateway API')
 @section('content')
     <div class="w-full flex flex-col gap-4 mb-20">
+
         <!-- Header -->
         <div class="flex flex-col bg-white shadow rounded md:p-6 p-4 md:gap-1 gap-3">
             <div class="flex justify-between items-center">
@@ -23,11 +24,13 @@
             </div>
         </div>
 
-        <!-- Forms -->
+        <!-- Forms Section -->
         <div class="w-full bg-white rounded shadow px-6 py-6">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-                <!-- Textlocal -->
+                <!-- ============================= -->
+                <!--       TEXTLOCAL FORM         -->
+                <!-- ============================= -->
                 <div class="border border-gray-300 bg-white rounded-lg overflow-hidden shadow-sm">
                     <div class="flex justify-between items-center px-4 py-3 text-white text-xl font-semibold"
                         style="background-color: #FF6F00;">
@@ -39,40 +42,36 @@
                         class="grid grid-cols-1 gap-4 px-5 py-5">
                         @csrf
 
-                        <input type="hidden" name="provider" value="{{ old('provider', $textlocal->provider ?? '') }}">
+                        <input type="hidden" name="textlocal_id" value="{{ $textlocal->id ?? '' }}">
 
                         <div>
                             <label class="block text-md text-gray-600 mb-1 font-medium">API Key</label>
                             <input type="text" name="api_key" placeholder="Enter API Key"
-                                value="{{ old('api_key', $textlocal->api_key ?? '') }}"
-                                class="w-full rounded-md bg-white text-gray-900 border border-gray-300 px-3 py-2 
-                                    outline-none focus:ring-2 focus:ring-[#FF6F00] focus:border-[#FF6F00] transition">
+                                value="{{ $textlocal->api_key ?? '' }}"
+                                class="w-full rounded-md bg-white text-gray-900 border border-gray-300 px-3 py-2 outline-none focus:ring-2 focus:ring-[#FF6F00]">
                         </div>
 
                         <div>
                             <label class="block text-md text-gray-600 mb-1 font-medium">Sender</label>
                             <input type="text" name="sender" placeholder="Enter Sender"
-                                value="{{ old('sender', $textlocal->sender ?? '') }}"
-                                class="w-full rounded-md bg-white text-gray-900 border border-gray-300 px-3 py-2 
-                                    outline-none focus:ring-2 focus:ring-[#FF6F00] focus:border-[#FF6F00] transition">
+                                value="{{ $textlocal->sender ?? '' }}"
+                                class="w-full rounded-md bg-white text-gray-900 border border-gray-300 px-3 py-2 outline-none focus:ring-2 focus:ring-[#FF6F00]">
                         </div>
 
                         <div>
                             <label class="block text-md text-gray-600 mb-1 font-medium">Base URL</label>
                             <input type="url" name="url" placeholder="Enter Base URL"
-                                value="{{ old('url', $textlocal->url ?? '') }}"
-                                class="w-full rounded-md bg-white text-gray-900 border border-gray-300 px-3 py-2 
-                                    outline-none focus:ring-2 focus:ring-[#FF6F00] focus:border-[#FF6F00] transition">
+                                value="{{ $textlocal->url ?? '' }}"
+                                class="w-full rounded-md bg-white text-gray-900 border border-gray-300 px-3 py-2 outline-none focus:ring-2 focus:ring-[#FF6F00]">
                         </div>
 
                         <div>
                             <label class="block text-md text-gray-600 font-medium mb-1">Provider</label>
                             <select name="provider"
-                                class="w-full rounded-md bg-white text-gray-900 border border-gray-300 px-3 py-2.5 
-                                    outline-none focus:ring-2 focus:ring-[#FF6F00] focus:border-[#FF6F00] transition">
+                                class="w-full rounded-md bg-white text-gray-900 border border-gray-300 px-3 py-2.5 outline-none focus:ring-2 focus:ring-[#FF6F00] transition">
                                 @foreach (['robi', 'banglalink', 'grameenphone', 'airtel', 'teletalk', 'other'] as $provider)
                                     <option value="{{ $provider }}"
-                                        {{ old('provider', $textlocal->provider ?? '') == $provider ? 'selected' : '' }}>
+                                        {{ ($textlocal->provider ?? '') == $provider ? 'selected' : '' }}>
                                         {{ ucfirst($provider) }}
                                     </option>
                                 @endforeach
@@ -81,21 +80,20 @@
 
                         <div class="flex items-center justify-between">
                             <label class="text-gray-700 font-medium">Enable Textlocal</label>
-                            <input type="checkbox" name="status"
-                                {{ old('status', $textlocal->status ?? 0) ? 'checked' : '' }}
-                                class="toggle-checkbox h-5 w-10 rounded-full bg-gray-300 checked:bg-[#FF6F00] transition duration-200">
+                            <input type="checkbox" name="textlocal_status" {{ $textlocal->status ?? 0 ? 'checked' : '' }}
+                                class="h-5 w-10 rounded-full bg-gray-300 checked:bg-[#FF6F00] transition duration-200">
                         </div>
 
-                        <div class="mt-2">
-                            <button type="submit"
-                                class="w-full rounded-md text-white py-2.5 font-medium transition bg-[#FF6F00] hover:bg-[#e65c00]">
-                                Save
-                            </button>
-                        </div>
+                        <button type="submit"
+                            class="w-full rounded-md text-white py-2.5 font-medium bg-[#FF6F00] hover:bg-[#e65c00] transition">
+                            Save
+                        </button>
                     </form>
                 </div>
 
-                <!-- Gmail SMTP -->
+                <!-- ============================= -->
+                <!--        GMAIL SMTP FORM       -->
+                <!-- ============================= -->
                 <div class="border border-gray-300 bg-white rounded-lg overflow-hidden shadow-sm">
                     <div class="flex justify-between items-center px-4 py-3 text-white text-xl font-semibold"
                         style="background-color: #D44638;">
@@ -107,54 +105,56 @@
                         class="grid grid-cols-1 gap-4 px-5 py-5">
                         @csrf
 
+                        <input type="hidden" name="gmail_id" value="{{ $gmailSmtp->id ?? '' }}">
+
                         <div>
                             <label class="block text-md text-gray-600 mb-1 font-medium">Email</label>
                             <input type="text" name="email" placeholder="Enter Email"
-                                value="{{ old('email', $gmailSmtp->email ?? '') }}"
-                                class="w-full rounded-md bg-white text-gray-900 border border-gray-300 px-3 py-2
-                                    outline-none focus:ring-2 focus:ring-[#D44638] focus:border-[#D44638] transition">
+                                value="{{ $gmailSmtp->email ?? '' }}"
+                                class="w-full rounded-md bg-white text-gray-900 border border-gray-300 px-3 py-2 outline-none focus:ring-2 focus:ring-[#D44638]">
                         </div>
 
                         <div>
                             <label class="block text-md text-gray-600 mb-1 font-medium">App Password</label>
                             <input type="text" name="password" placeholder="Enter App Password"
-                                value="{{ old('password', $gmailSmtp->password ?? '') }}"
-                                class="w-full rounded-md bg-white text-gray-900 border border-gray-300 px-3 py-2
-                                    outline-none focus:ring-2 focus:ring-[#D44638] focus:border-[#D44638] transition">
+                                value="{{ $gmailSmtp->password ?? '' }}"
+                                class="w-full rounded-md bg-white text-gray-900 border border-gray-300 px-3 py-2 outline-none focus:ring-2 focus:ring-[#D44638]">
                         </div>
 
                         <div>
                             <label class="block text-md text-gray-600 mb-1 font-medium">Host</label>
                             <input type="text" name="host" placeholder="Enter Host"
-                                value="{{ old('host', $gmailSmtp->host ?? '') }}"
-                                class="w-full rounded-md bg-white text-gray-900 border border-gray-300 px-3 py-2
-                                    outline-none focus:ring-2 focus:ring-[#D44638] focus:border-[#D44638] transition">
+                                value="{{ $gmailSmtp->host ?? '' }}"
+                                class="w-full rounded-md bg-white text-gray-900 border border-gray-300 px-3 py-2 outline-none focus:ring-2 focus:ring-[#D44638]">
                         </div>
 
-                        <div>
-                            <label class="block text-md text-gray-600 mb-1 font-medium">Port</label>
-                            <input type="number" name="port" placeholder="Enter Port"
-                                value="{{ old('port', $gmailSmtp->port ?? '') }}"
-                                class="w-full rounded-md bg-white text-gray-900 border border-gray-300 px-3 py-2
-                                    outline-none focus:ring-2 focus:ring-[#D44638] focus:border-[#D44638] transition">
+                        <div class="col-span-1 flex gap-2">
+                            <div>
+                                <label class="block text-md text-gray-600 mb-1 font-medium">Port</label>
+                                <input type="number" name="port" placeholder="Enter Port"
+                                    value="{{ $gmailSmtp->port ?? '' }}"
+                                    class="w-full rounded-md bg-white text-gray-900 border border-gray-300 px-3 py-2 outline-none focus:ring-2 focus:ring-[#D44638]">
+                            </div>
+                            <div>
+                                <label class="block text-md text-gray-600 mb-1 font-medium">Encryption</label>
+                                <input type="text" name="encryption" placeholder="Enter Encryption"
+                                    value="{{ $gmailSmtp->encryption ?? '' }}"
+                                    class="w-full rounded-md bg-white text-gray-900 border border-gray-300 px-3 py-2 outline-none focus:ring-2 focus:ring-[#D44638]">
+                            </div>
                         </div>
 
                         <div class="flex items-center justify-between">
                             <label class="text-gray-700 font-medium">Enable Gmail SMTP</label>
-                            <input type="checkbox" name="status"
-                                {{ old('status', $gmailSmtp->status ?? 0) ? 'checked' : '' }}
-                                class="toggle-checkbox h-5 w-10 rounded-full bg-gray-300 checked:bg-[#D44638] transition duration-200">
+                            <input type="checkbox" name="gmail_status" {{ $gmailSmtp->status ?? 0 ? 'checked' : '' }}
+                                class="h-5 w-10 rounded-full bg-gray-300 checked:bg-[#D44638] transition duration-200">
                         </div>
 
-                        <div class="mt-2">
-                            <button type="submit"
-                                class="w-full rounded-md text-white py-2.5 font-medium transition bg-[#D44638] hover:bg-[#b13a30]">
-                                Save
-                            </button>
-                        </div>
+                        <button type="submit"
+                            class="w-full rounded-md text-white py-2.5 font-medium bg-[#D44638] hover:bg-[#b13a30] transition">
+                            Save
+                        </button>
                     </form>
                 </div>
-
             </div>
         </div>
     </div>

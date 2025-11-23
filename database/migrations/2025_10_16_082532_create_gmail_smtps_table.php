@@ -13,6 +13,7 @@ return new class extends Migration
             $table->string('email')->nullable();
             $table->string('password')->nullable();
             $table->string('host')->nullable();
+            $table->string('encryption')->nullable();
             $table->integer('port')->nullable();
             $table->boolean('status')->default(false);
             $table->timestamps();

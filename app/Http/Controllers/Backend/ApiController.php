@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\GmailSmtp;
 use App\Models\Textlocal;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 
 class ApiController extends Controller
 {
@@ -26,70 +25,70 @@ class ApiController extends Controller
      */
     public function store(Request $request)
     {
+        // -------------------------
+        // TEXTLOCAL SMS
+        // -------------------------
         if ($request->has('api_key') || $request->has('sender')) {
-            // Textlocal SMS
+
             $validated = $request->validate([
                 'api_key' => 'nullable|string',
                 'sender' => 'nullable|string',
                 'url' => 'nullable|url',
-                'provider' => 'nullable|string',
+                'provider' => 'required|string',
             ]);
 
             try {
-                Log::info('Textlocal Request:', $request->all());
 
                 $textlocal = Textlocal::updateOrCreate(
-                    ['provider' => $validated['provider'] ?? 'other'],
+                    ['id' => $request->textlocal_id],
                     [
-                        'api_key' => $validated['api_key'] ?? null,
-                        'sender' => $validated['sender'] ?? null,
-                        'url' => $validated['url'] ?? null,
-                        'status' => $request->has('status') ? 1 : 0,
+                        'api_key' => $request->api_key,
+                        'sender' => $request->sender,
+                        'url' => $request->url,
+                        'provider' => $request->provider,
+                        'status' => $request->has('textlocal_status') ? 1 : 0,
                     ]
                 );
 
-                Log::info('Textlocal Saved:', $textlocal->toArray());
-
-                return back()->with('success', 'Textlocal SMS settings saved successfully!');
+                return back()->with('success', 'Textlocal SMS settings updated!');
             } catch (\Exception $e) {
-                Log::error('Textlocal Save Error: '.$e->getMessage());
-
-                return back()->with('error', 'Something went wrong while saving Textlocal settings.');
+                return back()->with('error', $e->getMessage());
             }
         }
 
+        // -------------------------
+        // GMAIL SMTP
+        // -------------------------
         if ($request->has('email') || $request->has('host')) {
-            // Gmail SMTP
+
             $validated = $request->validate([
-                'email' => 'nullable|email',
+                'email' => 'required|email',
                 'password' => 'nullable|string',
                 'host' => 'nullable|string',
+                'encryption' => 'nullable|string',
                 'port' => 'nullable|integer',
             ]);
 
             try {
-                Log::info('Gmail SMTP Request:', $request->all());
 
                 $gmail = GmailSmtp::updateOrCreate(
-                    ['email' => $validated['email']],
+                    ['id' => $request->gmail_id],
                     [
-                        'password' => $validated['password'] ?? null,
-                        'host' => $validated['host'] ?? null,
-                        'port' => $validated['port'] ?? null,
-                        'status' => $request->has('status') ? 1 : 0,
+                        'email' => $request->email,
+                        'password' => $request->password,
+                        'host' => $request->host,
+                        'port' => $request->port,
+                        'encryption' => $request->encryption,
+                        'status' => $request->has('gmail_status') ? 1 : 0,
                     ]
                 );
 
-                Log::info('Gmail SMTP Saved:', $gmail->toArray());
-
-                return back()->with('success', 'Gmail SMTP settings saved successfully!');
+                return back()->with('success', 'Gmail SMTP settings updated!');
             } catch (\Exception $e) {
-                Log::error('Gmail SMTP Save Error: '.$e->getMessage());
-
-                return back()->with('error', 'Something went wrong while saving Gmail SMTP settings.');
+                return back()->with('error', $e->getMessage());
             }
         }
 
-        return back()->with('error', 'No valid input found.');
+        return back()->with('error', 'Invalid request.');
     }
 }
