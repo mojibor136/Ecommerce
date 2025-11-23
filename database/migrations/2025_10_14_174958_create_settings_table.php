@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('brand')->nullable();
             $table->string('name')->nullable();
+            $table->string('headline')->nullable();
             $table->string('meta_title')->nullable();
             $table->date('hot_deals')->nullable();
             $table->json('meta_tag')->nullable();

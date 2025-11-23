@@ -32,6 +32,16 @@
                     class="grid grid-cols-1 md:grid-cols-2 gap-4 px-4 py-4">
                     @csrf
 
+                    <!-- Website Headline -->
+                    <div class="col-span-2">
+                        <label class="block text-md text-gray-700 mb-1.5 font-medium">Website Headline</label>
+                        <input type="text" name="headline" placeholder="Enter website headline"
+                            value="{{ old('headline', $setting->headline ?? '') }}"
+                            class="w-full rounded-md bg-white text-gray-900 border px-3 py-2
+                                  text-sm sm:text-base outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-200 border-gray-300"
+                            required>
+                    </div>
+
                     <!-- Website Name -->
                     <div class="w-full">
                         <label class="block text-md text-gray-700 mb-1.5 font-medium">Website Name</label>
