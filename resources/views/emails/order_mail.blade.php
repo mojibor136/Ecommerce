@@ -6,10 +6,10 @@
 </head>
 
 <body style="font-family: Arial, sans-serif; background-color: #f5f5f5; margin: 0; padding: 0;">
-    <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f5f5f5; padding: 20px 0;">
+    <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f5f5f5; padding: 20px;">
         <tr>
             <td align="center">
-                <table width="600" cellpadding="0" cellspacing="0"
+                <table width="100%" cellpadding="0" cellspacing="0"
                     style="background-color: #ffffff; border-radius: 10px; overflow: hidden; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
                     <tr>
                         <td style="background-color: #584acd; color: #ffffff; text-align: center; padding: 20px;">
@@ -54,10 +54,6 @@
                                     </p>
                                 </div>
                             @endforeach
-
-                            <p style="font-size: 16px; margin-top: 20px; font-weight: bold; text-align: right;">
-                                Total: ৳{{ $order->total }}
-                            </p>
 
                             <h3 style="font-size: 18px; color: #584acd; margin: 20px 0 10px;">Shipping Address:</h3>
                             <p style="font-size: 16px; margin: 0;">{{ $order->shipping->address }},
