@@ -156,7 +156,7 @@
         <!-- Orders Table -->
         <div class="overflow-x-auto bg-white rounded shadow">
             <table class="min-w-full table-auto">
-                <thead class="bg-indigo-600 text-white text-sm font-semibold">
+                <thead class="bg-[{{ $theme->theme_bg }}] text-[{{ $theme->theme_text }}] text-sm font-semibold">
                     <tr>
                         <th class="px-4 py-3 text-center">#</th>
                         <th class="px-4 py-3 text-left whitespace-nowrap">Invoice ID</th>

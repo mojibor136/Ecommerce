@@ -71,8 +71,10 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'web'])->group(funct
     });
 
     Route::controller(ThemeController::class)->group(function () {
-        Route::get('/main/theme', 'shippingIndex')->name('main.theme');
-        Route::get('/navbar/theme', 'setting')->name('navbar.theme');
+        Route::get('/main/theme', 'mainIndex')->name('main.theme');
+        Route::get('/navbar/theme', 'navbarIndex')->name('navbar.theme');
+        Route::post('/main/theme', 'mainUpdate')->name('main.theme.update');
+        Route::post('/navbar/theme', 'navbarUpdate')->name('navbar.theme.update');
     });
 
     Route::controller(ProductController::class)->group(function () {

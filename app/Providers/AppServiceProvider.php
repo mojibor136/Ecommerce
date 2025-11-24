@@ -8,8 +8,9 @@ use App\Models\Courier;
 use App\Models\Order;
 use App\Models\PaymentGateway;
 use App\Models\Product;
-use App\Models\SocialMedia;
 use App\Models\Setting;
+use App\Models\SocialMedia;
+use App\Models\Theme;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -28,7 +29,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $socials = SocialMedia::where('status' , 1)->get();
+        $socials = SocialMedia::where('status', 1)->get();
 
         $topCategories = Category::withCount(['products as total_sold' => function ($query) {
             $query->whereHas('orderItems.order', function ($q) {
@@ -37,6 +38,8 @@ class AppServiceProvider extends ServiceProvider
         }])->orderByDesc('total_sold')
             ->take(5)
             ->get();
+
+        $theme = Theme::first();
 
         $pixelTracking = AnalyticsTracking::where('type', 'pixel')->first();
         $gtmTracking = AnalyticsTracking::where('type', 'gtm')->first();
@@ -77,7 +80,7 @@ class AppServiceProvider extends ServiceProvider
 
         // Share with all views
         View::share([
-            'socials' => $socials, 
+            'socials' => $socials,
             'topCategories' => $topCategories,
             'allcategories' => $categories,
             'setting' => $setting,
@@ -99,6 +102,7 @@ class AppServiceProvider extends ServiceProvider
             'nagadStatus' => $nagadStatus,
             'pixelTracking' => $pixelTracking,
             'gtmTracking' => $gtmTracking,
+            'theme' => $theme,
         ]);
     }
 }

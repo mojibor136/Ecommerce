@@ -4,7 +4,7 @@
     <div class="max-w-6xl mx-auto my-4 px-4 md:px-6 lg:px-0">
         <h1
             class="text-2xl font-semibold mb-6 text-gray-800 relative inline-block 
-           after:content-[''] after:absolute after:w-1/2 after:h-[3px] after:bg-indigo-500 after:bottom-[-6px] after:left-0">
+           after:content-[''] after:absolute after:w-1/2 after:h-[3px] after:bg-[{{ $theme->theme_bg }}] after:bottom-[-6px] after:left-0">
             📝 Order Details
         </h1>
 
@@ -15,22 +15,22 @@
                 </h3>
 
                 <p class="text-gray-500 text-sm mb-2 flex items-center gap-2">
-                    <i class="ri-user-line text-indigo-500"></i>
+                    <i class="ri-user-line text-[{{ $theme->theme_bg }}]"></i>
                     Name: {{ $order->shipping->name }}
                 </p>
 
                 <p class="text-gray-500 text-sm mb-2 flex items-center gap-2">
-                    <i class="ri-mail-line text-indigo-500"></i>
+                    <i class="ri-mail-line text-[{{ $theme->theme_bg }}]"></i>
                     Email: {{ $order->shipping->email }}
                 </p>
 
                 <p class="text-gray-500 text-sm mb-2 flex items-center gap-2">
-                    <i class="ri-phone-line text-indigo-500"></i>
+                    <i class="ri-phone-line text-[{{ $theme->theme_bg }}]"></i>
                     Phone: {{ $order->shipping->phone }}
                 </p>
 
                 <p class="text-gray-500 text-sm mb-2 flex items-center gap-2">
-                    <i class="ri-map-pin-line text-indigo-500"></i>
+                    <i class="ri-map-pin-line text-[{{ $theme->theme_bg }}]"></i>
                     Address: {{ $order->shipping->address }}
                 </p>
             </div>
@@ -132,7 +132,7 @@
                 <input type="hidden" name="ids" value="{{ $order->id }}">
 
                 <button type="submit"
-                    class="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 text-center w-full sm:w-auto">
+                    class="px-4 py-2 bg-[{{ $theme->theme_bg }}] text-[{{ $theme->theme_text }}]  rounded hover:bg-[{{ $theme->theme_hover }}] text-center w-full sm:w-auto">
                     Print Invoice
                 </button>
             </form>

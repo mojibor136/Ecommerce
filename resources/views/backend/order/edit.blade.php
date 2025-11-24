@@ -109,7 +109,7 @@
 
                 </div>
 
-                <button type="submit" class="mt-4 px-5 py-2 bg-indigo-600 text-white rounded shadow hover:bg-indigo-700">
+                <button type="submit" class="mt-4 px-5 py-2 bg-[{{ $theme->theme_bg }}] text-[{{ $theme->theme_text }}]  rounded shadow hover:bg-indigo-700">
                     💾 Update Shipping
                 </button>
             </div>

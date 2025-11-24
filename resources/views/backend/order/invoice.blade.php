@@ -54,7 +54,7 @@
 
     <div class="no-print text-center fixed right-8 bottom-8">
         <button onclick="window.print()"
-            class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition">Print Invoice</button>
+            class="px-4 py-2 bg-[{{ $theme->theme_bg }}] text-[{{ $theme->theme_text }}]  rounded hover:bg-[{{ $theme->theme_hover }}] transition">Print Invoice</button>
     </div>
 
     @php
