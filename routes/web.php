@@ -14,8 +14,9 @@ use App\Http\Controllers\Backend\OrderController;
 use App\Http\Controllers\Backend\PaymentGatewayController;
 use App\Http\Controllers\Backend\ProductController;
 use App\Http\Controllers\Backend\ReviewController;
+use App\Http\Controllers\Backend\SettingController;
 use App\Http\Controllers\Backend\SubcategoryController;
-use App\Http\Controllers\Backend\SystemSettingController;
+use App\Http\Controllers\Backend\ThemeController;
 use App\Http\Controllers\Frontend\CartController;
 use App\Http\Controllers\Frontend\CheckoutController;
 use App\Http\Controllers\Frontend\HomeController;
@@ -62,11 +63,16 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'web'])->group(funct
         Route::post('/account/store', 'accountStore')->name('account.store');
     });
 
-    Route::controller(SystemSettingController::class)->group(function () {
+    Route::controller(SettingController::class)->group(function () {
         Route::get('/shipping/charge', 'shippingIndex')->name('shipping.index');
         Route::post('/shipping/charge/store', 'shippingStore')->name('shipping.store');
         Route::get('/setting', 'setting')->name('setting');
         Route::post('/setting/store', 'settingStore')->name('setting.store');
+    });
+
+    Route::controller(ThemeController::class)->group(function () {
+        Route::get('/main/theme', 'shippingIndex')->name('main.theme');
+        Route::get('/navbar/theme', 'setting')->name('navbar.theme');
     });
 
     Route::controller(ProductController::class)->group(function () {

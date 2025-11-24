@@ -3,13 +3,18 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Mail\OrderCancelledMail;
+use App\Mail\OrderDeliveredMail;
 use App\Models\Category;
 use App\Models\Courier;
+use App\Models\GmailSmtp;
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class OrderController extends Controller
 {
@@ -251,6 +256,23 @@ class OrderController extends Controller
             'status' => 'required|string|in:pending,confirmed,Ready to Ship,shipped,delivered,cancelled,refunded',
         ]);
 
+        $smtp = GmailSmtp::where('status', 1)->first();
+        $setting = Setting::first();
+
+        if ($smtp) {
+            config([
+                'mail.default' => 'smtp',
+                'mail.mailers.smtp.transport' => 'smtp',
+                'mail.mailers.smtp.host' => $smtp->host,
+                'mail.mailers.smtp.port' => $smtp->port,
+                'mail.mailers.smtp.username' => $smtp->email,
+                'mail.mailers.smtp.password' => $smtp->password,
+                'mail.mailers.smtp.encryption' => strtolower($smtp->encryption),
+                'mail.from.address' => $smtp->email,
+                'mail.from.name' => $setting->name,
+            ]);
+        }
+
         try {
             $ids = $request->ids;
             $decodedIds = [];
@@ -268,11 +290,35 @@ class OrderController extends Controller
                 $decodedIds[] = $ids;
             }
 
-            Order::whereIn('id', $decodedIds)
-                ->update(['order_status' => $request->status]);
+            $orders = Order::with('shipping')->whereIn('id', $decodedIds)->get();
 
-            return redirect()->back()->with('success', 'Selected orders status updated to '.ucfirst($request->status).' successfully!');
+            Order::whereIn('id', $decodedIds)->update([
+                'order_status' => $request->status,
+            ]);
+
+            foreach ($orders as $order) {
+
+                try {
+                    if ($request->status == 'cancelled') {
+                        Mail::to($order->shipping->email)->send(new OrderCancelledMail($order));
+                    }
+
+                    if ($request->status == 'delivered') {
+                        Mail::to($order->shipping->email)->send(new OrderDeliveredMail($order));
+                    }
+
+                } catch (\Exception $e) {
+                    \Log::error('Status Mail Error: '.$e->getMessage());
+                }
+            }
+
+            return redirect()->back()->with(
+                'success',
+                'Selected orders status updated to '.ucfirst($request->status).' and mails sent!'
+            );
+
         } catch (\Exception $e) {
+
             return redirect()->back()->with('error', 'Something went wrong! '.$e->getMessage());
         }
     }

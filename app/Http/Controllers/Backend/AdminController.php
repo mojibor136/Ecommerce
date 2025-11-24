@@ -27,8 +27,13 @@ class AdminController extends Controller
         $categoryCount = Category::count();
         $subcategoryCount = Subcategory::count();
 
-        $dailySales = Order::whereDate('created_at', now())->sum('total');
-        $monthlySales = Order::whereMonth('created_at', now()->month)->sum('total');
+        $dailySales = Order::whereDate('created_at', now())
+            ->where('order_status', 'delivered')
+            ->sum('total');
+
+        $monthlySales = Order::whereMonth('created_at', now()->month)
+            ->where('order_status', 'delivered')
+            ->sum('total');
 
         $recentOrders = Order::latest()->take(5)->get();
 

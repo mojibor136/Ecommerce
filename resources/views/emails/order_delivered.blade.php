@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Order Confirmation</title>
+    <title>Order Delivered</title>
 </head>
 
 <body style="font-family: Arial, sans-serif; background-color: #f5f5f5; margin: 0; padding: 0;">
@@ -14,8 +14,8 @@
 
                     <!-- Header -->
                     <tr>
-                        <td style="background-color: #F85501; color: #ffffff; text-align: center; padding: 20px;">
-                            <h1 style="margin: 0; font-size: 24px; font-weight: normal;">Order Confirmation</h1>
+                        <td style="background-color: #28a745; color: #ffffff; text-align: center; padding: 20px;">
+                            <h1 style="margin: 0; font-size: 24px; font-weight: normal;">Order Delivered</h1>
                         </td>
                     </tr>
 
@@ -28,23 +28,16 @@
                             </p>
 
                             <p style="font-size: 16px; margin: 0 0 10px;">
-                                Thank you for your order! Here are the details:
+                                Good news! Your order has been successfully <strong
+                                    style="font-weight: normal;">delivered</strong>.
                             </p>
 
                             <p style="font-size: 16px; margin: 10px 0;">
                                 Invoice ID: {{ $order->invoice_id }}
                             </p>
 
-                            <p style="font-size: 16px; margin: 10px 0;">
-                                Delivery Charge: {{ $order->shipping_charge }}
-                            </p>
-
-                            <p style="font-size: 16px; margin: 10px 0;">
-                                Total: ৳{{ $order->total }}
-                            </p>
-
-                            <h3 style="font-size: 18px; color: #584acd; margin: 20px 0 10px; font-weight: normal;">
-                                Products:
+                            <h3 style="font-size: 18px; color: #28a745; margin: 20px 0 10px; font-weight: normal;">
+                                Delivered Items:
                             </h3>
 
                             @foreach ($order->items as $item)
@@ -62,9 +55,8 @@
                                     @if ($attributes && is_array($attributes))
                                         <p style="margin: 0 0 5px; font-size: 14px; color: #555; font-weight: normal;">
                                             @foreach ($attributes as $key => $value)
-                                                <span style="margin-right:5px;">
-                                                    {{ $key }}: {{ $value }}
-                                                </span>
+                                                <span style="margin-right:5px;">{{ $key }}:
+                                                    {{ $value }}</span>
                                             @endforeach
                                         </p>
                                     @endif
@@ -76,7 +68,7 @@
                                 </div>
                             @endforeach
 
-                            <h3 style="font-size: 18px; color: #584acd; margin: 20px 0 10px; font-weight: normal;">
+                            <h3 style="font-size: 18px; color: #28a745; margin: 20px 0 10px; font-weight: normal;">
                                 Shipping Address:
                             </h3>
 
@@ -90,7 +82,7 @@
                     <!-- Footer -->
                     <tr>
                         <td
-                            style="background-color: #ffffff; border-top:1px solid #eee; text-align: center; padding: 15px; font-size: 14px; color: #666666; font-weight: normal;">
+                            style="background-color: #ffffff; border-top:1px solid #eee; text-align: center; padding: 15px; font-size: 14px; color: #666; font-weight: normal;">
                             &copy; {{ date('Y') }} {{ $setting->name }}. All rights reserved.
                         </td>
                     </tr>

@@ -128,7 +128,7 @@
                         placeholder="Search in {{ $setting->name }}..."
                         class="w-full px-4 py-2 rounded-l-md border border-gray-300 focus:outline-none focus:border-orange-500 focus:ring-0 transition-colors duration-200">
                     <button
-                        class="bg-orange-500 border border-orange-500 text-white px-4 py-2 rounded-r-md hover:bg-orange-600">
+                        class="bg-[#F85501] border border-[#F85501] text-white px-4 py-2 rounded-r-md hover:bg-orange-600">
                         <i class="ri-search-line"></i>
                     </button>
 
@@ -143,7 +143,7 @@
 
                     <!-- Tracking Order -->
                     <a href="/order/tracking"
-                        class="flex items-center gap-1 text-gray-700 hover:text-orange-600 font-medium">
+                        class="flex items-center gap-1 text-gray-700 hover:text-[#F85501] font-medium">
                         <i class="ri-map-pin-line text-xl"></i>
                         <span class="font-normal">Tracking Order</span>
                     </a>
@@ -151,9 +151,9 @@
                     <!-- Shopping Cart -->
                     <div class="relative cursor-pointer" onclick="window.location.href='/shipping/cart'">
                         <i
-                            class="ri-shopping-cart-line  text-xl text-gray-700 hover:text-orange-600 cursor-pointer text-2xl"></i>
+                            class="ri-shopping-cart-line  text-xl text-gray-700 hover:text-[#F85501] cursor-pointer text-2xl"></i>
                         <span
-                            class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full px-1.5 py-0.5 font-semibold">
+                            class="absolute -top-2 -right-2 bg-[#F85501] text-white text-xs rounded-full px-1.5 py-0.5 font-semibold">
                             {{ count(session('cart', [])) }}</span>
                     </div>
                 </div>

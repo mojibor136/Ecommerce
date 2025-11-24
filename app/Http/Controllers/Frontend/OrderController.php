@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
+use App\Mail\AdminMail;
 use App\Mail\OrderMail;
 use App\Models\GmailSmtp;
 use App\Models\Order;
@@ -126,6 +127,7 @@ class OrderController extends Controller
 
                 try {
                     Mail::to($request->email)->send(new OrderMail($order));
+                    Mail::to($smtp->email)->send(new AdminMail($order));
                 } catch (\Exception $e) {
                     Log::error('Order Mail Failed: '.$e->getMessage());
                 }

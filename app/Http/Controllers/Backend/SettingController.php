@@ -8,7 +8,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 
-class SystemSettingController extends Controller
+class SettingController extends Controller
 {
     /**
      * Shipping Charge Page

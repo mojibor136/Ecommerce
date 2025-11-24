@@ -392,6 +392,33 @@
                             </ul>
                         </li>
 
+                        <!-- Theme Settings -->
+                        <li class="group">
+                            <a href="#"
+                                class="mb-1 flex items-center pl-4 py-2.5 text-gray-300 hover:text-white hover:bg-[#3b3f5c] rounded submenu-toggle"
+                                data-menu-key="theme-settings">
+                                <i class="ri-brush-line mr-2 text-pink-500"></i>
+                                <span class="text-[15px]">Theme Settings</span>
+                                <i class="ri-arrow-down-s-line ml-auto mr-4"></i>
+                            </a>
+                            <ul class="submenu pl-2 bg-[#2a2f45]">
+                                <li>
+                                    <a href="{{ route('admin.main.theme') }}"
+                                        class="flex items-center py-2 pl-6 text-[15px] rounded
+                {{ request()->routeIs('admin.main.theme') ? 'bg-[#3b3f5c] text-white' : 'text-gray-300 hover:text-white hover:bg-[#3b3f5c]' }}">
+                                        <i class="ri-layout-3-line mr-2 text-cyan-400"></i>Main Theme
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('admin.navbar.theme') }}"
+                                        class="flex items-center py-2 pl-6 text-[15px] rounded
+                {{ request()->routeIs('admin.navbar.theme') ? 'bg-[#3b3f5c] text-white' : 'text-gray-300 hover:text-white hover:bg-[#3b3f5c]' }}">
+                                        <i class="ri-navigation-line mr-2 text-yellow-400"></i>Navbar Theme
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
                         <!-- System Settings -->
                         <li class="group">
                             <a href="#"
