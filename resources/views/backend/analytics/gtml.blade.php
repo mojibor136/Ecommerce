@@ -7,16 +7,17 @@
             <div class="flex justify-between items-center">
                 <h2 class="text-2xl font-bold text-gray-800 mb-2">GTM Configuration</h2>
                 <a href="{{ route('admin.dashboard') }}"
-                    class="block md:hidden bg-amber-500 text-white px-4 py-2 rounded text-sm font-medium hover:bg-amber-600 transition">
+                    class="block md:hidden bg-[{{ $theme->theme_bg }}] text-[{{ $theme->theme_text }}]  px-4 py-2 rounded text-sm font-medium hover:bg-[{{ $theme->theme_hover }}] transition">
                     Dashboard
                 </a>
             </div>
             <div class="flex justify-between items-center text-gray-600 text-sm">
                 <p>
-                    <a href="{{ route('admin.dashboard') }}" class="text-blue-600 hover:underline">Home</a> / Analytics / GTM
+                    <a href="{{ route('admin.dashboard') }}" class="text-[{{ $theme->theme_bg }}] hover:underline">Home</a> /
+                    Analytics / GTM
                 </p>
                 <a href="{{ route('admin.dashboard') }}"
-                    class="hidden md:inline-flex items-center bg-amber-500 text-white px-4 py-2 rounded text-base font-medium hover:bg-amber-600 transition">
+                    class="hidden md:inline-flex items-center bg-[{{ $theme->theme_bg }}] text-[{{ $theme->theme_text }}]  px-4 py-2 rounded text-base font-medium hover:bg-[{{ $theme->theme_hover }}] transition">
                     Dashboard
                 </a>
             </div>

@@ -27,17 +27,18 @@
             <div class="flex justify-between items-center">
                 <h2 class="text-2xl font-bold text-gray-800 mb-2">Add Products</h2>
                 <a href="{{ route('admin.products.index') }}"
-                    class="block md:hidden bg-indigo-600 text-white px-4 py-2 rounded text-sm font-medium hover:bg-indigo-700 transition">
+                    class="block md:hidden bg-[{{ $theme->theme_bg }}] text-[{{ $theme->theme_text }}] px-4 py-2 rounded text-sm font-medium hover:bg-[{{ $theme->theme_hover }}] transition">
                     All Products
                 </a>
             </div>
             <div class="flex justify-between items-center text-gray-600 text-sm">
                 <p>
-                    <a href="{{ route('admin.dashboard') }}" class="text-blue-600 hover:underline">Home</a> / Product /
+                    <a href="{{ route('admin.dashboard') }}" class="text-[{{ $theme->theme_bg }}] hover:underline">Home</a>
+                    / Product /
                     Create
                 </p>
                 <a href="{{ route('admin.products.index') }}"
-                    class="hidden md:inline-flex items-center bg-indigo-600 text-white px-4 py-2 rounded text-base font-medium hover:bg-indigo-700 transition">
+                    class="hidden md:inline-flex items-center bg-[{{ $theme->theme_bg }}] text-[{{ $theme->theme_text }}] px-4 py-2 rounded text-base font-medium hover:bg-[{{ $theme->theme_hover }}] transition">
                     All Products
                 </a>
             </div>
@@ -45,8 +46,8 @@
 
         <!-- Form -->
         <div class="w-full bg-white rounded shadow px-6 py-6">
-            <form id="productForm" action="{{ route('admin.products.store') }}" method="POST" enctype="multipart/form-data"
-                class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5 md:gap-6">
+            <form id="productForm" action="{{ route('admin.products.store') }}" method="POST"
+                enctype="multipart/form-data" class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5 md:gap-6">
                 @csrf
 
                 <!-- Product Name -->
@@ -55,7 +56,7 @@
                     <input type="text" name="name" placeholder="Product Name" id="productName"
                         value="{{ old('name') }}"
                         class="w-full rounded-md bg-white text-gray-900 border border-gray-300 px-3 py-2
-    text-sm sm:text-base outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-200">
+    text-sm sm:text-base outline-none focus:ring-2 focus:ring-[{{ $theme->theme_bg }}] transition-all duration-200">
                 </div>
 
                 <!-- Product Description -->
@@ -71,7 +72,7 @@
                     <label class="block text-md text-gray-700 mb-1 font-medium">SKU</label>
                     <input type="text" name="sku" placeholder="SKU" value="{{ old('sku') }}"
                         class="w-full rounded-md bg-white text-gray-900 border border-gray-300 px-3 py-2
-    text-sm sm:text-base outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-200">
+    text-sm sm:text-base outline-none focus:ring-2 focus:ring-[{{ $theme->theme_bg }}] transition-all duration-200">
                 </div>
 
                 <!-- Brand -->
@@ -79,7 +80,7 @@
                     <label class="block text-md text-gray-700 mb-1 font-medium">Brand Name</label>
                     <input type="text" name="brand" placeholder="Brand Name" value="{{ old('brand') }}"
                         class="w-full rounded-md bg-white text-gray-900 border border-gray-300 px-3 py-2
-    text-sm sm:text-base outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-200">
+    text-sm sm:text-base outline-none focus:ring-2 focus:ring-[{{ $theme->theme_bg }}] transition-all duration-200">
                 </div>
 
                 <!-- Stock -->
@@ -87,7 +88,7 @@
                     <label class="block text-md text-gray-700 mb-1 font-medium">Stock</label>
                     <input type="number" name="stock" placeholder="Stock" value="{{ old('stock') }}"
                         class="w-full rounded-md bg-white text-gray-900 border border-gray-300 px-3 py-2
-    text-sm sm:text-base outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-200">
+    text-sm sm:text-base outline-none focus:ring-2 focus:ring-[{{ $theme->theme_bg }}] transition-all duration-200">
                 </div>
 
                 <!-- Category -->
@@ -95,7 +96,7 @@
                     <label class="block text-md text-gray-700 mb-1 font-medium">Select Category</label>
                     <select name="category_id" id="category" required
                         class="w-full rounded-md bg-white text-gray-900 border px-3 sm:px-4 py-2.5
-        text-sm sm:text-base outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-200 border-gray-300">
+        text-sm sm:text-base outline-none focus:ring-2 focus:ring-[{{ $theme->theme_bg }}] transition-all duration-200 border-gray-300">
                         <option value="">-- Select Category --</option>
                         @foreach ($categories as $category)
                             <option value="{{ $category->id }}"
@@ -111,7 +112,7 @@
                     <label class="block text-md text-gray-700 mb-1 font-medium">Select Subcategory</label>
                     <select name="subcategory_id" id="subcategory"
                         class="w-full rounded-md bg-white text-gray-900 border px-3 sm:px-4 py-2.5
-        text-sm sm:text-base outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-200 border-gray-300">
+        text-sm sm:text-base outline-none focus:ring-2 focus:ring-[{{ $theme->theme_bg }}] transition-all duration-200 border-gray-300">
                         <option value="">-- Select Subcategory --</option>
                         @if (old('subcategory_id') && old('category_id'))
                             @php
@@ -132,7 +133,7 @@
                     <label class="block text-md text-gray-700 mb-1 font-medium">Buy Price</label>
                     <input type="number" name="buy_price" placeholder="Enter Buy Price" value="{{ old('buy_price') }}"
                         class="w-full rounded-md bg-white text-gray-900 border border-gray-300 px-3 py-2
-    text-sm sm:text-base outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-200">
+    text-sm sm:text-base outline-none focus:ring-2 focus:ring-[{{ $theme->theme_bg }}] transition-all duration-200">
                 </div>
 
                 <!-- Old Price -->
@@ -140,7 +141,7 @@
                     <label class="block text-md text-gray-700 mb-1 font-medium">Old Price</label>
                     <input type="number" name="old_price" placeholder="Enter Old Price" value="{{ old('old_price') }}"
                         class="w-full rounded-md bg-white text-gray-900 border border-gray-300 px-3 py-2
-    text-sm sm:text-base outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-200">
+    text-sm sm:text-base outline-none focus:ring-2 focus:ring-[{{ $theme->theme_bg }}] transition-all duration-200">
                 </div>
 
                 <!-- New Price -->
@@ -148,16 +149,16 @@
                     <label class="block text-md text-gray-700 mb-1 font-medium">New Price</label>
                     <input type="number" name="new_price" placeholder="Enter New Price" value="{{ old('new_price') }}"
                         class="w-full rounded-md bg-white text-gray-900 border border-gray-300 px-3 py-2
-    text-sm sm:text-base outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-200">
+    text-sm sm:text-base outline-none focus:ring-2 focus:ring-[{{ $theme->theme_bg }}] transition-all duration-200">
                 </div>
 
                 <!-- Image -->
                 <div class="col-span-2 md:col-span-1">
                     <label class="block text-md text-gray-700 mb-1 font-medium">Product Image</label>
                     <input type="file" name="image" accept="image/*"
-                        class="w-full rounded-md border border-gray-300 text-gray-900 focus:ring-2 focus:ring-indigo-500
-           file:bg-indigo-600 file:text-white file:border-0 file:rounded-l file:px-3 file:py-2 file:cursor-pointer
-           hover:file:bg-indigo-700 transition-all duration-200">
+                        class="w-full rounded-md border border-gray-300 text-gray-900 focus:ring-2 focus:ring-[{{ $theme->theme_bg }}]
+           file:bg-[{{ $theme->theme_bg }}] file:text-[{{ $theme->theme_text }}] file:border-0 file:rounded-l file:px-3 file:py-2 file:cursor-pointer
+           hover:file:bg-[{{ $theme->theme_hover }}] transition-all duration-200">
                 </div>
 
                 <!-- Status -->
@@ -165,7 +166,7 @@
                     <label class="block text-md text-gray-700 mb-1 font-medium">Status</label>
                     <select name="status"
                         class="w-full rounded-md bg-white text-gray-900 border px-3 sm:px-4 py-2.5
-        text-sm sm:text-base outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-200 border-gray-300">
+        text-sm sm:text-base outline-none focus:ring-2 focus:ring-[{{ $theme->theme_bg }}] transition-all duration-200 border-gray-300">
                         <option value="1" {{ old('status', '1') == '1' ? 'selected' : '' }}>Active</option>
                         <option value="0" {{ old('status') == '0' ? 'selected' : '' }}>Inactive</option>
                     </select>
@@ -176,7 +177,7 @@
                     <label class="block text-md text-gray-700 mb-1 font-medium">Product Type</label>
                     <select name="type"
                         class="w-full rounded-md bg-white text-gray-900 border px-3 sm:px-4 py-2.5
-        text-sm sm:text-base outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-200 border-gray-300">
+        text-sm sm:text-base outline-none focus:ring-2 focus:ring-[{{ $theme->theme_bg }}] transition-all duration-200 border-gray-300">
                         <option value="0" {{ old('type') == 0 ? 'selected' : '' }}>Normal</option>
                         <option value="1" {{ old('type') == 1 ? 'selected' : '' }}>Variable</option>
                     </select>
@@ -188,7 +189,7 @@
                             class="ri-fire-fill text-orange-500"></i> Hot Deals</label>
                     <select name="hot_deal"
                         class="w-full rounded-md bg-white text-gray-900 border px-3 sm:px-4 py-2.5
-        text-sm sm:text-base outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-200 border-gray-300">
+        text-sm sm:text-base outline-none focus:ring-2 focus:ring-[{{ $theme->theme_bg }}] transition-all duration-200 border-gray-300">
                         <option value="1" {{ old('hot_deal', '1') == '1' ? 'selected' : '' }}>On</option>
                         <option value="0" {{ old('hot_deal') == '0' ? 'selected' : '' }}>Off</option>
                     </select>
@@ -207,7 +208,7 @@
                 <!-- Submit -->
                 <div class="col-span-2 mt-4">
                     <button type="submit"
-                        class="w-full rounded-md bg-indigo-600 hover:bg-indigo-700 text-white py-2.5 text-base transition-all duration-200">
+                        class="w-full rounded-md bg-[{{ $theme->theme_bg }}] text-[{{ $theme->theme_text }}] hover:bg-[{{ $theme->theme_hover }}] py-2.5 text-base transition-all duration-200">
                         Create Product
                     </button>
                 </div>
@@ -251,28 +252,28 @@
                 <div>
                     <label class="block text-sm text-gray-700 mb-1 font-medium">Buy Price</label>
                     <input type="number" name="variants[${variantIndex}][buy_price]" placeholder="Buy Price" value="${oldData?.buy_price ?? ''}" class="w-full rounded-md bg-white text-gray-900 border border-gray-300 px-3 py-2
-    text-sm sm:text-base outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-200">
+    text-sm sm:text-base outline-none focus:ring-2 focus:ring-[{{ $theme->theme_bg }}] transition-all duration-200">
                 </div>
                 <div>
                     <label class="block text-sm text-gray-700 mb-1 font-medium">Old Price</label>
                     <input type="number" name="variants[${variantIndex}][old_price]" placeholder="Old Price" value="${oldData?.old_price ?? ''}" class="w-full rounded-md bg-white text-gray-900 border border-gray-300 px-3 py-2
-    text-sm sm:text-base outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-200">
+    text-sm sm:text-base outline-none focus:ring-2 focus:ring-[{{ $theme->theme_bg }}] transition-all duration-200">
                 </div>
                 <div>
                     <label class="block text-sm text-gray-700 mb-1 font-medium">New Price</label>
                     <input type="number" name="variants[${variantIndex}][new_price]" placeholder="New Price" value="${oldData?.new_price ?? ''}" class="w-full rounded-md bg-white text-gray-900 border border-gray-300 px-3 py-2
-    text-sm sm:text-base outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-200">
+    text-sm sm:text-base outline-none focus:ring-2 focus:ring-[{{ $theme->theme_bg }}] transition-all duration-200">
                 </div>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
                     <label class="block text-sm text-gray-700 mb-1 font-medium">Stock</label>
                     <input type="number" name="variants[${variantIndex}][stock]" placeholder="Stock" value="${oldData?.stock ?? ''}" class="w-full rounded-md bg-white text-gray-900 border border-gray-300 px-3 py-2
-    text-sm sm:text-base outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-200">
+    text-sm sm:text-base outline-none focus:ring-2 focus:ring-[{{ $theme->theme_bg }}] transition-all duration-200">
                 </div>
              <div>
                 <label class="block text-sm text-gray-700 mb-1 font-medium">Variant Image</label>
-                <input type="file" name="variants[${variantIndex}][image]" accept="image/*" class="w-full rounded-md border border-gray-300 text-gray-900 focus:ring-2 focus:ring-indigo-500
+                <input type="file" name="variants[${variantIndex}][image]" accept="image/*" class="w-full rounded-md border border-gray-300 text-gray-900 focus:ring-2 focus:ring-[{{ $theme->theme_bg }}]
            file:bg-indigo-600 file:text-white file:border-0 file:rounded-l file:px-3 file:py-2 file:cursor-pointer
            hover:file:bg-indigo-700 transition-all duration-200">
             </div>

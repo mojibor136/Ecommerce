@@ -8,7 +8,7 @@
                 <h2 class="text-2xl font-bold text-gray-800 mb-2">Attribute Value</h2>
                 <!-- Small Screen Button -->
                 <a href="{{ route('admin.attribute_values.index') }}"
-                    class="block md:hidden bg-indigo-600 text-white px-4 py-2 rounded text-sm font-medium hover:bg-indigo-700 transition">
+                    class="block md:hidden bg-[{{ $theme->theme_bg }}] text-[{{ $theme->theme_text }}]  px-4 py-2 rounded text-sm font-medium hover:bg-[{{ $theme->theme_hover }}] transition">
                     All Attribute Values
                 </a>
             </div>
@@ -19,7 +19,7 @@
                 </p>
                 <!-- Large Screen Button -->
                 <a href="{{ route('admin.attribute_values.index') }}"
-                    class="hidden md:inline-flex items-center bg-indigo-600 text-white px-4 py-2 rounded text-base font-medium hover:bg-indigo-700 transition">
+                    class="hidden md:inline-flex items-center bg-[{{ $theme->theme_bg }}] text-[{{ $theme->theme_text }}]  px-4 py-2 rounded text-base font-medium hover:bg-[{{ $theme->theme_hover }}] transition">
                     All Attribute Values
                 </a>
             </div>
@@ -36,7 +36,7 @@
                     <label class="block text-md text-gray-700 mb-1 sm:mb-2 font-medium">Select Attribute</label>
                     <select name="attribute_id" required
                         class="w-full rounded-md bg-white text-gray-900 border px-3 sm:px-4 py-2
-                        text-sm sm:text-base outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-200 border-gray-300">
+                        text-sm sm:text-base outline-none focus:ring-2 focus:ring-[{{ $theme->theme_bg }}] transition-all duration-200 border-gray-300">
                         <option value="">-- Select Attribute --</option>
                         @foreach ($attributes as $attribute)
                             <option value="{{ $attribute->id }}"
@@ -52,7 +52,7 @@
                     <label class="block text-md text-gray-700 mb-1 sm:mb-2 font-medium">Value</label>
                     <input type="text" name="value" placeholder="Attribute Value" value="{{ old('value') }}"
                         class="w-full rounded-md bg-white text-gray-900 border px-3 sm:px-4 py-2
-                        text-sm sm:text-base outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-200 border-gray-300">
+                        text-sm sm:text-base outline-none focus:ring-2 focus:ring-[{{ $theme->theme_bg }}] transition-all duration-200 border-gray-300">
                 </div>
 
                 <!-- Color Code -->
@@ -60,7 +60,7 @@
                     <label class="block text-md text-gray-700 mb-1 sm:mb-2 font-medium">Color Code (Optional)</label>
                     <input type="text" name="color_code" placeholder="#ffffff" value="{{ old('color_code') }}"
                         class="w-full rounded-md bg-white text-gray-900 border px-3 sm:px-4 py-2
-                        text-sm sm:text-base outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-200 border-gray-300">
+                        text-sm sm:text-base outline-none focus:ring-2 focus:ring-[{{ $theme->theme_bg }}] transition-all duration-200 border-gray-300">
                 </div>
 
                 <!-- Status -->
@@ -68,7 +68,7 @@
                     <label class="block text-md text-gray-700 mb-1 sm:mb-2 font-medium">Status</label>
                     <select name="status"
                         class="w-full rounded-md bg-white text-gray-900 border px-3 sm:px-4 py-2
-                        text-sm sm:text-base outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-200 border-gray-300">
+                        text-sm sm:text-base outline-none focus:ring-2 focus:ring-[{{ $theme->theme_bg }}] transition-all duration-200 border-gray-300">
                         <option value="1" {{ old('status') == 1 ? 'selected' : '' }}>Active</option>
                         <option value="0" {{ old('status') == 0 ? 'selected' : '' }}>Inactive</option>
                     </select>
@@ -77,8 +77,8 @@
                 <!-- Submit Button -->
                 <div class="col-span-2 md:col-span-2 mt-2">
                     <button type="submit"
-                        class="w-full rounded-md bg-indigo-600 hover:bg-indigo-700 disabled:opacity-60 disabled:cursor-not-allowed 
-                        text-white py-2.5 text-sm sm:text-base transition-all duration-200 transform">
+                        class="w-full rounded-md bg-[{{ $theme->theme_bg }}] text-[{{ $theme->theme_text }}] hover:bg-[{{ $theme->theme_hover }}] disabled:opacity-60 disabled:cursor-not-allowed 
+                        py-2.5 text-sm sm:text-base transition-all duration-200 transform">
                         Create Attribute Value
                     </button>
                 </div>

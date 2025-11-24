@@ -8,17 +8,17 @@
             <div class="flex justify-between items-center">
                 <h2 class="text-2xl font-bold text-gray-800 mb-2">SMS Gateway API</h2>
                 <a href="{{ route('admin.dashboard') }}"
-                    class="block md:hidden bg-indigo-600 text-white px-4 py-2 rounded font-medium hover:bg-indigo-700 transition">
+                    class="block md:hidden bg-[{{ $theme->theme_bg }}] text-[{{ $theme->theme_text }}]  px-4 py-2 rounded font-medium hover:bg-[{{ $theme->theme_hover }}] transition">
                     Dashboard
                 </a>
             </div>
             <div class="flex justify-between items-center text-gray-600">
                 <p>
-                    <a href="{{ route('admin.dashboard') }}" class="text-blue-600 hover:underline">Home</a> /
+                    <a href="{{ route('admin.dashboard') }}" class="text-[{{ $theme->theme_bg }}] hover:underline">Home</a> /
                     SMS / Create
                 </p>
                 <a href="{{ route('admin.dashboard') }}"
-                    class="hidden md:inline-flex items-center bg-indigo-600 text-white px-4 py-2 rounded text-base font-medium hover:bg-indigo-700 transition">
+                    class="hidden md:inline-flex items-center bg-[{{ $theme->theme_bg }}] text-[{{ $theme->theme_text }}]  px-4 py-2 rounded text-base font-medium hover:bg-[{{ $theme->theme_hover }}] transition">
                     Dashboard
                 </a>
             </div>

@@ -9,20 +9,20 @@
 
                 <!-- Small Screen Button -->
                 <a href="{{ route('admin.coupons.index') }}"
-                    class="block md:hidden bg-indigo-600 text-white px-4 py-2 rounded text-sm font-medium hover:bg-indigo-700 transition">
-                    All Coupons
+                    class="block md:hidden bg-[{{ $theme->theme_bg }}] text-[{{ $theme->theme_text }}]  px-4 py-2 rounded text-sm font-mediumdigo-700 transition">
+                    All Coupons hover:bg-in
                 </a>
             </div>
 
             <div class="flex justify-between items-center text-gray-600 text-sm">
                 <p>
-                    <a href="{{ route('admin.dashboard') }}" class="text-blue-600 hover:underline">Home</a> /
+                    <a href="{{ route('admin.dashboard') }}" class="text-[{{ $theme->theme_bg }}] hover:underline">Home</a> /
                     Coupons Edit
                 </p>
 
                 <!-- Large Screen Button -->
                 <a href="{{ route('admin.coupons.index') }}"
-                    class="hidden md:inline-flex items-center bg-indigo-600 text-white px-4 py-2 rounded text-base font-medium hover:bg-indigo-700 transition">
+                    class="hidden md:inline-flex items-center bg-[{{ $theme->theme_bg }}] text-[{{ $theme->theme_text }}]  px-4 py-2 rounded text-base font-medium hover:bg-[{{ $theme->theme_hover }}] transition">
                     All Coupons
                 </a>
             </div>
@@ -41,7 +41,7 @@
                             class="text-red-500">*</span></label>
                     <input type="text" name="code" id="code" value="{{ old('code', $coupon->code) }}"
                         placeholder="Enter coupon code (e.g. OFFER50)"
-                        class="w-full rounded-md border border-gray-300 text-gray-900 px-3 py-2 text-sm sm:text-base focus:ring-2 focus:ring-indigo-500 outline-none transition-all"
+                        class="w-full rounded-md border border-gray-300 text-gray-900 px-3 py-2 text-sm sm:text-base focus:ring-2 focus:ring-[{{ $theme->theme_bg }}] outline-none transition-all"
                         required>
                 </div>
 
@@ -49,7 +49,7 @@
                 <div>
                     <label for="type" class="block text-md text-gray-700 mb-1 font-medium">Discount Type</label>
                     <select name="type" id="type"
-                        class="w-full rounded-md bg-white text-gray-900 border border-gray-300 px-3 py-2.5 text-sm sm:text-base focus:ring-2 focus:ring-indigo-500 outline-none transition-all">
+                        class="w-full rounded-md bg-white text-gray-900 border border-gray-300 px-3 py-2.5 text-sm sm:text-base focus:ring-2 focus:ring-[{{ $theme->theme_bg }}] outline-none transition-all">
                         <option value="percent" {{ $coupon->type == 'percent' ? 'selected' : '' }}>Percentage (%)</option>
                         <option value="fixed" {{ $coupon->type == 'fixed' ? 'selected' : '' }}>Fixed Amount (৳)</option>
                     </select>
@@ -61,7 +61,7 @@
                             class="text-red-500">*</span></label>
                     <input type="number" step="0.01" name="value" id="value"
                         value="{{ old('value', $coupon->value) }}" placeholder="Enter discount value"
-                        class="w-full rounded-md border border-gray-300 text-gray-900 px-3 py-2 text-sm sm:text-base focus:ring-2 focus:ring-indigo-500 outline-none transition-all"
+                        class="w-full rounded-md border border-gray-300 text-gray-900 px-3 py-2 text-sm sm:text-base focus:ring-2 focus:ring-[{{ $theme->theme_bg }}] outline-none transition-all"
                         required>
                 </div>
 
@@ -71,14 +71,14 @@
                         (৳)</label>
                     <input type="number" step="0.01" name="min_purchase" id="min_purchase"
                         value="{{ old('min_purchase', $coupon->min_purchase) }}" placeholder="Optional"
-                        class="w-full rounded-md border border-gray-300 text-gray-900 px-3 py-2 text-sm sm:text-base focus:ring-2 focus:ring-indigo-500 outline-none transition-all">
+                        class="w-full rounded-md border border-gray-300 text-gray-900 px-3 py-2 text-sm sm:text-base focus:ring-2 focus:ring-[{{ $theme->theme_bg }}] outline-none transition-all">
                 </div>
 
                 <!-- Apply on Category -->
                 <div class="col-span-2">
                     <label class="block text-md text-gray-700 mb-1 font-medium">Apply To Category</label>
                     <select name="category"
-                        class="w-full rounded-md bg-white text-gray-900 border border-gray-300 px-3 py-[12px] text-sm sm:text-base focus:ring-2 focus:ring-indigo-500 outline-none transition-all">
+                        class="w-full rounded-md bg-white text-gray-900 border border-gray-300 px-3 py-[12px] text-sm sm:text-base focus:ring-2 focus:ring-[{{ $theme->theme_bg }}] outline-none transition-all">
                         <option value="">Select Category (Optional)</option>
                         @foreach ($categories as $category)
                             <option value="{{ $category->id }}"
@@ -94,14 +94,14 @@
                     <label for="expiry_date" class="block text-md text-gray-700 mb-1 font-medium">Expiry Date</label>
                     <input type="date" name="expiry_date" id="expiry_date"
                         value="{{ old('expiry_date', $coupon->expiry_date ? \Carbon\Carbon::parse($coupon->expiry_date)->format('Y-m-d') : '') }}"
-                        class="w-full rounded-md border border-gray-300 text-gray-900 px-3 py-2 text-sm sm:text-base focus:ring-2 focus:ring-indigo-500 outline-none transition-all">
+                        class="w-full rounded-md border border-gray-300 text-gray-900 px-3 py-2 text-sm sm:text-base focus:ring-2 focus:ring-[{{ $theme->theme_bg }}] outline-none transition-all">
                 </div>
 
                 <!-- Status -->
                 <div>
                     <label for="status" class="block text-md text-gray-700 mb-1 font-medium">Status</label>
                     <select name="status" id="status"
-                        class="w-full rounded-md bg-white text-gray-900 border border-gray-300 px-3 py-[12px] text-sm sm:text-base focus:ring-2 focus:ring-indigo-500 outline-none transition-all">
+                        class="w-full rounded-md bg-white text-gray-900 border border-gray-300 px-3 py-[12px] text-sm sm:text-base focus:ring-2 focus:ring-[{{ $theme->theme_bg }}] outline-none transition-all">
                         <option value="1" {{ $coupon->status == 1 ? 'selected' : '' }}>Active</option>
                         <option value="0" {{ $coupon->status == 0 ? 'selected' : '' }}>Inactive</option>
                     </select>
@@ -110,7 +110,7 @@
                 <!-- Submit Button -->
                 <div class="col-span-2 mt-3">
                     <button type="submit"
-                        class="w-full rounded-md bg-indigo-600 hover:bg-indigo-700 text-white py-2.5 text-sm sm:text-base transition-all duration-200">
+                        class="w-full rounded-md bg-[{{ $theme->theme_bg }}] hover:bg-[{{ $theme->theme_hover }}] text-white py-2.5 text-sm sm:text-base transition-all duration-200">
                         Update Coupon
                     </button>
                 </div>

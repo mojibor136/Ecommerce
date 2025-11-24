@@ -8,18 +8,19 @@
                 <h2 class="text-2xl font-bold text-gray-800 mb-2">Social Media</h2>
                 <!-- Small Screen Button -->
                 <a href="{{ route('admin.social_media.index') }}"
-                    class="block md:hidden bg-indigo-600 text-white px-4 py-2 rounded text-sm font-medium hover:bg-indigo-700 transition">
+                    class="block md:hidden bg-[{{ $theme->theme_bg }}] text-[{{ $theme->theme_text }}]  px-4 py-2 rounded text-sm font-medium hover:bg-[{{ $theme->theme_hover }}] transition">
                     All Social Media
                 </a>
             </div>
             <div class="flex justify-between items-center text-gray-600 text-sm">
                 <p>
-                    <a href="{{ route('admin.dashboard') }}" class="text-blue-600 hover:underline">Home</a> / Social Media /
+                    <a href="{{ route('admin.dashboard') }}" class="text-[{{ $theme->theme_bg }}] hover:underline">Home</a> /
+                    Social Media /
                     Create
                 </p>
                 <!-- Large Screen Button -->
                 <a href="{{ route('admin.social_media.index') }}"
-                    class="hidden md:inline-flex items-center bg-indigo-600 text-white px-4 py-2 rounded font-medium hover:bg-indigo-700 transition">
+                    class="hidden md:inline-flex items-center bg-[{{ $theme->theme_bg }}] text-[{{ $theme->theme_text }}]  px-4 py-2 rounded font-medium hover:bg-[{{ $theme->theme_hover }}] transition">
                     All Social Media
                 </a>
             </div>
@@ -36,7 +37,7 @@
                     <label class="block text-md text-gray-700 mb-1 font-medium">Social Media Name <span
                             class="text-red-500">*</span></label>
                     <select name="name"
-                        class="w-full rounded-md bg-white text-gray-900 border px-3 py-[11px] focus:ring-2 focus:ring-indigo-500 outline-none transition-all border-gray-300"
+                        class="w-full rounded-md bg-white text-gray-900 border px-3 py-[11px] focus:ring-2 focus:ring-[{{ $theme->theme_bg }}] outline-none transition-all border-gray-300"
                         required>
                         <option value="">-- Select Social Media --</option>
                         @php
@@ -62,7 +63,7 @@
                     <label class="block text-md text-gray-700 mb-1 font-medium">Link <span
                             class="text-red-500">*</span></label>
                     <input type="url" name="link" placeholder="Enter social media URL" value="{{ old('link') }}"
-                        class="w-full rounded-md bg-white text-gray-900 border px-3 py-2 focus:ring-2 focus:ring-indigo-500 outline-none transition-all border-gray-300"
+                        class="w-full rounded-md bg-white text-gray-900 border px-3 py-2 focus:ring-2 focus:ring-[{{ $theme->theme_bg }}] outline-none transition-all border-gray-300"
                         required>
                 </div>
 
@@ -70,7 +71,7 @@
                 <div class="col-span-2">
                     <label class="block text-md text-gray-700 mb-1 font-medium">Status</label>
                     <select name="status"
-                        class="w-full rounded-md bg-white text-gray-900 border px-3 py-[11px] focus:ring-2 focus:ring-indigo-500 outline-none transition-all border-gray-300">
+                        class="w-full rounded-md bg-white text-gray-900 border px-3 py-[11px] focus:ring-2 focus:ring-[{{ $theme->theme_bg }}] outline-none transition-all border-gray-300">
                         <option value="1" {{ old('status') == 1 ? 'selected' : '' }}>Active</option>
                         <option value="0" {{ old('status') == 0 ? 'selected' : '' }}>Inactive</option>
                     </select>
@@ -79,7 +80,7 @@
                 <!-- Submit Button -->
                 <div class="col-span-2 mt-3">
                     <button type="submit"
-                        class="w-full rounded-md bg-indigo-600 hover:bg-indigo-700 text-white py-2.5 transition-all duration-200">
+                        class="w-full rounded-md bg-[{{ $theme->theme_bg }}] text-[{{ $theme->theme_text }}] hover:bg-[{{ $theme->theme_hover }}] py-2.5 transition-all duration-200">
                         Create Social Media
                     </button>
                 </div>

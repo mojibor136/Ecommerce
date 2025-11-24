@@ -121,16 +121,17 @@
             <div class="flex justify-between items-center">
                 <h2 class="text-2xl font-bold text-gray-800 mb-2">Edit Review</h2>
                 <a href="{{ route('admin.reviews.index') }}"
-                    class="block md:hidden bg-indigo-600 text-white px-4 py-2 rounded text-sm font-medium hover:bg-indigo-700 transition">
+                    class="block md:hidden bg-[{{ $theme->theme_bg }}] text-[{{ $theme->theme_text }}] hover:bg-[{{ $theme->theme_hover }}] px-4 py-2 rounded text-sm font-medium transition">
                     All Reviews
                 </a>
             </div>
             <div class="flex justify-between items-center text-gray-600 text-sm">
                 <p>
-                    <a href="{{ route('admin.dashboard') }}" class="text-blue-600 hover:underline">Home</a> / Review / Edit
+                    <a href="{{ route('admin.dashboard') }}" class="text-[{{ $theme->theme_bg }}] hover:underline">Home</a> /
+                    Review / Edit
                 </p>
                 <a href="{{ route('admin.reviews.index') }}"
-                    class="hidden md:inline-flex items-center bg-indigo-600 text-white px-4 py-2 rounded text-base font-medium hover:bg-indigo-700 transition">
+                    class="hidden md:inline-flex items-center bg-[{{ $theme->theme_bg }}] text-[{{ $theme->theme_text }}] hover:bg-[{{ $theme->theme_hover }}] px-4 py-2 rounded text-base font-medium transition">
                     All Reviews
                 </a>
             </div>
@@ -145,7 +146,7 @@
                 <div class="col-span-2" id="product-select-edit">
                     <label class="block text-md text-gray-700 mb-1 sm:mb-2 font-medium">Select Product</label>
                     <select name="product_id" id="productSelect"
-                        class="w-full rounded-md border border-gray-300 text-gray-900 px-3 py-[11px] text-sm sm:text-base focus:ring-2 focus:ring-indigo-500 outline-none">
+                        class="w-full rounded-md border border-gray-300 text-gray-900 px-3 py-[11px] text-sm sm:text-base focus:ring-2 focus:ring-[{{ $theme->theme_bg }}] outline-none">
                         <option value="">Select a product to review</option>
                         @foreach ($products as $product)
                             <option value="{{ $product->id }}" data-name="{{ $product->name }}"
@@ -177,25 +178,25 @@
                     <label class="block text-md text-gray-700 mb-1 sm:mb-2 font-medium">Rating (1-5)</label>
                     <input type="number" name="rating" min="1" max="5"
                         value="{{ old('rating', $review->rating) }}"
-                        class="w-full rounded-md bg-white text-gray-900 border px-3 sm:px-4 py-2 text-sm sm:text-base outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-200 border-gray-300">
+                        class="w-full rounded-md bg-white text-gray-900 border px-3 sm:px-4 py-2 text-sm sm:text-base outline-none focus:ring-2 focus:ring-[{{ $theme->theme_bg }}] transition-all duration-200 border-gray-300">
                 </div>
 
                 <div class="col-span-2 md:col-span-1">
                     <label class="block text-md text-gray-700 mb-1 sm:mb-2 font-medium">Review Title</label>
                     <input type="text" name="title" value="{{ old('title', $review->title) }}"
-                        class="w-full rounded-md bg-white text-gray-900 border px-3 sm:px-4 py-2 text-sm sm:text-base outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-200 border-gray-300">
+                        class="w-full rounded-md bg-white text-gray-900 border px-3 sm:px-4 py-2 text-sm sm:text-base outline-none focus:ring-2 focus:ring-[{{ $theme->theme_bg }}] transition-all duration-200 border-gray-300">
                 </div>
 
                 <div class="col-span-2">
                     <label class="block text-md text-gray-700 mb-1 sm:mb-2 font-medium">Review Details</label>
                     <textarea name="review" rows="4"
-                        class="w-full rounded-md bg-white text-gray-900 border px-3 sm:px-4 py-2 text-sm sm:text-base outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-200 border-gray-300">{{ old('review', $review->review) }}</textarea>
+                        class="w-full rounded-md bg-white text-gray-900 border px-3 sm:px-4 py-2 text-sm sm:text-base outline-none focus:ring-2 focus:ring-[{{ $theme->theme_bg }}] transition-all duration-200 border-gray-300">{{ old('review', $review->review) }}</textarea>
                 </div>
 
                 <div class="col-span-2">
                     <label class="block text-md text-gray-700 mb-1 sm:mb-2 font-medium">Status</label>
                     <select name="status"
-                        class="w-full rounded-md border border-gray-300 text-gray-900 px-3 py-[11px] text-sm sm:text-base focus:ring-2 focus:ring-indigo-500 outline-none">
+                        class="w-full rounded-md border border-gray-300 text-gray-900 px-3 py-[11px] text-sm sm:text-base focus:ring-2 focus:ring-[{{ $theme->theme_bg }}] outline-none">
                         <option value="1" {{ $review->status == 1 ? 'selected' : '' }}>Active</option>
                         <option value="0" {{ $review->status == 0 ? 'selected' : '' }}>Inactive</option>
                     </select>
@@ -203,7 +204,7 @@
 
                 <div class="col-span-2 mt-2">
                     <button type="submit"
-                        class="w-full rounded-md bg-indigo-600 hover:bg-indigo-700 text-white py-2.5 text-sm sm:text-base transition-all duration-200 transform">
+                        class="w-full rounded-md bg-[{{ $theme->theme_bg }}] text-[{{ $theme->theme_text }}] hover:bg-[{{ $theme->theme_hover }}] py-2.5 text-sm sm:text-base transition-all duration-200 transform">
                         Update Review
                     </button>
                 </div>

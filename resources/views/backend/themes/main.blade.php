@@ -45,7 +45,7 @@
             </div>
             <div class="flex justify-between items-center text-gray-600">
                 <p>
-                    <a href="{{ route('admin.dashboard') }}" class="text-blue-600 hover:underline">Home</a> /
+                    <a href="{{ route('admin.dashboard') }}" class="text-[{{ $theme->theme_bg }}] hover:underline">Home</a> /
                     Theme / Main
                 </p>
                 <a href="{{ route('admin.dashboard') }}"

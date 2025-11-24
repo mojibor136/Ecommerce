@@ -18,7 +18,7 @@
                 <!-- Search -->
                 <div class="relative w-full sm:w-1/2">
                     <input type="text" name="search" value="{{ request('search') }}" placeholder="Search SKU"
-                        class="w-full rounded-md bg-white text-gray-900 border border-gray-300 pl-10 pr-3 py-2 text-sm sm:text-base outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-200" />
+                        class="w-full rounded-md bg-white text-gray-900 border border-gray-300 pl-10 pr-3 py-2 text-sm sm:text-base outline-none focus:ring-2 focus:ring-[{{ $theme->theme_bg }}] transition-all duration-200" />
                     <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-lg pointer-events-none">
                         <i class="ri-search-line"></i>
                     </span>
@@ -26,7 +26,7 @@
 
                 <!-- Category -->
                 <select name="category_id" id="categoryFilter"
-                    class="w-full sm:w-1/2 rounded-md bg-white text-gray-900 border px-3 sm:px-4 py-2.5 text-sm sm:text-base outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-200 border-gray-300">
+                    class="w-full sm:w-1/2 rounded-md bg-white text-gray-900 border px-3 sm:px-4 py-2.5 text-sm sm:text-base outline-none focus:ring-2 focus:ring-[{{ $theme->theme_bg }}] transition-all duration-200 border-gray-300">
                     <option value="">-- All Categories --</option>
                     @foreach ($categories as $category)
                         <option value="{{ $category->id }}" {{ request('category_id') == $category->id ? 'selected' : '' }}>
@@ -37,7 +37,7 @@
 
                 <!-- Subcategory -->
                 <select name="subcategory_id" id="subcategoryFilter"
-                    class="w-full sm:w-1/2 rounded-md bg-white text-gray-900 border px-3 sm:px-4 py-2.5 text-sm sm:text-base outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-200 border-gray-300">
+                    class="w-full sm:w-1/2 rounded-md bg-white text-gray-900 border px-3 sm:px-4 py-2.5 text-sm sm:text-base outline-none focus:ring-2 focus:ring-[{{ $theme->theme_bg }}] transition-all duration-200 border-gray-300">
                     <option value="">-- All Subcategories --</option>
                     @foreach ($subcategories as $subcategory)
                         <option value="{{ $subcategory->id }}"
@@ -49,7 +49,7 @@
 
                 <!-- Search Button -->
                 <button type="submit"
-                    class="flex justify-center items-center px-4 py-2 h-10 rounded-md bg-indigo-600 hover:bg-indigo-700 text-white font-medium transition-all duration-150 mt-2 sm:mt-0">
+                    class="flex justify-center items-center px-4 py-2 h-10 rounded-md bg-[{{ $theme->theme_bg }}] text-[{{ $theme->theme_text }}] hover:bg-[{{ $theme->theme_hover }}] font-medium transition-all duration-150 mt-2 sm:mt-0">
                     <i class="ri-search-line mr-1"></i> Search
                 </button>
             </div>
@@ -64,7 +64,7 @@
         <!-- Order by Table -->
         <div class="overflow-x-auto bg-white rounded-lg shadow">
             <table class="min-w-full table-auto border-collapse">
-                <thead class="bg-indigo-600 text-white text-sm font-semibold">
+                <thead class="bg-[{{ $theme->theme_bg }}] text-[{{ $theme->theme_text }}] text-sm font-semibold">
                     <tr>
                         <th class="px-4 py-3 text-center w-12">#</th>
                         <th class="px-4 py-3 text-left w-14">Image</th>
@@ -102,7 +102,7 @@
 
                                     <input type="number" name="orders[{{ $product->id }}]"
                                         value="{{ $product->orders }}" min="0" placeholder="Enter Serial"
-                                        class="w-16 md:w-24 h-8 border border-gray-300 rounded px-2 py-1 text-sm focus:ring-2 focus:ring-indigo-500 outline-none"
+                                        class="w-16 md:w-24 h-8 border border-gray-300 rounded px-2 py-1 text-sm focus:ring-2 focus:ring-[{{ $theme->theme_bg }}] outline-none"
                                         required>
 
                                     <button type="submit"
