@@ -21,7 +21,7 @@ class AdminController extends Controller
         foreach ($statuses as $status) {
             $ordersCount[$status] = Order::where('order_status', $status)->count();
         }
-        $ordersCount['all'] = Order::count();
+        $ordersCount['all order'] = Order::count();
 
         $productCount = Product::count();
         $categoryCount = Category::count();
@@ -35,11 +35,11 @@ class AdminController extends Controller
             ->where('order_status', 'delivered')
             ->sum('total');
 
-        $recentOrders = Order::latest()->take(5)->get();
+        $recentOrders = Order::latest()->take(10)->get();
 
         $topProducts = Product::withCount(['orderItems as sold_count' => function ($query) {
             $query->select(\DB::raw('SUM(quantity)'));
-        }])->orderBy('sold_count', 'desc')->take(5)->get();
+        }])->orderBy('sold_count', 'desc')->take(10)->get();
 
         return view('backend.dashboard', compact(
             'ordersCount',

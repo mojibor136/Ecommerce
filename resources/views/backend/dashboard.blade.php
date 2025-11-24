@@ -71,14 +71,32 @@
             </div>
         </div>
 
+        @php
+            // Random Tailwind color classes list
+            $colors = [
+                'text-lime-600',
+                'text-blue-600',
+                'text-red-600',
+                'text-amber-600',
+                'text-emerald-600',
+                'text-purple-600',
+                'text-pink-600',
+                'text-cyan-600',
+            ];
+        @endphp
+
         <!-- Orders Status Overview -->
         <div class="bg-white rounded p-5 shadow mb-6">
             <h2 class="font-semibold text-lg mb-4">Orders Status Overview</h2>
             <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
                 @foreach ($ordersCount as $status => $count)
+                    @php
+                        $randomColor = $colors[array_rand($colors)];
+                    @endphp
+
                     <div class="bg-gray-50 p-4 rounded shadow hover:shadow-md transition text-center">
-                        <p class="text-gray-500 capitalize text-sm">{{ $status }}</p>
-                        <h3 class="text-2xl font-bold mt-1">{{ $count }}</h3>
+                        <p class="{{ $randomColor }} font-semibold capitalize text-sm">{{ $status }}</p>
+                        <h3 class="text-2xl font-bold mt-1 text-gray-800">{{ $count }}</h3>
                     </div>
                 @endforeach
             </div>
