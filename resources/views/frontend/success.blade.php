@@ -27,11 +27,11 @@
             <!-- Buttons -->
             <div class="flex flex-col gap-3">
                 <a href="{{ route('home') }}"
-                    class="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 rounded-lg transition">
+                    class="w-full bg-[{{ $theme->theme_bg }}] text-[{{ $theme->theme_text }}] hover:bg-[{{ $theme->theme_hover }}] font-semibold py-3 rounded-lg transition">
                     <i class="ri-home-5-line mr-1"></i> Back to Home
                 </a>
                 <a href="email"
-                    class="w-full border border-orange-500 text-orange-500 hover:bg-orange-50 font-semibold py-3 rounded-lg transition">
+                    class="w-full border border-[{{ $theme->theme_bg }}] text-[{{ $theme->theme_bg }}] hover:bg-[{{ $theme->theme_bg }}]/50 font-semibold py-3 rounded-lg transition">
                     <i class="ri-file-list-line mr-1"></i> View My Orders
                 </a>
             </div>

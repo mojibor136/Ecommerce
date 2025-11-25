@@ -4,7 +4,7 @@
     <div class="max-w-6xl mx-auto my-4 px-4 md:px-6 lg:px-0">
         <h1
             class="text-2xl font-semibold mb-6 text-gray-800 relative inline-block
-        after:content-[''] after:absolute after:w-1/2 after:h-[3px] after:bg-orange-500 after:bottom-[-6px] after:left-0">
+        after:content-[''] after:absolute after:w-1/2 after:h-[3px] after:bg-[{{ $theme->theme_bg }}] after:bottom-[-6px] after:left-0">
             🛍️ Checkout
         </h1>
 
@@ -31,37 +31,37 @@
                 @endif
                 <div class="lg:w-2/3 bg-white shadow rounded-lg md:p-6 p-4">
                     <h2 class="text-lg font-semibold mb-4 flex items-center gap-2">
-                        <i class="ri-user-line text-orange-500"></i>Customer Information
+                        <i class="ri-user-line text-[{{ $theme->theme_bg }}]"></i>Customer Information
                     </h2>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                         <div>
                             <label class="text-md mb-1 text-gray-600">Full Name</label>
                             <input type="text" name="name" value="{{ old('name') }}" required
-                                class="w-full border border-gray-300 rounded px-3 py-2 text-md focus:border-orange-500 focus:ring-1 focus:ring-orange-500 outline-none"
+                                class="w-full border border-gray-300 rounded px-3 py-2 text-md focus:border-[{{ $theme->theme_bg }}] focus:ring-1 focus:ring-[{{ $theme->theme_bg }}] outline-none"
                                 placeholder="Enter your name">
                         </div>
                         <div>
                             <label class="text-md mb-1 text-gray-600">Email Address</label>
                             <input type="email" name="email" value="{{ old('email') }}" required
-                                class="w-full border border-gray-300 rounded px-3 py-2 text-md focus:border-orange-500 focus:ring-1 focus:ring-orange-500 outline-none"
+                                class="w-full border border-gray-300 rounded px-3 py-2 text-md focus:border-[{{ $theme->theme_bg }}] focus:ring-1 focus:ring-[{{ $theme->theme_bg }}] outline-none"
                                 placeholder="you@example.com">
                         </div>
                         <div>
                             <label class="text-md mb-1 text-gray-600">Phone Number</label>
                             <input type="tel" name="phone" value="{{ old('phone') }}" required
-                                class="w-full border border-gray-300 rounded px-3 py-2 text-md focus:border-orange-500 focus:ring-1 focus:ring-orange-500 outline-none"
+                                class="w-full border border-gray-300 rounded px-3 py-2 text-md focus:border-[{{ $theme->theme_bg }}] focus:ring-1 focus:ring-[{{ $theme->theme_bg }}] outline-none"
                                 placeholder="+8801XXXXXXXXX">
                         </div>
                         <div>
                             <label class="text-md mb-1 text-gray-600">City</label>
                             <input type="text" name="city" value="{{ old('city') }}" required
-                                class="w-full border border-gray-300 rounded px-3 py-2 text-md focus:border-orange-500 focus:ring-1 focus:ring-orange-500 outline-none"
+                                class="w-full border border-gray-300 rounded px-3 py-2 text-md focus:border-[{{ $theme->theme_bg }}] focus:ring-1 focus:ring-[{{ $theme->theme_bg }}] outline-none"
                                 placeholder="Enter city">
                         </div>
                         <div class="md:col-span-2">
                             <label class="text-md mb-1 text-gray-600">Delivery Area</label>
                             <select name="charge" id="deliveryArea" required
-                                class="w-full border border-gray-300 rounded px-3 py-[10px] text-md focus:border-orange-500 focus:ring-1 focus:ring-orange-500 outline-none">
+                                class="w-full border border-gray-300 rounded px-3 py-[10px] text-md focus:border-[{{ $theme->theme_bg }}] focus:ring-1 focus:ring-[{{ $theme->theme_bg }}] outline-none">
                                 <option value="{{ $inDhakaCharge }}">Inside Dhaka</option>
                                 <option value="{{ $outDhakaCharge }}">Outside Dhaka</option>
                             </select>
@@ -69,13 +69,13 @@
                         <div class="md:col-span-2">
                             <label class="text-md mb-1 text-gray-600">Full Address</label>
                             <textarea name="address" rows="3" required
-                                class="w-full border border-gray-300 rounded px-3 py-2 text-md focus:border-orange-500 focus:ring-1 focus:ring-orange-500 outline-none"
+                                class="w-full border border-gray-300 rounded px-3 py-2 text-md focus:border-[{{ $theme->theme_bg }}] focus:ring-1 focus:ring-[{{ $theme->theme_bg }}] outline-none"
                                 placeholder="House, Road, Area">{{ old('address') }}</textarea>
                         </div>
                     </div>
 
                     <h2 class="text-lg font-semibold flex items-center gap-2">
-                        <i class="ri-shopping-bag-3-line text-orange-500"></i>Order Details
+                        <i class="ri-shopping-bag-3-line text-[{{ $theme->theme_bg }}]"></i>Order Details
                     </h2>
                     <div class="flex flex-col gap-2">
                         <div class="flex items-center justify-between border-b border-gray-200 py-4 cart-item"
@@ -115,7 +115,7 @@
 
                 <div class="lg:w-1/3 bg-white shadow rounded-lg p-6 h-fit">
                     <h2 class="text-lg font-semibold mb-4 flex items-center gap-2"><i
-                            class="ri-bill-line text-orange-500"></i>Order Summary</h2>
+                            class="ri-bill-line text-[{{ $theme->theme_bg }}]"></i>Order Summary</h2>
 
                     <div class="flex justify-between mb-2">
                         <span class="text-gray-600">Your Location</span>
@@ -136,7 +136,7 @@
                     </div>
 
                     <h3 class="text-md font-semibold mb-3 flex items-center gap-2"><i
-                            class="ri-bank-card-line text-orange-500"></i>Payment Method</h3>
+                            class="ri-bank-card-line text-[{{ $theme->theme_bg }}]"></i>Payment Method</h3>
                     <div class="space-y-3 mb-6">
                         <h2 class="font-semibold text-gray-800 mb-2">Select Payment Method</h2>
                         <div class="grid grid-cols-3 gap-2">
@@ -205,7 +205,7 @@
                     </script>
 
                     <button type="submit"
-                        class="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 rounded-lg transition">
+                        class="w-full bg-[{{ $theme->theme_bg }}] hover:bg-[{{ $theme->theme_hover }}] text-[{{ $theme->theme_text }}] font-semibold py-3 rounded-lg transition">
                         <i class="ri-lock-line mr-1"></i> Confirm & Place Order
                     </button>
                 </div>
@@ -232,37 +232,37 @@
                 @endforeach
                 <div class="lg:w-2/3 bg-white shadow rounded-lg md:p-6 p-4">
                     <h2 class="text-lg font-semibold mb-4 flex items-center gap-2">
-                        <i class="ri-user-line text-orange-500"></i>Customer Information
+                        <i class="ri-user-line text-[{{ $theme->theme_bg }}]"></i>Customer Information
                     </h2>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                         <div>
                             <label class="text-md mb-1 text-gray-600">Full Name</label>
                             <input type="text" name="name" value="{{ old('name') }}" required
-                                class="w-full border border-gray-300 rounded px-3 py-2 text-md focus:border-orange-500 focus:ring-1 focus:ring-orange-500 outline-none"
+                                class="w-full border border-gray-300 rounded px-3 py-2 text-md focus:border-[{{ $theme->theme_bg }}] focus:ring-1 focus:ring-[{{ $theme->theme_bg }}] outline-none"
                                 placeholder="Enter your name">
                         </div>
                         <div>
                             <label class="text-md mb-1 text-gray-600">Email Address</label>
                             <input type="email" name="email" value="{{ old('email') }}" required
-                                class="w-full border border-gray-300 rounded px-3 py-2 text-md focus:border-orange-500 focus:ring-1 focus:ring-orange-500 outline-none"
+                                class="w-full border border-gray-300 rounded px-3 py-2 text-md focus:border-[{{ $theme->theme_bg }}] focus:ring-1 focus:ring-[{{ $theme->theme_bg }}] outline-none"
                                 placeholder="you@example.com">
                         </div>
                         <div>
                             <label class="text-md mb-1 text-gray-600">Phone Number</label>
                             <input type="tel" name="phone" value="{{ old('phone') }}" required
-                                class="w-full border border-gray-300 rounded px-3 py-2 text-md focus:border-orange-500 focus:ring-1 focus:ring-orange-500 outline-none"
+                                class="w-full border border-gray-300 rounded px-3 py-2 text-md focus:border-[{{ $theme->theme_bg }}] focus:ring-1 focus:ring-[{{ $theme->theme_bg }}] outline-none"
                                 placeholder="+8801XXXXXXXXX">
                         </div>
                         <div>
                             <label class="text-md mb-1 text-gray-600">City</label>
                             <input type="text" name="city" value="{{ old('city') }}" required
-                                class="w-full border border-gray-300 rounded px-3 py-2 text-md focus:border-orange-500 focus:ring-1 focus:ring-orange-500 outline-none"
+                                class="w-full border border-gray-300 rounded px-3 py-2 text-md focus:border-[{{ $theme->theme_bg }}] focus:ring-1 focus:ring-[{{ $theme->theme_bg }}] outline-none"
                                 placeholder="Enter city">
                         </div>
                         <div class="md:col-span-2">
                             <label class="text-md mb-1 text-gray-600">Delivery Area</label>
                             <select name="charge" id="deliveryArea" required
-                                class="w-full border border-gray-300 rounded px-3 py-[10px] text-md focus:border-orange-500 focus:ring-1 focus:ring-orange-500 outline-none">
+                                class="w-full border border-gray-300 rounded px-3 py-[10px] text-md focus:border-[{{ $theme->theme_bg }}] focus:ring-1 focus:ring-[{{ $theme->theme_bg }}] outline-none">
                                 <option value="{{ $inDhakaCharge }}">Inside Dhaka</option>
                                 <option value="{{ $outDhakaCharge }}">Outside Dhaka</option>
                             </select>
@@ -270,13 +270,13 @@
                         <div class="md:col-span-2">
                             <label class="text-md mb-1 text-gray-600">Full Address</label>
                             <textarea name="address" rows="3" required
-                                class="w-full border border-gray-300 rounded px-3 py-2 text-md focus:border-orange-500 focus:ring-1 focus:ring-orange-500 outline-none"
+                                class="w-full border border-gray-300 rounded px-3 py-2 text-md focus:border-[{{ $theme->theme_bg }}] focus:ring-1 focus:ring-[{{ $theme->theme_bg }}] outline-none"
                                 placeholder="House, Road, Area">{{ old('address') }}</textarea>
                         </div>
                     </div>
 
                     <h2 class="text-lg font-semibold flex items-center gap-2">
-                        <i class="ri-shopping-bag-3-line text-orange-500"></i>Order Details
+                        <i class="ri-shopping-bag-3-line text-[{{ $theme->theme_bg }}]"></i>Order Details
                     </h2>
                     <div class="flex flex-col gap-2">
                         @foreach ($cart as $id => $item)
@@ -308,7 +308,7 @@
                                         </div>
                                         <p class="text-gray-500 text-sm mt-1">Qty:
                                             <input type="number" value="{{ $item['quantity'] }}" min="1"
-                                                class="w-14 border border-gray-300 rounded px-2 py-0.5 text-sm focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition duration-200 outline-none quantity-input"
+                                                class="w-14 border border-gray-300 rounded px-2 py-0.5 text-sm focus:border-[{{ $theme->theme_bg }}] focus:ring-1 focus:ring-[{{ $theme->theme_bg }}] transition duration-200 outline-none quantity-input"
                                                 data-id="{{ $id }}">
                                         </p>
                                     </div>
@@ -324,7 +324,7 @@
 
                 <div class="lg:w-1/3 bg-white shadow rounded-lg md:p-6 p-4 h-fit">
                     <h2 class="text-lg font-semibold mb-4 flex items-center gap-2"><i
-                            class="ri-bill-line text-orange-500"></i>Order Summary</h2>
+                            class="ri-bill-line text-[{{ $theme->theme_bg }}]"></i>Order Summary</h2>
 
                     <div class="flex justify-between mb-2">
                         <span class="text-gray-600">Your Location</span>
@@ -345,7 +345,7 @@
                     </div>
 
                     <h3 class="text-md font-semibold mb-3 flex items-center gap-2"><i
-                            class="ri-bank-card-line text-orange-500"></i>Payment Method</h3>
+                            class="ri-bank-card-line text-[{{ $theme->theme_bg }}]"></i>Payment Method</h3>
 
                     <div class="space-y-3 mb-6">
                         <h2 class="font-semibold text-gray-800 mb-2">Select Payment Method</h2>
@@ -410,7 +410,7 @@
                         });
                     </script>
                     <button type="submit"
-                        class="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 rounded-lg transition">
+                        class="w-full bg-[{{ $theme->theme_bg }}] hover:bg-[{{ $theme->theme_hover }}] text-[{{ $theme->theme_text }}] font-semibold py-3 rounded-lg transition">
                         <i class="ri-lock-line mr-1"></i> Confirm & Place Order
                     </button>
                 </div>
@@ -424,7 +424,7 @@
                     shopping
                     and fill your cart!</p>
                 <a href="{{ route('home') }}"
-                    class="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 px-6 rounded-lg transition">
+                    class="bg-[{{ $theme->theme_bg }}] hover:bg-[{{ $theme->theme_hover }}] text-[{{ $theme->theme_text }}] font-semibold py-3 px-6 rounded-lg transition">
                     Continue Shopping
                 </a>
             </div>
@@ -432,7 +432,7 @@
     </div>
 
     <!-- GTM + Pixel: InitiateCheckout -->
-    
+
     @if ($buyNow)
         <script>
             (function() {

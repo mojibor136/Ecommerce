@@ -105,9 +105,9 @@
         </noscript>
     @endif
 
-    <div class="bg-gray-800 w-full">
+    <div class="bg-[{{ $theme->nav_bg }}] w-full">
         <div class="max-w-6xl mx-auto flex items-center py-2">
-            <marquee class="text-white text-sm leading-tight">
+            <marquee class="text-[{{ $theme->nav_text }}] hover:text-[{{ $theme->theme_bg }}] text-sm leading-tight">
                 {{ $setting->headline }}
             </marquee>
         </div>
@@ -126,7 +126,7 @@
                 <div id="searchEngine" class="relative flex items-center justify-center mx-6 w-[500px] lg:w-[600px]">
                     <input id="searchInput" type="text" name="search"
                         placeholder="Search in {{ $setting->name }}..."
-                        class="w-full px-4 py-2 rounded-l-md border border-gray-300 focus:outline-none focus:border-orange-500 focus:ring-0 transition-colors duration-200">
+                        class="w-full px-4 py-2 rounded-l-md border border-gray-300 focus:outline-none focus:border-[{{ $theme->theme_bg }}] focus:ring-0 transition-colors duration-200">
                     <button
                         class="bg-[#F85501] border border-[#F85501] text-white px-4 py-2 rounded-r-md hover:bg-orange-600">
                         <i class="ri-search-line"></i>
@@ -165,7 +165,7 @@
             <!-- Top Bar: Menu, Logo, Cart -->
             <div class="flex items-center justify-between px-4 py-4">
                 <!-- ☰ Menu Button -->
-                <button class="mobileMenuBtn text-gray-700 text-2xl hover:text-orange-500">
+                <button class="mobileMenuBtn text-gray-700 text-2xl hover:text-[{{ $theme->theme_bg }}]">
                     <i class="ri-menu-line"></i>
                 </button>
 
@@ -178,7 +178,8 @@
 
                 <!-- 🛒 Cart Icon -->
                 <div class="relative" onclick="window.location.href='/shipping/cart'">
-                    <i class="ri-shopping-cart-line text-2xl text-gray-700 hover:text-orange-500 cursor-pointer"></i>
+                    <i
+                        class="ri-shopping-cart-line text-2xl text-gray-700 hover:text-[{{ $theme->theme_bg }}] cursor-pointer"></i>
                     <span
                         class="absolute -top-1.5 -right-1.5 bg-red-500 text-white text-xs rounded-full px-1.5 font-semibold">
                         {{ count(session('cart', [])) }}
@@ -191,8 +192,8 @@
                 <div id="MobilesearchEngine" class="relative flex items-center bg-gray-100 rounded bg-white">
                     <input id="MobilesearchInput" type="text" placeholder="Search products..."
                         class="w-full bg-[transparent] px-3 py-2 outline-none rounded-l ring-1 ring-offset-1 ring-gray-200 text-sm text-gray-700 transition-colors duration-200
-                focus:outline-none focus:ring-1 focus:ring-orange-500 focus:ring-offset-1">
-                    <button class="bg-orange-500 px-3 py-2 text-white hover:bg-orange-600 rounded-r">
+                focus:outline-none focus:ring-1 focus:ring-[{{ $theme->theme_bg }}] focus:ring-offset-1">
+                    <button class="bg-[{{ $theme->theme_bg }}] px-3 py-2 text-white hover:bg-orange-600 rounded-r">
                         <i class="ri-search-line"></i>
                     </button>
                     <div id="MobilesearchBox" data-lenis-disabled
@@ -214,7 +215,7 @@
                     <img class="max-w-48 w-auto h-10"
                         src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Daraz_Logo.png/1200px-Daraz_Logo.png"
                         alt="">
-                    <button id="closeCategorySidebar" class="text-gray-600 hover:text-orange-500">
+                    <button id="closeCategorySidebar" class="text-gray-600 hover:text-[{{ $theme->theme_bg }}]">
                         <i class="ri-close-line text-2xl"></i>
                     </button>
                 </div>
@@ -256,25 +257,26 @@
         </div>
 
         <!-- Desktop Navigation Bar -->
-        <div class="bg-gray-800 w-full hidden sm:block">
+        <div class="bg-[{{ $theme->nav_bg }}] w-full hidden sm:block">
             <div class="max-w-6xl mx-auto flex items-center justify-between h-12">
                 <!-- Left: All Categories -->
                 <div id="categoryButton"
-                    class="mobileMenuBtn flex items-center justify-between gap-2 bg-orange-600 px-3 h-full cursor-pointer hover:bg-orange-700 transition">
-                    <span class="text-white font-medium text-[14.5px] uppercase">All Categories</span>
-                    <i class="ri-menu-line text-white text-lg"></i>
+                    class="mobileMenuBtn flex items-center justify-between gap-2 bg-[{{ $theme->theme_bg }}] px-3 h-full cursor-pointer hover:[{{ $theme->theme_hover }}] transition">
+                    <span class="text-[{{ $theme->theme_text }}] font-medium text-[14.5px] uppercase">All
+                        Categories</span>
+                    <i class="ri-menu-line text-[{{ $theme->theme_text }}] text-lg"></i>
                 </div>
 
                 <!-- Right: Nav Links -->
                 <div class="flex items-center gap-6">
                     <a href="{{ url('/') }}"
-                        class="text-white text-[14.5px] hover:text-orange-500 transition">Home</a>
+                        class="text-[{{ $theme->nav_text }}] hover:text-[{{ $theme->theme_bg }}] text-[14.5px] hover:text-[{{ $theme->theme_bg }}] transition">Home</a>
                     <a href="{{ url('/your/shop') }}"
-                        class="text-white text-[14.5px] hover:text-orange-500 transition">Shop</a>
+                        class="text-[{{ $theme->nav_text }}] hover:text-[{{ $theme->theme_bg }}] text-[14.5px] hover:text-[{{ $theme->theme_bg }}] transition">Shop</a>
                     <a href="{{ url('deals') }}"
-                        class="text-white text-[14.5px] hover:text-orange-500 transition">Deals</a>
+                        class="text-[{{ $theme->nav_text }}] hover:text-[{{ $theme->theme_bg }}] text-[14.5px] hover:text-[{{ $theme->theme_bg }}] transition">Deals</a>
                     <a href="{{ url('/contact') }}"
-                        class="text-white text-[14.5px] hover:text-orange-500 transition">Contact</a>
+                        class="text-[{{ $theme->nav_text }}] hover:text-[{{ $theme->theme_bg }}] text-[14.5px] hover:text-[{{ $theme->theme_bg }}] transition">Contact</a>
                 </div>
             </div>
         </div>
@@ -381,7 +383,7 @@
                         <input type="email" placeholder="Enter your email"
                             class="w-full px-3 py-2 bg-gray-800 text-gray-300 text-sm focus:outline-none">
                         <button
-                            class="bg-orange-500 hover:bg-orange-600 px-4 text-white font-semibold text-sm transition">Join</button>
+                            class="bg-[{{ $theme->theme_bg }}] hover:bg-orange-600 px-4 text-white font-semibold text-sm transition">Join</button>
                     </form>
                     <p class="text-xs text-gray-500 mb-4">We respect your privacy. Unsubscribe anytime.</p>
 
@@ -422,7 +424,8 @@
                     class="nav-item flex flex-col items-center justify-center py-2 relative text-gray-700">
                     <i class="ri-home-5-line text-2xl"></i>
                     <span class="text-xs">Home</span>
-                    <span class="nav-indicator absolute bottom-0 w-0 h-[2px] bg-orange-500 transition-all"></span>
+                    <span
+                        class="nav-indicator absolute bottom-0 w-0 h-[2px] bg-[{{ $theme->theme_bg }}] transition-all"></span>
                 </a>
             </li>
 
@@ -432,7 +435,8 @@
                     class="nav-item flex flex-col items-center justify-center py-2 relative text-gray-700">
                     <i class="ri-store-line text-2xl"></i>
                     <span class="text-xs">Shop</span>
-                    <span class="nav-indicator absolute bottom-0 w-0 h-[2px] bg-orange-500 transition-all"></span>
+                    <span
+                        class="nav-indicator absolute bottom-0 w-0 h-[2px] bg-[{{ $theme->theme_bg }}] transition-all"></span>
                 </a>
             </li>
 
@@ -442,7 +446,8 @@
                     class="nav-item flex flex-col items-center justify-center py-2 relative text-gray-700">
                     <i class="ri-shopping-cart-line text-2xl"></i>
                     <span class="text-xs">Cart</span>
-                    <span class="nav-indicator absolute bottom-0 w-0 h-[2px] bg-orange-500 transition-all"></span>
+                    <span
+                        class="nav-indicator absolute bottom-0 w-0 h-[2px] bg-[{{ $theme->theme_bg }}] transition-all"></span>
                 </a>
             </li>
 
@@ -452,7 +457,8 @@
                     class="nav-item flex flex-col items-center justify-center py-2 relative text-gray-700">
                     <i class="ri-map-pin-line text-2xl"></i>
                     <span class="text-xs">Track</span>
-                    <span class="nav-indicator absolute bottom-0 w-0 h-[2px] bg-orange-500 transition-all"></span>
+                    <span
+                        class="nav-indicator absolute bottom-0 w-0 h-[2px] bg-[{{ $theme->theme_bg }}] transition-all"></span>
                 </a>
             </li>
         </ul>
@@ -481,7 +487,7 @@
 
             navItems.forEach(item => {
                 if (item.href === window.location.href) {
-                    item.classList.add('text-orange-500');
+                    item.classList.add('text-[{{ $theme->theme_bg }}]');
                     item.querySelector('.nav-indicator').classList.add('w-full');
                 }
             });
@@ -489,11 +495,11 @@
             navItems.forEach(item => {
                 item.addEventListener('click', () => {
                     navItems.forEach(i => {
-                        i.classList.remove('text-orange-500');
+                        i.classList.remove('text-[{{ $theme->theme_bg }}]');
                         i.querySelector('.nav-indicator').classList.remove('w-full');
                     });
 
-                    item.classList.add('text-orange-500');
+                    item.classList.add('text-[{{ $theme->theme_bg }}]');
                     item.querySelector('.nav-indicator').classList.add('w-full');
                 });
             });

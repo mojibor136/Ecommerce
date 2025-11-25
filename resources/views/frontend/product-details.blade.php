@@ -128,12 +128,12 @@
                         mainImage.src = target.src;
 
                         container.querySelectorAll("img").forEach(img => {
-                            img.classList.remove("border-2", "border-orange-500");
+                            img.classList.remove("border-2", "border-[{{ $theme->theme_bg }}]");
                             img.classList.add("border", "border-gray-200");
                         });
 
                         target.classList.remove("border", "border-gray-200");
-                        target.classList.add("border-2", "border-orange-500");
+                        target.classList.add("border-2", "border-[{{ $theme->theme_bg }}]");
 
                         const variantId = parseInt(target.getAttribute('data-variant-id'));
                         updateHiddenInputs(variantId);
@@ -207,7 +207,7 @@
                                 <span class="text-gray-700 text-sm">{{ $attributeName }}:</span>
                                 @foreach ($values as $value)
                                     <div
-                                        class="px-3 py-1 border rounded cursor-pointer text-sm variant-box hover:bg-orange-500 hover:text-white">
+                                        class="px-3 py-1 border rounded cursor-pointer text-sm variant-box hover:bg-[{{ $theme->theme_bg }}] hover:text-white">
                                         {{ $value }}
                                     </div>
                                 @endforeach
@@ -231,8 +231,8 @@
 
             <div class="mb-4">
                 <div class="flex items-center gap-3">
-                    <span class="text-2xl font-bold text-orange-600" data-base-price="{{ $product->new_price }}"
-                        id="finalPrice">৳{{ $product->new_price }}.00</span>
+                    <span class="text-2xl font-bold text-[{{ $theme->theme_bg }}]"
+                        data-base-price="{{ $product->new_price }}" id="finalPrice">৳{{ $product->new_price }}.00</span>
                     @if ($product->old_price)
                         <span class="text-gray-400 line-through text-lg" data-old-price="{{ $product->old_price }}"
                             id="oldPrice">৳{{ $product->old_price }}.00</span>
@@ -254,7 +254,7 @@
                     <input type="hidden" id="cartVariantId" name="cartVariantId">
                     <input id="quantity" type="hidden" name="quantity" value="1" class="quantity-input">
                     <button type="submit" id="addToCartBtn"
-                        class="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2.5 rounded transition duration-200">
+                        class="w-full bg-[{{ $theme->theme_bg }}] hover:bg-[{{ $theme->theme_hover }}] text-white font-semibold py-2.5 rounded transition duration-200">
                         Add to Cart
                     </button>
                 </form>
@@ -355,10 +355,10 @@
                             '').trim();
 
                         box.parentElement.querySelectorAll('.variant-box').forEach(b => {
-                            b.classList.remove('bg-orange-500', 'text-white');
+                            b.classList.remove('bg-[{{ $theme->theme_bg }}]', 'text-white');
                         });
 
-                        box.classList.add('bg-orange-500', 'text-white');
+                        box.classList.add('bg-[{{ $theme->theme_bg }}]', 'text-white');
 
                         const value = box.innerText.trim();
 
@@ -475,10 +475,10 @@
             <div class="p-4 bg-gradient-to-br from-yellow-50 to-yellow-100">
                 <h2 class="text-lg font-semibold mb-2 text-gray-800 flex items-center gap-2">💬 Need Help?</h2>
                 <p class="text-sm text-gray-700">📞 Call us at <span
-                        class="font-medium text-orange-600">{{ $setting->phone }}</span>
+                        class="font-medium text-[{{ $theme->theme_bg }}]">{{ $setting->phone }}</span>
                 </p>
                 <p class="text-sm text-gray-700 mt-1">📧 Email: <span
-                        class="text-orange-600">{{ $setting->email }}</span>
+                        class="text-[{{ $theme->theme_bg }}]">{{ $setting->email }}</span>
                 </p>
                 <p class="text-sm text-gray-700 mt-1">✅ Free delivery on orders over <span
                         class="font-semibold">৳1000</span>.</p>
@@ -490,11 +490,11 @@
                 <div class="flex flex-col gap-2 text-sm text-gray-700">
                     <div class="flex justify-between border-b pb-1">
                         <span>Inside Dhaka:</span>
-                        <span class="font-semibold text-orange-600">৳{{ $inDhakaCharge }}</span>
+                        <span class="font-semibold text-[{{ $theme->theme_bg }}]">৳{{ $inDhakaCharge }}</span>
                     </div>
                     <div class="flex justify-between">
                         <span>Outside Dhaka:</span>
-                        <span class="font-semibold text-orange-600">৳{{ $outDhakaCharge }}</span>
+                        <span class="font-semibold text-[{{ $theme->theme_bg }}]">৳{{ $outDhakaCharge }}</span>
                     </div>
                 </div>
                 <p class="text-xs text-gray-500 mt-2">💡 Delivery time 2–5 working days.</p>
@@ -576,7 +576,7 @@
                                     </p>
                                     @if (strlen($review->review) > 100)
                                         <button id="seeMoreBtn-{{ $review->id }}"
-                                            class="text-orange-600 font-semibold text-sm"
+                                            class="text-[{{ $theme->theme_bg }}] font-semibold text-sm"
                                             onclick="toggleDescription({{ $review->id }})">
                                             See More
                                         </button>
@@ -647,7 +647,7 @@
                                     <i class="ri-star-line text-yellow-400"></i>
                                 @endfor
                             </div>
-                            <p class="text-orange-500 font-bold mb-2 text-left text-[14.5px]">
+                            <p class="text-[{{ $theme->theme_bg }}] font-bold mb-2 text-left text-[14.5px]">
                                 &#2547;{{ $product->new_price }}
                                 @if ($product->old_price)
                                     <span
@@ -655,7 +655,7 @@
                                 @endif
                             </p>
                             <button
-                                class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-md w-full transition text-[14.5px]">Order
+                                class="bg-[{{ $theme->theme_bg }}] hover:bg-[{{ $theme->theme_hover }}] text-[{{ $theme->theme_text }}] px-4 py-2 rounded-md w-full transition text-[14.5px]">Order
                                 Now</button>
                         </div>
                     </div>

@@ -117,7 +117,7 @@
         <div class="max-w-6xl mx-auto">
             <div class="border-b pb-3 mb-3 flex items-center justify-between px-2">
                 <h2 class="text-lg font-semibold text-gray-800 mb-3 flex items-center gap-2 mt-1">
-                    <i class="ri-fire-fill text-orange-500"></i> Hot Deals
+                    <i class="ri-fire-fill text-[{{ $theme->theme_bg }}]"></i> Hot Deals
                 </h2>
                 @php
                     $hotDealsDate = $setting->hot_deals ?? null;
@@ -125,13 +125,13 @@
                 @if ($hotDealsDate)
                     <div class="flex gap-2 items-center" id="hot-deal-timer" data-end-date="{{ $hotDealsDate }}">
                         <div id="hours"
-                            class="w-10 h-9 text-sm flex items-center justify-center rounded bg-orange-600 text-white font-semibold">
+                            class="w-10 h-9 text-sm flex items-center justify-center rounded bg-[{{ $theme->theme_bg }}] text-white font-semibold">
                             00</div>
                         <div id="minutes"
-                            class="w-10 h-9 text-sm flex items-center justify-center rounded bg-orange-600 text-white font-semibold">
+                            class="w-10 h-9 text-sm flex items-center justify-center rounded bg-[{{ $theme->theme_bg }}] text-white font-semibold">
                             00</div>
                         <div id="seconds"
-                            class="w-10 h-9 text-sm flex items-center justify-center rounded bg-orange-600 text-white font-semibold">
+                            class="w-10 h-9 text-sm flex items-center justify-center rounded bg-[{{ $theme->theme_bg }}] text-white font-semibold">
                             00</div>
                     </div>
                 @endif
@@ -171,7 +171,7 @@
                                 class="w-full h-full object-cover transform hover:scale-105 transition duration-300">
                             <button
                                 onclick="event.stopPropagation(); document.getElementById('add_cart_{{ $product->id }}').submit();"
-                                class="absolute bottom-2 left-2 bg-orange-500 hover:bg-orange-600 text-white w-9 h-9 flex items-center justify-center rounded-full transition">
+                                class="absolute bottom-2 left-2 bg-[{{ $theme->theme_bg }}] hover:bg-[{{ $theme->theme_bg }}] text-white w-9 h-9 flex items-center justify-center rounded-full transition">
                                 <i class="ri-shopping-cart-line text-md"></i>
                             </button>
                         </div>
@@ -194,7 +194,7 @@
                                 <i class="ri-star-line text-yellow-400"></i>
                             @endfor
                         </div>
-                        <p class="text-orange-500 font-bold mb-2 text-left text-[14.5px]">
+                        <p class="text-[{{ $theme->theme_bg }}] font-bold mb-2 text-left text-[14.5px]">
                             &#2547;{{ $product->new_price }}
                             @if ($product->old_price)
                                 <span
@@ -216,7 +216,7 @@
                             <input type="hidden" name="image"
                                 value="{{ asset('uploads/products/' . $product->images->first()->image) }}">
                             <button type="submit" onclick="event.stopPropagation();"
-                                class="bg-orange-600 hover:bg-orange-700 text-white px-2 py-2 rounded w-full text-[14.5px]">
+                                class="bg-[{{ $theme->theme_bg }}] hover:bg-[{{ $theme->theme_hover }}] text-white px-2 py-2 rounded w-full text-[14.5px]">
                                 Buy Now
                             </button>
                         </form>
@@ -291,7 +291,7 @@
                                     <i class="ri-star-line text-yellow-400"></i>
                                 @endfor
                             </div>
-                            <p class="text-orange-500 font-bold mb-2 text-left text-[14.5px]">
+                            <p class="text-[{{ $theme->theme_bg }}] font-bold mb-2 text-left text-[14.5px]">
                                 &#2547;{{ $product->new_price }}
                                 @if ($product->old_price)
                                     <span
@@ -304,7 +304,7 @@
                                 <input type="hidden" name="image"
                                     value="{{ asset('uploads/products/' . $product->images->first()->image) }}">
                                 <button type="submit" onclick="event.stopPropagation();"
-                                    class="bg-orange-600 hover:bg-orange-700 text-white px-2 py-2 rounded w-full text-[14.5px]">
+                                    class="bg-[{{ $theme->theme_bg }}] hover:bg-[{{ $theme->theme_hover }}] text-white px-2 py-2 rounded w-full text-[14.5px]">
                                     Buy Now
                                 </button>
                             </form>
@@ -374,7 +374,7 @@
                                         @endif
                                     @endfor
                                 </div>
-                                <p class="text-orange-500 font-bold mb-2 text-left text-[14.5px]">
+                                <p class="text-[{{ $theme->theme_bg }}] font-bold mb-2 text-left text-[14.5px]">
                                     &#2547;{{ $product->new_price }}
                                     @if ($product->old_price)
                                         <span
@@ -388,7 +388,7 @@
                                     <input type="hidden" name="image"
                                         value="{{ asset('uploads/products/' . $product->images->first()->image) }}">
                                     <button type="submit" onclick="event.stopPropagation();"
-                                        class="bg-orange-600 hover:bg-orange-700 text-white px-2 py-2 rounded w-full text-[14.5px]">
+                                        class="bg-[{{ $theme->theme_bg }}] hover:bg-[{{ $theme->theme_hover }}] text-white px-2 py-2 rounded w-full text-[14.5px]">
                                         Buy Now
                                     </button>
                                 </form>

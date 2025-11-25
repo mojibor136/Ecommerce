@@ -29,10 +29,10 @@
                     <div class="flex items-center gap-2">
                         <input type="number" name="min_price" placeholder="Min"
                             value="{{ request()->min_price ?? $minPrice }}"
-                            class="w-1/2 border px-3 py-1.5 rounded focus:outline-none focus:ring-2 focus:ring-orange-500">
+                            class="w-1/2 border px-3 py-1.5 rounded focus:outline-none focus:ring-2 focus:ring-[{{ $theme->theme_bg }}]">
                         <input type="number" name="max_price" placeholder="Max"
                             value="{{ request()->max_price ?? $maxPrice }}"
-                            class="w-1/2 border px-3 py-1.5 rounded focus:outline-none focus:ring-2 focus:ring-orange-500">
+                            class="w-1/2 border px-3 py-1.5 rounded focus:outline-none focus:ring-2 focus:ring-[{{ $theme->theme_bg }}]">
                     </div>
                 </div>
 
@@ -58,7 +58,7 @@
 
                 <div class="flex gap-2 mt-4">
                     <button type="submit"
-                        class="w-1/2 bg-orange-500 hover:bg-orange-600 text-white py-2 rounded transition">Apply</button>
+                        class="w-1/2 bg-[{{ $theme->theme_bg }}] hover:bg-[{{ $theme->theme_hover }}] text-[{{ $theme->theme_bg }}] py-2 rounded transition">Apply</button>
                     <a href="{{ route('category.product', $product_category->slug) }}"
                         class="w-1/2 bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 rounded transition text-center">Reset</a>
                 </div>
@@ -93,7 +93,7 @@
                     </form>
 
                     <button id="openFilter" type="button"
-                        class="flex items-center gap-2 bg-orange-500 text-white px-4 py-[7px] rounded-md shadow hover:bg-orange-600 transition">
+                        class="flex items-center gap-2 bg-[{{ $theme->theme_bg }}] text-[{{ $theme->theme_text }}] px-4 py-[7px] rounded-md shadow hover:bg-[{{ $theme->theme_hover }}] transition">
                         <i class="ri-filter-3-line text-lg"></i> Filter
                     </button>
                 </div>
@@ -129,10 +129,10 @@
                                 <div class="flex items-center gap-2">
                                     <input type="number" name="min_price" placeholder="Min"
                                         value="{{ request()->min_price ?? $minPrice }}"
-                                        class="w-1/2 border px-3 py-1.5 rounded focus:ring-2 focus:ring-orange-500">
+                                        class="w-1/2 border px-3 py-1.5 rounded focus:ring-2 focus:ring-[{{ $theme->theme_bg }}]">
                                     <input type="number" name="max_price" placeholder="Max"
                                         value="{{ request()->max_price ?? $maxPrice }}"
-                                        class="w-1/2 border px-3 py-1.5 rounded focus:ring-2 focus:ring-orange-500">
+                                        class="w-1/2 border px-3 py-1.5 rounded focus:ring-2 focus:ring-[{{ $theme->theme_bg }}]">
                                 </div>
                             </div>
 
@@ -160,7 +160,7 @@
                             <!-- Buttons -->
                             <div class="flex gap-2 pt-2">
                                 <button type="submit"
-                                    class="w-1/2 bg-orange-500 hover:bg-orange-600 text-white py-2 rounded transition">Apply</button>
+                                    class="w-1/2 bg-[{{ $theme->theme_bg }}] hover:bg-[{{ $theme->theme_hover }}] text-[{{ $theme->theme_text }}] py-2 rounded transition">Apply</button>
                                 <a href="{{ route('category.product', $product_category->slug) }}"
                                     class="w-1/2 bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 rounded transition text-center">Reset</a>
                             </div>
@@ -231,7 +231,7 @@
                                         <i class="ri-star-line text-yellow-400"></i>
                                     @endfor
                                 </div>
-                                <p class="text-orange-500 font-bold mb-2 text-left text-[14.5px]">
+                                <p class="text-[{{ $theme->theme_bg }}] font-bold mb-2 text-left text-[14.5px]">
                                     &#2547;{{ $product->new_price }}
                                     @if ($product->old_price)
                                         <span

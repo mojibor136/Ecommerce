@@ -28,7 +28,8 @@
                         text-sm sm:text-base outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-200 border-gray-300">
                 </div>
 
-                <button type="submit" class="w-full bg-orange-500 text-white font-semibold py-2.5 rounded-md">
+                <button type="submit"
+                    class="w-full bg-[{{ $theme->theme_bg }}] text-[{{ $theme->theme_text }}] hover:bg-[{{ $theme->theme_hover }}] font-semibold py-2.5 rounded-md">
                     Track Order
                 </button>
             </form>

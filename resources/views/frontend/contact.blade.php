@@ -10,29 +10,29 @@
                 <div>
                     <label for="name" class="block text-gray-700 font-medium mb-2">Your Name</label>
                     <input type="text" id="name" name="name" placeholder="Enter your name"
-                        class="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500">
+                        class="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[{{ $theme->theme_bg }}] focus:border-[{{ $theme->theme_bg }}]">
                 </div>
 
                 <div>
                     <label for="email" class="block text-gray-700 font-medium mb-2">Email Address</label>
                     <input type="email" id="email" name="email" placeholder="Enter your email"
-                        class="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500">
+                        class="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[{{ $theme->theme_bg }}] focus:border-[{{ $theme->theme_bg }}]">
                 </div>
 
                 <div>
                     <label for="subject" class="block text-gray-700 font-medium mb-2">Subject</label>
                     <input type="text" id="subject" name="subject" placeholder="Enter your subject"
-                        class="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500">
+                        class="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[{{ $theme->theme_bg }}] focus:border-[{{ $theme->theme_bg }}]">
                 </div>
 
                 <div>
                     <label for="message" class="block text-gray-700 font-medium mb-2">Message</label>
                     <textarea id="message" name="message" rows="4" placeholder="Write your message here"
-                        class="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"></textarea>
+                        class="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[{{ $theme->theme_bg }}] focus:border-[{{ $theme->theme_bg }}]"></textarea>
                 </div>
 
                 <button type="submit"
-                    class="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2.5 rounded-md transition duration-200">
+                    class="w-full bg-[{{ $theme->theme_bg }}] hover:bg-[{{ $theme->theme_hover }}] text-[{{ $theme->theme_text }}] font-semibold py-2.5 rounded-md transition duration-200">
                     Send Message
                 </button>
             </form>
@@ -40,11 +40,14 @@
             <!-- Contact Info -->
             <div id="contactInfo" class="mt-8 bg-gray-50 border border-gray-200 rounded-lg p-4">
                 <h3 class="text-lg font-semibold text-gray-800 mb-3">Our Contact Information</h3>
-                <p class="mb-2"><i class="ri-map-pin-line text-orange-500 mr-2"></i>{{ $setting->address }}
+                <p class="mb-2"><i
+                        class="ri-map-pin-line text-[{{ $theme->theme_bg }}] mr-2"></i>{{ $setting->address }}
                 </p>
-                <p class="mb-2"><i class="ri-phone-line text-orange-500 mr-2"></i>+{{ $setting->phone }}</p>
-                <p class="mb-2"><i class="ri-mail-line text-orange-500 mr-2"></i>{{ $setting->email }}</p>
-                <p class="mb-2"><i class="ri-time-line text-orange-500 mr-2"></i>Open: {{ $setting->open_time }}</p>
+                <p class="mb-2"><i class="ri-phone-line text-[{{ $theme->theme_bg }}] mr-2"></i>+{{ $setting->phone }}
+                </p>
+                <p class="mb-2"><i class="ri-mail-line text-[{{ $theme->theme_bg }}] mr-2"></i>{{ $setting->email }}</p>
+                <p class="mb-2"><i class="ri-time-line text-[{{ $theme->theme_bg }}] mr-2"></i>Open:
+                    {{ $setting->open_time }}</p>
             </div>
         </div>
     </div>

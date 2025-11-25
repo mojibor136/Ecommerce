@@ -3,7 +3,7 @@
 @section('content')
     <div class="max-w-6xl mx-auto my-4 px-4 md:px-6 lg:px-0">
         <h1
-            class="text-2xl font-medium mb-6 text-gray-800 relative inline-block after:content-[''] after:absolute after:w-1/2 after:h-[3px] after:bg-orange-500 after:bottom-[-6px] after:left-0">
+            class="text-2xl font-medium mb-6 text-gray-800 relative inline-block after:content-[''] after:absolute after:w-1/2 after:h-[3px] after:bg-[{{ $theme->theme_bg }}] after:bottom-[-6px] after:left-0">
             🛍️ Shopping Cart
         </h1>
 
@@ -44,7 +44,7 @@
                                         </div>
                                         <p class="text-gray-500 text-sm mt-1">Qty:
                                             <input type="number" value="{{ $item['quantity'] }}" min="1"
-                                                class="w-14 border border-gray-300 rounded px-2 py-0.5 text-sm focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition duration-200 outline-none quantity-input"
+                                                class="w-14 border border-gray-300 rounded px-2 py-0.5 text-sm focus:border-[{{ $theme->theme_bg }}] focus:ring-1 focus:ring-[{{ $theme->theme_bg }}] transition duration-200 outline-none quantity-input"
                                                 data-id="{{ $id }}">
                                         </p>
                                     </div>
@@ -66,7 +66,7 @@
 
                 <div class="lg:w-1/3 bg-white shadow rounded-lg p-4 h-fit">
                     <h2 class="text-lg font-semibold mb-4 flex items-center gap-2"><i
-                            class="ri-bill-line text-orange-500"></i>Order Summary</h2>
+                            class="ri-bill-line text-[{{ $theme->theme_bg }}]"></i>Order Summary</h2>
                     <div class="flex justify-between mb-2">
                         <span class="text-gray-600">Your Location</span>
                         <span class="text-gray-800 font-medium customer-location">Detecting...</span>
@@ -91,7 +91,7 @@
 
                     @if (session('cart') && count(session('cart')) > 0)
                         <a href="{{ route('checkout.index') }}"
-                            class="w-full block text-center bg-orange-500 hover:bg-orange-600 text-white font-medium py-3 rounded-lg transition">
+                            class="w-full block text-center bg-[{{ $theme->theme_bg }}] hover:bg-[{{ $theme->theme_hover }}] text-[{{ $theme->theme_text }}] font-medium py-3 rounded-lg transition">
                             Proceed to Checkout
                         </a>
                     @else
@@ -110,7 +110,7 @@
                 <p class="text-gray-500 mb-6 text-center px-4">Looks like you haven't added any products yet. Start shopping
                     and fill your cart!</p>
                 <a href="{{ route('home') }}"
-                    class="bg-orange-500 hover:bg-orange-600 text-white font-medium py-3 px-6 rounded-lg transition">
+                    class="bg-[{{ $theme->theme_bg }}] hover:bg-[{{ $theme->theme_hover }}] text-[{{ $theme->theme_text }}] font-medium py-3 px-6 rounded-lg transition">
                     Continue Shopping
                 </a>
             </div>
