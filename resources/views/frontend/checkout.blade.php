@@ -385,7 +385,7 @@
 
                         .payment-card.active {
                             border: 2px solid;
-                            border-color: #f97316;
+                            border-color: #712f00;
                             background-color: #fff7ed;
                         }
                     </style>

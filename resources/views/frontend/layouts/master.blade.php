@@ -118,7 +118,7 @@
             <div class="max-w-6xl mx-auto py-4 flex items-center justify-between">
                 <!-- Logo -->
                 <h1 onclick="window.location.href='/'"
-                    class="text-2xl font-bold text-orange-600 flex items-center gap-1 cursor-pointer">
+                    class="text-2xl font-bold text-[{{ $theme->theme_bg }}] flex items-center gap-1 cursor-pointer">
                     <img class="max-w-48 w-auto h-16" src="{{ asset($logo) }}" alt="">
                 </h1>
 
@@ -128,7 +128,7 @@
                         placeholder="Search in {{ $setting->name }}..."
                         class="w-full px-4 py-2 rounded-l-md border border-gray-300 focus:outline-none focus:border-[{{ $theme->theme_bg }}] focus:ring-0 transition-colors duration-200">
                     <button
-                        class="bg-[#F85501] border border-[#F85501] text-white px-4 py-2 rounded-r-md hover:bg-orange-600">
+                        class="bg-[{{ $theme->theme_bg }}] text-[{{ $theme->theme_text }}] hover:bg-[{{ $theme->theme_hover }}] border border-[{{ $theme->theme_bg }}] px-4 py-2 rounded-r-md">
                         <i class="ri-search-line"></i>
                     </button>
 
@@ -143,7 +143,7 @@
 
                     <!-- Tracking Order -->
                     <a href="/order/tracking"
-                        class="flex items-center gap-1 text-gray-700 hover:text-[#F85501] font-medium">
+                        class="flex items-center gap-1 text-gray-700 hover:text-[{{ $theme->theme_bg }}] font-medium">
                         <i class="ri-map-pin-line text-xl"></i>
                         <span class="font-normal">Tracking Order</span>
                     </a>
@@ -151,9 +151,9 @@
                     <!-- Shopping Cart -->
                     <div class="relative cursor-pointer" onclick="window.location.href='/shipping/cart'">
                         <i
-                            class="ri-shopping-cart-line  text-xl text-gray-700 hover:text-[#F85501] cursor-pointer text-2xl"></i>
+                            class="ri-shopping-cart-line  text-xl text-gray-700 hover:text-[{{ $theme->theme_bg }}] cursor-pointer text-2xl"></i>
                         <span
-                            class="absolute -top-2 -right-2 bg-[#F85501] text-white text-xs rounded-full px-1.5 py-0.5 font-semibold">
+                            class="absolute -top-2 -right-2 bg-[{{ $theme->theme_bg }}] text-[{{ $theme->theme_text }}] text-xs rounded-full px-1.5 py-0.5 font-semibold">
                             {{ count(session('cart', [])) }}</span>
                     </div>
                 </div>
@@ -170,7 +170,7 @@
                 </button>
 
                 <!-- 🛍️ Logo -->
-                <a href="/" class="flex items-center gap-1 text-orange-600 font-bold text-xl">
+                <a href="/" class="flex items-center gap-1 text-[{{ $theme->theme_bg }}] font-bold text-xl">
                     <img class="max-w-48 w-auto h-12"
                         src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Daraz_Logo.png/1200px-Daraz_Logo.png"
                         alt="">
@@ -181,7 +181,7 @@
                     <i
                         class="ri-shopping-cart-line text-2xl text-gray-700 hover:text-[{{ $theme->theme_bg }}] cursor-pointer"></i>
                     <span
-                        class="absolute -top-1.5 -right-1.5 bg-red-500 text-white text-xs rounded-full px-1.5 font-semibold">
+                        class="absolute -top-1.5 -right-1.5 bg-[{{ $theme->theme_bg }}] text-[{{ $theme->theme_text }}] text-xs rounded-full px-1.5 font-semibold">
                         {{ count(session('cart', [])) }}
                     </span>
                 </div>
@@ -193,7 +193,7 @@
                     <input id="MobilesearchInput" type="text" placeholder="Search products..."
                         class="w-full bg-[transparent] px-3 py-2 outline-none rounded-l ring-1 ring-offset-1 ring-gray-200 text-sm text-gray-700 transition-colors duration-200
                 focus:outline-none focus:ring-1 focus:ring-[{{ $theme->theme_bg }}] focus:ring-offset-1">
-                    <button class="bg-[{{ $theme->theme_bg }}] px-3 py-2 text-white hover:bg-orange-600 rounded-r">
+                    <button class="bg-[{{ $theme->theme_bg }}] text-[{{ $theme->theme_text }}] hover:bg-[{{ $theme->theme_hover }}] px-3 py-2 rounded-r">
                         <i class="ri-search-line"></i>
                     </button>
                     <div id="MobilesearchBox" data-lenis-disabled
@@ -225,7 +225,7 @@
                     @foreach ($allcategories as $category)
                         <li class="flex flex-col">
                             <!-- Main Category -->
-                            <div class="flex items-center justify-between px-4 py-3 hover:bg-orange-50 cursor-pointer"
+                            <div class="flex items-center justify-between px-4 py-3 hover:bg-[{{ $theme->theme_bg }}]/50 cursor-pointer"
                                 onclick="window.location.href='{{ route('category.product', $category->slug) }}'">
                                 <div class="flex items-center gap-3">
                                     <img src="{{ asset($category->image ?? 'default-category.png') }}"
@@ -243,7 +243,7 @@
                                 <ul
                                     class="max-h-0 overflow-hidden transition-all duration-300 ease-in-out flex-col divide-y divide-gray-200 bg-gray-50">
                                     @foreach ($category->subcategories as $subcategory)
-                                        <li class="flex items-center gap-3 px-8 py-3 hover:bg-orange-100 cursor-pointer"
+                                        <li class="flex items-center gap-3 px-8 py-3 hover:bg-[{{ $theme->theme_bg }}]/50 cursor-pointer"
                                             onclick="window.location.href='{{ route('subcategory.product', $subcategory->slug) }}'">
                                             <span class="text-gray-600 text-sm">{{ $subcategory->name }}</span>
                                         </li>
@@ -355,7 +355,7 @@
                     <ul class="space-y-2 text-sm">
                         @foreach ($topCategories as $category)
                             <li><a href="{{ route('category.product', $category->slug) }}"
-                                    class="hover:text-orange-400 transition">{{ $category->name }}</a>
+                                    class="hover:text-[{{ $theme->theme_bg }}] transition">{{ $category->name }}</a>
                             </li>
                         @endforeach
                     </ul>
@@ -365,11 +365,11 @@
                 <div>
                     <h3 class="text-lg font-semibold text-white mb-3">Our Services</h3>
                     <ul class="space-y-2 text-sm">
-                        <li><a href="#" class="hover:text-orange-400 transition">Free Shipping</a></li>
-                        <li><a href="#" class="hover:text-orange-400 transition">Easy Returns</a></li>
-                        <li><a href="#" class="hover:text-orange-400 transition">24/7 Support</a></li>
-                        <li><a href="#" class="hover:text-orange-400 transition">Warranty Policy</a></li>
-                        <li><a href="#" class="hover:text-orange-400 transition">Affiliate Program</a></li>
+                        <li><a href="#" class="hover:text-[{{ $theme->theme_bg }}] transition">Free Shipping</a></li>
+                        <li><a href="#" class="hover:text-[{{ $theme->theme_bg }}] transition">Easy Returns</a></li>
+                        <li><a href="#" class="hover:text-[{{ $theme->theme_bg }}] transition">24/7 Support</a></li>
+                        <li><a href="#" class="hover:text-[{{ $theme->theme_bg }}] transition">Warranty Policy</a></li>
+                        <li><a href="#" class="hover:text-[{{ $theme->theme_bg }}] transition">Affiliate Program</a></li>
                     </ul>
                 </div>
 
@@ -383,7 +383,7 @@
                         <input type="email" placeholder="Enter your email"
                             class="w-full px-3 py-2 bg-gray-800 text-gray-300 text-sm focus:outline-none">
                         <button
-                            class="bg-[{{ $theme->theme_bg }}] hover:bg-orange-600 px-4 text-white font-semibold text-sm transition">Join</button>
+                            class="bg-[{{ $theme->theme_bg }}] text-[{{ $theme->theme_text }}] hover:bg-[{{ $theme->theme_hover }}] px-4 font-semibold text-sm transition">Join</button>
                     </form>
                     <p class="text-xs text-gray-500 mb-4">We respect your privacy. Unsubscribe anytime.</p>
 
@@ -403,12 +403,12 @@
                     rights reserved.
                 </p>
                 <div class="flex flex-wrap justify-center gap-4 mt-3 sm:mt-0">
-                    <a href="{{ url('/privacy-policy') }}" class="hover:text-orange-400 transition">Privacy
+                    <a href="{{ url('/privacy-policy') }}" class="hover:text-[{{ $theme->theme_bg }}] transition">Privacy
                         Policy</a>
-                    <a href="{{ url('/terms-and-conditions') }}" class="hover:text-orange-400 transition">Terms of
+                    <a href="{{ url('/terms-and-conditions') }}" class="hover:text-[{{ $theme->theme_bg }}] transition">Terms of
                         Use</a>
-                    <a href="{{ url('/help-center') }}" class="hover:text-orange-400 transition">Help Center</a>
-                    <a href="{{ url('/order/tracking') }}" class="hover:text-orange-400 transition">Track Order</a>
+                    <a href="{{ url('/help-center') }}" class="hover:text-[{{ $theme->theme_bg }}] transition">Help Center</a>
+                    <a href="{{ url('/order/tracking') }}" class="hover:text-[{{ $theme->theme_bg }}] transition">Track Order</a>
                 </div>
             </div>
         </div>
