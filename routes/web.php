@@ -10,6 +10,7 @@ use App\Http\Controllers\Backend\CategoryController;
 use App\Http\Controllers\Backend\CouponController;
 use App\Http\Controllers\Backend\CourierController;
 use App\Http\Controllers\Backend\FraudController;
+use App\Http\Controllers\Backend\IpBlockController;
 use App\Http\Controllers\Backend\MediaController;
 use App\Http\Controllers\Backend\OrderController;
 use App\Http\Controllers\Backend\PaymentGatewayController;
@@ -74,6 +75,11 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'web'])->group(funct
     Route::controller(FraudController::class)->group(function () {
         Route::post('/fraud', 'index')->name('fraud.index');
         Route::post('/fraud/store', 'store')->name('fraud.store');
+    });
+
+    Route::controller(IpBlockController::class)->group(function () {
+        Route::get('/ip-blocked', 'index')->name('ip_block.index');
+        Route::delete('/ip-blocked/{id}', 'destroy')->name('ip_block.destroy');
     });
 
     Route::controller(ThemeController::class)->group(function () {

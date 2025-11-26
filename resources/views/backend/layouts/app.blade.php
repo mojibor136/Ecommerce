@@ -392,6 +392,27 @@
                             </ul>
                         </li>
 
+                        <!-- IP Block Management -->
+                        <li class="group">
+                            <a href="#"
+                                class="mb-1 flex items-center pl-4 py-2.5 text-gray-300 hover:text-white hover:bg-[#3b3f5c] rounded submenu-toggle"
+                                data-menu-key="ip-block">
+                                <i class="ri-shield-user-line mr-2 text-red-400"></i>
+                                <span class="text-[15px]">IP Management</span>
+                                <i class="ri-arrow-down-s-line ml-auto mr-4"></i>
+                            </a>
+                            <ul class="submenu pl-2 bg-[#2a2f45]">
+                                <!-- Submodule: All Blocked -->
+                                <li>
+                                    <a href="{{ route('admin.ip_block.index') }}"
+                                        class="flex items-center py-2 pl-6 text-[15px] rounded
+                {{ request()->routeIs('admin.ip_block.*') ? 'bg-[#3b3f5c] text-white' : 'text-gray-300 hover:text-white hover:bg-[#3b3f5c]' }}">
+                                        <i class="ri-lock-line mr-2 text-yellow-400"></i>All Blocked
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
                         <!-- Theme Settings -->
                         <li class="group">
                             <a href="#"
