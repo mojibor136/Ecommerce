@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Setting extends Model
 {
-    protected $fillable = ['name', 'headline' , 'open_time' , 'address' , 'whatsapp' , 'facebook' , 'phone' , 'email' , 'shipping_charge' , 'brand' , 'hot_deals' , 'meta_title', 'meta_tag', 'meta_desc', 'footer', 'icon', 'favicon'];
+    protected $fillable = ['name', 'fraud_api' , 'headline' , 'open_time' , 'address' , 'whatsapp' , 'facebook' , 'phone' , 'email' , 'shipping_charge' , 'brand' , 'hot_deals' , 'meta_title', 'meta_tag', 'meta_desc', 'footer', 'icon', 'favicon'];
 
     protected $casts = [
         'meta_tag' => 'array',

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Courier;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -16,8 +17,9 @@ class CourierController extends Controller
     {
         $redx = Courier::where('type', 'redx')->first();
         $steadfast = Courier::where('type', 'steadfast')->first();
+        $setting = Setting::first();
 
-        return view('backend.courier.index', compact('redx', 'steadfast'));
+        return view('backend.courier.index', compact('redx', 'steadfast', 'setting'));
     }
 
     /**

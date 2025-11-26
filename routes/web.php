@@ -73,6 +73,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'web'])->group(funct
 
     Route::controller(FraudController::class)->group(function () {
         Route::post('/fraud', 'index')->name('fraud.index');
+        Route::post('/fraud/store', 'store')->name('fraud.store');
     });
 
     Route::controller(ThemeController::class)->group(function () {

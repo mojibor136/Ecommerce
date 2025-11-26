@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 
 class FraudController extends Controller
@@ -69,7 +70,7 @@ class FraudController extends Controller
             $phone = $order->shipping->phone;
 
             // API KEY
-            $apiKey = 'nM4c51nyAar6036jTMfMyxXEPTTxPKXDwgJAgynb0jiSmwh6EIMTCKyxiMMa';
+            $apiKey = Setting::first()->fraud_api;
 
             // cURL
             $curl = curl_init();
@@ -102,6 +103,25 @@ class FraudController extends Controller
 
         } catch (\Exception $e) {
             return back()->with('error', 'Something went wrong: '.$e->getMessage());
+        }
+    }
+
+    public function store(Request $request)
+    {
+        try {
+            $validated = $request->validate([
+                'fraud_api' => 'nullable|string',
+            ]);
+
+            $setting = Setting::first();
+            $setting->fraud_api = $validated['fraud_api'] ?? null;
+            $setting->save();
+
+            return redirect()->back()->with('success', 'Fraud API updated successfully!');
+        } catch (\Exception $e) {
+            Log::error('Fraud API Error: '.$e->getMessage());
+
+            return redirect()->back()->with('error', 'Something went wrong! Please try again.');
         }
     }
 }

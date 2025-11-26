@@ -26,7 +26,6 @@
         <!-- Forms -->
         <div class="w-full bg-white rounded shadow px-6 py-6">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-
                 <!-- Redx -->
                 <div class="border border-gray-300 bg-white rounded-lg overflow-hidden shadow-sm">
                     <div class="flex justify-between items-center px-4 py-3" style="background-color: #E0002D;">
@@ -103,8 +102,37 @@
                         </div>
                     </form>
                 </div>
-
             </div>
+
+            <div class="mt-6 w-full">
+                <div class="border border-gray-300 bg-white rounded-lg overflow-hidden shadow-sm">
+                    <div class="flex justify-between items-center px-4 py-3" style="background-color: #4F46E5;">
+                        <span class="text-white text-xl font-semibold">BD Courier Api</span>
+                        <i class="ri-shield-check-fill text-3xl text-white"></i>
+                    </div>
+
+                    <form action="{{ route('admin.fraud.store') }}" method="POST" enctype="multipart/form-data"
+                        class="grid grid-cols-1 gap-3 px-4 py-4">
+                        @csrf
+
+                        <div>
+                            <label class="block text-md text-gray-600 mb-1 font-medium">API Key</label>
+                            <input type="text" placeholder="Enter BD Courier Api"
+                                value="{{ old('fraud_api', $setting->fraud_api) }}" name="fraud_api"
+                                class="w-full rounded-md border border-gray-300 text-gray-700 px-3 py-2 
+            focus:ring-2 focus:ring-indigo-500 outline-none transition-all">
+                        </div>
+
+                        <div class="mt-3">
+                            <button type="submit"
+                                class="w-full rounded-md bg-indigo-600 hover:bg-indigo-700 text-white py-2.5 font-medium transition-all">
+                                Save
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
         </div>
     </div>
 @endsection
