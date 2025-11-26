@@ -5,12 +5,14 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 use App\Mail\OrderCancelledMail;
 use App\Mail\OrderDeliveredMail;
+use App\Models\BlockedIp;
 use App\Models\Category;
 use App\Models\Courier;
 use App\Models\GmailSmtp;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\Setting;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -18,6 +20,28 @@ use Illuminate\Support\Facades\Mail;
 
 class OrderController extends Controller
 {
+    protected function checkIpForBlock($ip)
+    {
+        if (! $ip) {
+            return;
+        }
+
+        $todayCancelledOrders = Order::where('ip_address', $ip)
+            ->where('order_status', 'cancelled')
+            ->whereDate('created_at', Carbon::today())
+            ->count();
+
+        if ($todayCancelledOrders >= 10) {
+
+            if (! BlockedIp::where('ip', $ip)->exists()) {
+                BlockedIp::create([
+                    'ip' => $ip,
+                    'reason' => 'Too many cancelled orders today',
+                ]);
+            }
+        }
+    }
+
     public function index(Request $request)
     {
         $query = Order::with(['items', 'shipping'])->latest();
@@ -301,6 +325,7 @@ class OrderController extends Controller
                 try {
                     if ($request->status == 'cancelled') {
                         Mail::to($order->shipping->email)->send(new OrderCancelledMail($order));
+                        $this->checkIpForBlock($order->ip_address);
                     }
 
                     if ($request->status == 'delivered') {

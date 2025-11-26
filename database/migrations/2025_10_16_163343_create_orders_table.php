@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('courier_method')->default('');
             $table->string('discount')->default(0);
             $table->string('shipping_charge')->default(0);
+            $table->string('ip_address')->default(0);
             $table->string('order_status')->default('pending');
             $table->string('payment_status')->default('pending');
             $table->timestamps();
