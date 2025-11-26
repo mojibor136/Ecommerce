@@ -156,7 +156,7 @@
         focus-within:border-blue-500 transition-colors duration-200">
                     <!-- Input Field -->
                     <input id="searchInput" type="text" placeholder="Invoice & Tracking ID...."
-                        class="flex-1 px-4 h-full outline-none border-none text-gray-700">
+                        class="flex-1 px-4 h-full outline-none border-none text-gray-700" {{ request()->search }}>
                     <!-- Search Button with Remix Icon -->
                     <button type="button" onclick="searchOrder()"
                         class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 flex items-center justify-center">

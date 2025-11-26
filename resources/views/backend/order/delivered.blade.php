@@ -144,7 +144,7 @@
                     class="w-full sm:w-auto flex items-center border rounded-md overflow-hidden h-10
             focus-within:border-blue-500 transition-colors duration-200 mt-2 sm:mt-0">
                     <input id="searchInput" type="text" placeholder="Invoice & Tracking ID...."
-                        class="flex-1 px-4 h-full outline-none border-none text-gray-700">
+                        class="flex-1 px-4 h-full outline-none border-none text-gray-700" {{ request()->search }}>
                     <button type="button" onclick="searchOrder()"
                         class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 flex items-center justify-center">
                         <i class="ri-search-line text-lg"></i>

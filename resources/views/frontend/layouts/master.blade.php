@@ -197,13 +197,12 @@
                         <i class="ri-search-line"></i>
                     </button>
                     <div id="MobilesearchBox" data-lenis-disabled
-                        class="search-box absolute left-0 top-full mt-2 bg-white shadow-md border border-gray-200 rounded-md max-h-96 overflow-y-auto hidden">
+                        class="search-box absolute left-0 top-full mt-2 bg-white w-[-webkit-fill-available] shadow-md border border-gray-200 rounded-md max-h-96 overflow-y-auto hidden">
                         <!-- JS will populate products here -->
                     </div>
                 </div>
             </div>
         </header>
-
 
         <!-- 📂 Mobile Dropdown Menu (Hidden by default) -->
         <div id="mobileMenu"
