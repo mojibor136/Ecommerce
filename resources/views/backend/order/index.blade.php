@@ -78,6 +78,116 @@
             ];
         @endphp
 
+        @if (session('response'))
+            @php
+                $response = session('response', []);
+                $couriers = collect($response['courierData'] ?? [])->except('summary');
+
+                $totalParcels = $couriers->sum('total_parcel');
+                $totalSuccess = $couriers->sum('success_parcel');
+                $totalCancel = $couriers->sum('cancelled_parcel');
+                $successRate = $totalParcels > 0 ? round(($totalSuccess / $totalParcels) * 100, 1) : 0;
+            @endphp
+            @if (session('response'))
+                <script>
+                    function togglePopup() {
+                        const popup = document.getElementById("popup");
+                        popup.style.display = popup.style.display === "flex" ? "none" : "flex";
+                    }
+                    document.addEventListener('DOMContentLoaded', function() {
+                        togglePopup();
+                    });
+                </script>
+            @endif
+        @endif
+
+        @if (session('response'))
+            <div id="popup" class="fixed inset-0 bg-black bg-opacity-50 p-4 hidden justify-center items-center z-[9999]">
+
+                <div class="bg-white rounded-lg px-6 pb-6 pt-4 w-full max-w-4xl shadow-xl relative">
+                    <button onclick="togglePopup()" class="absolute top-3 right-4"><i
+                            class="ri-close-line text-2xl text-gray-700 hover:text-red-600"></i></button>
+                    <!-- Header -->
+                    <div class="flex flex-col items-center mb-6">
+                        <h2 class="text-2xl font-bold text-gray-800 mb-1">Fraud Checker Report</h2>
+                        <p class="text-gray-600 text-sm">Phone: <span
+                                class="font-medium">{{ $response['phone'] ?? 'N/A' }}</span></p>
+                        <p class="text-gray-500 text-xs mt-1">Generated on:
+                            {{ \Carbon\Carbon::now()->format('d M Y, h:i A') }}</p>
+                    </div>
+
+                    <!-- Summary Cards -->
+                    <div class="flex gap-3 mb-6 flex-wrap justify-center">
+
+                        <div class="flex-1 min-w-[100px] rounded-md p-4 text-center bg-blue-500 text-white">
+                            <p class="text-xl font-bold m-0">{{ $totalParcels }}</p>
+                            <p class="text-xs font-medium m-0">TOTAL ORDER</p>
+                        </div>
+
+                        <div class="flex-1 min-w-[100px] rounded-md p-4 text-center bg-green-500 text-white">
+                            <p class="text-xl font-bold m-0">{{ $totalSuccess }}</p>
+                            <p class="text-xs font-medium m-0">TOTAL DELIVERY</p>
+                        </div>
+
+                        <div class="flex-1 min-w-[100px] rounded-md p-4 text-center bg-red-500 text-white">
+                            <p class="text-xl font-bold m-0">{{ $totalCancel }}</p>
+                            <p class="text-xs font-medium m-0">TOTAL CANCEL</p>
+                        </div>
+                    </div>
+
+                    <!-- Table -->
+                    <div class="overflow-x-auto mt-4">
+                        <table class="w-full border-collapse text-center rounded-md shadow-md overflow-hidden">
+                            <thead>
+                                <tr>
+                                    <th class="p-3 border bg-blue-500 text-white">Courier Name</th>
+                                    <th class="p-3 border bg-green-500 text-white">Order</th>
+                                    <th class="p-3 border bg-yellow-500 text-white">Delivery</th>
+                                    <th class="p-3 border bg-red-500 text-white">Cancel</th>
+                                    <th class="p-3 border bg-purple-500 text-white">Success Rate</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                @if (empty($response['courierData']) || count($response['courierData']) == 0)
+                                    <tr>
+                                        <td colspan="5" class="p-4 text-gray-400 text-center">No data found</td>
+                                    </tr>
+                                @else
+                                    @foreach ($response['courierData'] as $name => $courier)
+                                        <tr class="transition bg-white hover:bg-blue-50">
+
+                                            <td class="p-3 border bg-blue-100 text-blue-600">
+                                                {{ ucfirst($name) }}
+                                            </td>
+
+                                            <td class="p-3 border bg-green-100 text-green-600">
+                                                {{ $courier['total_parcel'] ?? 0 }}
+                                            </td>
+
+                                            <td class="p-3 border bg-yellow-100 text-yellow-600">
+                                                {{ $courier['success_parcel'] ?? 0 }}
+                                            </td>
+
+                                            <td class="p-3 border bg-red-100 text-red-600">
+                                                {{ $courier['cancelled_parcel'] ?? 0 }}
+                                            </td>
+
+                                            <td class="p-3 border bg-purple-100 text-purple-600">
+                                                {{ $courier['success_ratio'] ?? 'N/A' }}%
+                                            </td>
+
+                                        </tr>
+                                    @endforeach
+                                @endif
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        @endif
+
         <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 mb-4">
             @foreach ($statuses as $status)
                 <div onclick="window.location.href='{{ $status['route'] }}'"
@@ -133,6 +243,17 @@
                     <span
                         class="absolute -top-8 left-1/2 -translate-x-1/2 scale-0 group-hover:scale-100 transition-all duration-200 bg-gray-800 text-white text-xs px-2 py-1 rounded shadow whitespace-nowrap">
                         Delete this order
+                    </span>
+                </button>
+
+                <!-- Fraud Checker -->
+                <button type="button" onclick="submitForm('{{ route('admin.fraud.index') }}')"
+                    class="relative inline-flex items-center bg-gray-900 hover:bg-gray-800 text-white px-4 py-2 rounded-md shadow font-medium transition-all duration-200 group"
+                    title="Fraud Checker">
+                    <i class="ri-shield-keyhole-line mr-2"></i> Fraud Checker
+                    <span
+                        class="absolute -top-8 left-1/2 -translate-x-1/2 scale-0 group-hover:scale-100 transition-all duration-200 bg-gray-800 text-white text-xs px-2 py-1 rounded shadow whitespace-nowrap">
+                        Check Fraud Orders
                     </span>
                 </button>
 

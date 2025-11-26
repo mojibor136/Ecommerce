@@ -9,6 +9,7 @@ use App\Http\Controllers\Backend\BannerController;
 use App\Http\Controllers\Backend\CategoryController;
 use App\Http\Controllers\Backend\CouponController;
 use App\Http\Controllers\Backend\CourierController;
+use App\Http\Controllers\Backend\FraudController;
 use App\Http\Controllers\Backend\MediaController;
 use App\Http\Controllers\Backend\OrderController;
 use App\Http\Controllers\Backend\PaymentGatewayController;
@@ -68,6 +69,10 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'web'])->group(funct
         Route::post('/shipping/charge/store', 'shippingStore')->name('shipping.store');
         Route::get('/setting', 'setting')->name('setting');
         Route::post('/setting/store', 'settingStore')->name('setting.store');
+    });
+
+    Route::controller(FraudController::class)->group(function () {
+        Route::post('/fraud', 'index')->name('fraud.index');
     });
 
     Route::controller(ThemeController::class)->group(function () {
