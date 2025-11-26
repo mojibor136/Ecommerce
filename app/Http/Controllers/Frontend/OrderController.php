@@ -51,7 +51,8 @@ class OrderController extends Controller
                 'discount' => '0',
                 'tracking_id' => '0',
                 'courier_method' => 'Any',
-                'ip_address' => request()->ip(),
+                'ip_address' => $request->ip(),
+                'user_agent' => $request->userAgent(),
             ]);
 
             Shipping::create([

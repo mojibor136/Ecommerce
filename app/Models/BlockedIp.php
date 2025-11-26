@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class BlockedIp extends Model
 {
-    protected $fillable = ['ip', 'reason'];
+    protected $fillable = ['ip_address', 'user_agent', 'reason'];
 }

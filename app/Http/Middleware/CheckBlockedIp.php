@@ -11,8 +11,12 @@ class CheckBlockedIp
     public function handle(Request $request, Closure $next)
     {
         $ip = $request->ip();
-        if (BlockedIp::where('ip', $ip)->exists()) {
-            abort(403, 'আপনার IP ব্লক করা হয়েছে।');
+        $userAgent = $request->userAgent();
+
+        if (BlockedIp::where('ip_address', $ip)
+            ->where('user_agent', $userAgent)
+            ->exists()) {
+            abort(403, 'আপনার IP বা ডিভাইস ব্লক করা হয়েছে।');
         }
 
         return $next($request);

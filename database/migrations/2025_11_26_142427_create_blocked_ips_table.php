@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('blocked_ips', function (Blueprint $table) {
             $table->id();
-            $table->string('ip')->unique();
+            $table->string('ip_address')->unique();
+            $table->string('user_agent')->unique();
             $table->string('reason')->nullable();
             $table->timestamps();
         });
