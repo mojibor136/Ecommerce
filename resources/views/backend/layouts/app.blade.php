@@ -88,8 +88,7 @@
                 <div class="flex justify-between w-full items-center">
                     <div class="logo flex flex-row gap-16 hidden md:block">
                         <div class="flex flex-row gap-2 items-center">
-                            <img src="https://bttibd.it.com/bteibd/public/upload/side_logo_1760010888.png"
-                                alt="Logo" class="w-44 h-auto" />
+                            <img src="{{ asset($logo) }}" alt="Logo" class="w-32 h-auto" />
                         </div>
                     </div>
                     <i id="menuBtn" class="ri-menu-line md:hidden block text-white text-xl font-medium"></i>

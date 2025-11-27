@@ -171,9 +171,7 @@
 
                 <!-- 🛍️ Logo -->
                 <a href="/" class="flex items-center gap-1 text-[{{ $theme->theme_bg }}] font-bold text-xl">
-                    <img class="max-w-48 w-auto h-12"
-                        src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Daraz_Logo.png/1200px-Daraz_Logo.png"
-                        alt="">
+                    <img class="max-w-48 w-auto h-12" src="{{ asset($logo) }}" alt="">
                 </a>
 
                 <!-- 🛒 Cart Icon -->
@@ -193,7 +191,8 @@
                     <input id="MobilesearchInput" type="text" placeholder="Search products..."
                         class="w-full bg-[transparent] px-3 py-2 outline-none rounded-l ring-1 ring-offset-1 ring-gray-200 text-sm text-gray-700 transition-colors duration-200
                 focus:outline-none focus:ring-1 focus:ring-[{{ $theme->theme_bg }}] focus:ring-offset-1">
-                    <button class="bg-[{{ $theme->theme_bg }}] text-[{{ $theme->theme_text }}] hover:bg-[{{ $theme->theme_hover }}] px-3 py-2 rounded-r">
+                    <button
+                        class="bg-[{{ $theme->theme_bg }}] text-[{{ $theme->theme_text }}] hover:bg-[{{ $theme->theme_hover }}] px-3 py-2 rounded-r">
                         <i class="ri-search-line"></i>
                     </button>
                     <div id="MobilesearchBox" data-lenis-disabled
@@ -211,9 +210,7 @@
                 <!-- Header -->
                 <div
                     class="flex items-center justify-between px-4 py-2 border-b border-gray-200 sticky top-0 bg-white z-50">
-                    <img class="max-w-48 w-auto h-10"
-                        src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Daraz_Logo.png/1200px-Daraz_Logo.png"
-                        alt="">
+                    <img class="max-w-48 w-auto h-10" src="{{ asset($logo) }}" alt="">
                     <button id="closeCategorySidebar" class="text-gray-600 hover:text-[{{ $theme->theme_bg }}]">
                         <i class="ri-close-line text-2xl"></i>
                     </button>
@@ -364,11 +361,16 @@
                 <div>
                     <h3 class="text-lg font-semibold text-white mb-3">Our Services</h3>
                     <ul class="space-y-2 text-sm">
-                        <li><a href="#" class="hover:text-[{{ $theme->theme_bg }}] transition">Free Shipping</a></li>
-                        <li><a href="#" class="hover:text-[{{ $theme->theme_bg }}] transition">Easy Returns</a></li>
-                        <li><a href="#" class="hover:text-[{{ $theme->theme_bg }}] transition">24/7 Support</a></li>
-                        <li><a href="#" class="hover:text-[{{ $theme->theme_bg }}] transition">Warranty Policy</a></li>
-                        <li><a href="#" class="hover:text-[{{ $theme->theme_bg }}] transition">Affiliate Program</a></li>
+                        <li><a href="#" class="hover:text-[{{ $theme->theme_bg }}] transition">Free
+                                Shipping</a></li>
+                        <li><a href="#" class="hover:text-[{{ $theme->theme_bg }}] transition">Easy Returns</a>
+                        </li>
+                        <li><a href="#" class="hover:text-[{{ $theme->theme_bg }}] transition">24/7 Support</a>
+                        </li>
+                        <li><a href="#" class="hover:text-[{{ $theme->theme_bg }}] transition">Warranty
+                                Policy</a></li>
+                        <li><a href="#" class="hover:text-[{{ $theme->theme_bg }}] transition">Affiliate
+                                Program</a></li>
                     </ul>
                 </div>
 
@@ -402,12 +404,16 @@
                     rights reserved.
                 </p>
                 <div class="flex flex-wrap justify-center gap-4 mt-3 sm:mt-0">
-                    <a href="{{ url('/privacy-policy') }}" class="hover:text-[{{ $theme->theme_bg }}] transition">Privacy
+                    <a href="{{ url('/privacy-policy') }}"
+                        class="hover:text-[{{ $theme->theme_bg }}] transition">Privacy
                         Policy</a>
-                    <a href="{{ url('/terms-and-conditions') }}" class="hover:text-[{{ $theme->theme_bg }}] transition">Terms of
+                    <a href="{{ url('/terms-and-conditions') }}"
+                        class="hover:text-[{{ $theme->theme_bg }}] transition">Terms of
                         Use</a>
-                    <a href="{{ url('/help-center') }}" class="hover:text-[{{ $theme->theme_bg }}] transition">Help Center</a>
-                    <a href="{{ url('/order/tracking') }}" class="hover:text-[{{ $theme->theme_bg }}] transition">Track Order</a>
+                    <a href="{{ url('/help-center') }}" class="hover:text-[{{ $theme->theme_bg }}] transition">Help
+                        Center</a>
+                    <a href="{{ url('/order/tracking') }}"
+                        class="hover:text-[{{ $theme->theme_bg }}] transition">Track Order</a>
                 </div>
             </div>
         </div>
