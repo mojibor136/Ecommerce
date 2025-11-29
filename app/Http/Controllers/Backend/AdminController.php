@@ -21,6 +21,7 @@ class AdminController extends Controller
         foreach ($statuses as $status) {
             $ordersCount[$status] = Order::where('order_status', $status)->count();
         }
+
         $ordersCount['all order'] = Order::count();
 
         $productCount = Product::count();

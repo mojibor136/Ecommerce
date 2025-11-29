@@ -17,7 +17,7 @@
             <div class="bg-white p-5 rounded shadow hover:shadow-lg transition flex justify-between items-center">
                 <div>
                     <p class="text-gray-500 text-sm">Total Orders</p>
-                    <h2 class="text-3xl font-bold">{{ $ordersCount['all'] ?? 0 }}</h2>
+                    <h2 class="text-3xl font-bold">{{ $ordersCount['all order'] ?? 0 }}</h2>
                 </div>
                 <i class="ri-shopping-cart-2-line text-4xl text-blue-500"></i>
             </div>

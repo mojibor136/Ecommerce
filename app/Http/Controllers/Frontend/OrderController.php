@@ -119,6 +119,12 @@ class OrderController extends Controller
             $order->total = $total;
             $order->save();
 
+            $incomplete = Order::find($request->incomplete);
+
+            if ($incomplete) {
+                $incomplete->delete();
+            }
+
             $this->reduceStock($order->id);
 
             DB::commit();

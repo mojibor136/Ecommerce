@@ -163,15 +163,28 @@
                                 <li>
                                     <a href="{{ route('admin.orders.index') }}"
                                         class="flex items-center py-2 pl-6 text-[15px] rounded 
-                    {{ request()->routeIs('admin.orders.index') ? 'bg-[#3b3f5c] text-white' : 'text-gray-300 hover:text-white hover:bg-[#3b3f5c]' }}">
-                                        <i class="ri-list-check mr-2 text-gray-400"></i>All Orders
+                                    {{ request()->routeIs('admin.orders.index') ? 'bg-[#3b3f5c] text-white' : 'text-gray-300 hover:text-white hover:bg-[#3b3f5c]' }}">
+                                        <i
+                                            class="ri-list-check mr-2 {{ request()->routeIs('admin.orders.index') ? 'text-white' : 'text-gray-400' }}"></i>All
+                                        Orders
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('admin.orders.incomplete') }}"
+                                        class="flex items-center py-2 pl-6 text-[15px] rounded 
+                                    {{ request()->routeIs('admin.orders.incomplete') ? 'bg-[#3b3f5c] text-white' : 'text-gray-300 hover:text-white hover:bg-[#3b3f5c]' }}">
+                                        <i
+                                            class="ri-file-close-line mr-2 {{ request()->routeIs('admin.orders.incomplete') ? 'text-white' : 'text-red-400' }}"></i>Incomplete
+                                        Orders
                                     </a>
                                 </li>
                                 <li>
                                     <a href="{{ route('admin.orders.create') }}"
                                         class="flex items-center py-2 pl-6 text-[15px] rounded 
-                    {{ request()->routeIs('admin.orders.create') ? 'bg-[#3b3f5c] text-white' : 'text-gray-300 hover:text-white hover:bg-[#3b3f5c]' }}">
-                                        <i class="ri-add-box-line mr-2 text-green-400"></i>Create Order
+                                    {{ request()->routeIs('admin.orders.create') ? 'bg-[#3b3f5c] text-white' : 'text-gray-300 hover:text-white hover:bg-[#3b3f5c]' }}">
+                                        <i
+                                            class="ri-add-box-line mr-2 {{ request()->routeIs('admin.orders.create') ? 'text-white' : 'text-green-400' }}"></i>Create
+                                        Order
                                     </a>
                                 </li>
                             </ul>

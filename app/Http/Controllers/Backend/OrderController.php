@@ -60,6 +60,26 @@ class OrderController extends Controller
         return view('backend.order.index', compact('orders'));
     }
 
+    public function incomplete(Request $request)
+    {
+        $query = Order::with(['items', 'shipping'])
+            ->where('order_status', 'incomplete')
+            ->latest();
+
+        if ($request->has('search') && $request->search != '') {
+            $search = $request->search;
+
+            $query->where(function ($q) use ($search) {
+                $q->where('invoice_id', 'like', "%{$search}%")
+                    ->orWhere('tracking_id', 'like', "%{$search}%");
+            });
+        }
+
+        $orders = $query->get();
+
+        return view('backend.order.incomplete', compact('orders'));
+    }
+
     public function pending(Request $request)
     {
         $query = Order::with(['items', 'shipping'])

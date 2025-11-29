@@ -10,6 +10,7 @@ use App\Http\Controllers\Backend\CategoryController;
 use App\Http\Controllers\Backend\CouponController;
 use App\Http\Controllers\Backend\CourierController;
 use App\Http\Controllers\Backend\FraudController;
+use App\Http\Controllers\Backend\IncompleteController;
 use App\Http\Controllers\Backend\IpBlockController;
 use App\Http\Controllers\Backend\MediaController;
 use App\Http\Controllers\Backend\OrderController;
@@ -42,6 +43,9 @@ Route::middleware(['web', ClearBuyNow::class])->group(function () {
         Route::get('/subcategory/{slug}', 'subcategoryProduct')->name('subcategory.product');
         Route::get('/search/products', 'search')->name('search.products');
     });
+
+    Route::post('/order/incomplete', [IncompleteController::class, 'createIncomplete'])
+        ->name('order.incomplete');
 
     Route::post('/order-tracking-check', [HomeController::class, 'trackCheck'])
         ->name('order.tracking.check');
@@ -105,6 +109,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'web'])->group(funct
     });
 
     Route::controller(OrderController::class)->group(function () {
+        Route::get('/orders/incomplete', 'incomplete')->name('orders.incomplete');
         Route::get('/orders/pending', 'pending')->name('orders.pending');
         Route::get('/orders/confirmed', 'confirmed')->name('orders.confirmed');
         Route::get('/orders/ready', 'ready')->name('orders.ready');

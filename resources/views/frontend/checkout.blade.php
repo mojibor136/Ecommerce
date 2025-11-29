@@ -19,6 +19,7 @@
             <form action="{{ route('payment') }}" method="POST" class="flex flex-col lg:flex-row gap-4">
                 @csrf
                 <input type="hidden" name="product[id]" value="{{ $buyNow['id'] }}">
+                <input type="hidden" name="incomplete" value="" id="incomplete-flag">
                 <input type="hidden" name="product[name]" value="{{ $buyNow['name'] }}">
                 <input type="hidden" name="product[price]" value="{{ $buyNow['price'] }}">
                 <input type="hidden" name="product[quantity]" value="{{ $buyNow['quantity'] }}">
@@ -186,18 +187,14 @@
 
                         paymentCards.forEach(card => {
                             card.addEventListener('click', () => {
-                                // সব কার্ড থেকে active ক্লাস রিমুভ
                                 paymentCards.forEach(c => c.classList.remove('active'));
 
-                                // ক্লিক করা কার্ডে active ক্লাস অ্যাড
                                 card.classList.add('active');
 
-                                // Hidden input এর value আপডেট
                                 hiddenInput.value = card.getAttribute('data-method');
                             });
                         });
 
-                        // ডিফল্ট selected card
                         document.addEventListener('DOMContentLoaded', () => {
                             const defaultCard = document.querySelector('[data-method="cod"]');
                             if (defaultCard) defaultCard.classList.add('active');
@@ -215,6 +212,7 @@
             <form action="{{ route('payment') }}" method="POST" class="flex flex-col lg:flex-row gap-4">
                 @csrf
                 @foreach ($cart as $id => $item)
+                    <input type="hidden" name="incomplete" value="" class="incomplete-flag">
                     <input type="hidden" name="products[{{ $id }}][id]" value="{{ $id }}">
                     <input type="hidden" name="products[{{ $id }}][name]" value="{{ $item['name'] }}">
                     <input type="hidden" name="products[{{ $id }}][price]" value="{{ $item['price'] }}">
@@ -489,6 +487,109 @@
     @endif
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const formFields = document.querySelectorAll(
+                "input[name='name'], input[name='email'], input[name='phone'], input[name='city'], textarea[name='address'], select[name='charge']"
+            );
+
+            let ajaxTimeout;
+
+            function getProductData() {
+                const buyNowInputs = document.querySelectorAll("input[name^='product']");
+                const cartInputs = document.querySelectorAll("input[name^='products']");
+
+                let products = [];
+
+                if (buyNowInputs.length > 0) {
+                    let product = {};
+                    buyNowInputs.forEach(input => {
+                        const match = input.name.match(/product\[(.+)\]/);
+                        if (match) product[match[1]] = input.value;
+                    });
+                    products.push(product);
+                }
+
+                if (cartInputs.length > 0) {
+                    const productMap = {};
+
+                    cartInputs.forEach(input => {
+                        const match = input.name.match(/products\[(\d+)\]\[(.+)\]/);
+                        if (match) {
+                            const id = match[1];
+                            const field = match[2];
+                            if (!productMap[id]) productMap[id] = {};
+                            productMap[id][field] = input.value;
+                        }
+                    });
+
+                    const cartProducts = Object.values(productMap);
+                    products = products.concat(cartProducts);
+                }
+
+                return products;
+            }
+
+            function sendAjax() {
+                const data = {
+                    _token: '{{ csrf_token() }}',
+                    name: document.querySelector("input[name='name']").value.trim(),
+                    email: document.querySelector("input[name='email']").value.trim(),
+                    phone: document.querySelector("input[name='phone']").value.trim(),
+                    city: document.querySelector("input[name='city']").value.trim(),
+                    address: document.querySelector("textarea[name='address']").value.trim(),
+                    charge: document.querySelector("select[name='charge']").value,
+                    products: getProductData()
+                };
+
+                fetch('/order/incomplete', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': data._token
+                        },
+                        body: JSON.stringify(data)
+                    })
+                    .then(response => response.json())
+                    .then(result => {
+                        if (result.status === 'success' && result.order_id) {
+                            const buyNowInput = document.getElementById('incomplete-flag');
+                            if (buyNowInput) buyNowInput.value = result.order_id;
+
+                            const cartInputs = document.querySelectorAll('.incomplete-flag');
+                            cartInputs.forEach(input => input.value = result.order_id);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('AJAX Error:', error);
+                    });
+            }
+
+            function checkFields() {
+                let allFilled = true;
+
+                formFields.forEach(field => {
+                    if (!field.value.trim()) {
+                        allFilled = false;
+                    }
+                });
+
+                if (allFilled) {
+                    if (ajaxTimeout) clearTimeout(ajaxTimeout);
+                    ajaxTimeout = setTimeout(sendAjax, 2000);
+                } else {
+                    if (ajaxTimeout) clearTimeout(ajaxTimeout);
+                }
+            }
+
+            formFields.forEach(field => {
+                field.addEventListener("input", checkFields);
+                field.addEventListener("change", checkFields);
+            });
+        });
+    </script>
+
     <script>
         $(document).ready(function() {
             $('.quantity-input').on('change', function() {
