@@ -425,6 +425,27 @@
                             </ul>
                         </li>
 
+                        <!-- Campaign Management -->
+                        <li class="group">
+                            <a href="#"
+                                class="mb-1 flex items-center pl-4 py-2.5 text-gray-300 hover:text-white hover:bg-[#3b3f5c] rounded submenu-toggle"
+                                data-menu-key="campaign-center">
+                                <i class="ri-rocket-line mr-2 text-blue-400"></i>
+                                <span class="text-[15px]">Campaign Center</span>
+                                <i class="ri-arrow-down-s-line ml-auto mr-4"></i>
+                            </a>
+                            <ul class="submenu pl-2 bg-[#2a2f45]">
+                                <!-- Submodule: Campaign -->
+                                <li>
+                                    <a href="{{ route('admin.landing.index') }}"
+                                        class="flex items-center py-2 pl-6 text-[15px] rounded
+                {{ request()->routeIs('admin.landing.*') ? 'bg-[#3b3f5c] text-white' : 'text-gray-300 hover:text-white hover:bg-[#3b3f5c]' }}">
+                                        <i class="ri-file-list-3-line mr-2 text-green-400"></i></i>Landing Pages
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
                         <!-- Theme Settings -->
                         <li class="group">
                             <a href="#"

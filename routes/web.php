@@ -12,6 +12,7 @@ use App\Http\Controllers\Backend\CourierController;
 use App\Http\Controllers\Backend\FraudController;
 use App\Http\Controllers\Backend\IncompleteController;
 use App\Http\Controllers\Backend\IpBlockController;
+use App\Http\Controllers\Backend\LandingPageController;
 use App\Http\Controllers\Backend\MediaController;
 use App\Http\Controllers\Backend\OrderController;
 use App\Http\Controllers\Backend\PaymentGatewayController;
@@ -140,6 +141,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'web'])->group(funct
     Route::resource('payment_gateways', PaymentGatewayController::class);
     Route::resource('sms_email_api', ApiController::class);
     Route::resource('courier', CourierController::class);
+    Route::resource('landing', LandingPageController::class);
 
     Route::get('/get-subcategories/{category_id}', [ProductController::class, 'getSubcategories'])->name('get.subcategories');
     Route::get('/get-attribute-values', [ProductController::class, 'getAttributeValuesMultiple'])->name('get.attribute.values.multiple');
