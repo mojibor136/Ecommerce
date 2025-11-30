@@ -57,6 +57,11 @@ class Product extends Model
         return $this->activeReviews()->count();
     }
 
+    public function landingPage()
+    {
+        return $this->hasOne(LandingPage::class, 'product_id', 'id');
+    }
+
     protected static function booted()
     {
         static::creating(function ($product) {

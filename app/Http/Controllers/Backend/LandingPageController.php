@@ -3,13 +3,16 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Models\LandingPage;
 use Illuminate\Http\Request;
 
 class LandingPageController extends Controller
 {
     public function index()
     {
-        return view('backend.landing.index');
+        $landing = LandingPage::paginate(10);
+
+        return view('backend.landing.index', compact('landing'));
     }
 
     public function create()
