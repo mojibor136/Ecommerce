@@ -11,9 +11,8 @@ class CreateLandingPagesTable extends Migration
         Schema::create('landing_pages', function (Blueprint $table) {
             $table->id();
             $table->integer('product_id')->nullable();
-            $table->integer('product_variant_id')->nullable();
-            $table->string('product_type')->nullable();
             $table->string('campaign_title')->nullable();
+            $table->string('campaign_slug')->nullable();
             $table->text('campaign_description')->nullable();
             $table->json('banner_image')->nullable();
             $table->json('review_image')->nullable();

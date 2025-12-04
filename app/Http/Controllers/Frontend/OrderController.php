@@ -8,7 +8,6 @@ use App\Mail\OrderMail;
 use App\Models\GmailSmtp;
 use App\Models\Order;
 use App\Models\OrderItem;
-use App\Models\Payment;
 use App\Models\Product;
 use App\Models\ProductVariant;
 use App\Models\Setting;
@@ -97,18 +96,8 @@ class OrderController extends Controller
                 ]);
             }
 
-            if (isset($request->payment_method) && in_array($request->payment_method, ['bkash', 'nagad'])) {
-                $payment = Payment::create([
-                    'order_id' => $order->id,
-                    'transaction_id' => $request->transaction_id,
-                    'sender_number' => $request->sender_number,
-                    'amount' => 0,
-                    'status' => 'paid',
-                    'method' => $request->payment_method,
-                ]);
-            }
-
             $total += $request->charge;
+
             $total -= $request->discount;
 
             if ($payment) {
@@ -127,27 +116,35 @@ class OrderController extends Controller
 
             $this->reduceStock($order->id);
 
+            try {
+                Mail::to($request->email)->send(new OrderMail($order));
+                Mail::to($smtp->email)->send(new AdminMail($order));
+            } catch (\Exception $e) {
+                Log::error('Order Mail Failed: '.$e->getMessage());
+            }
+
             DB::commit();
 
             if ($request->payment_method == 'cod') {
-
-                $order->load('items');
-
-                try {
-                    Mail::to($request->email)->send(new OrderMail($order));
-                    Mail::to($smtp->email)->send(new AdminMail($order));
-                } catch (\Exception $e) {
-                    Log::error('Order Mail Failed: '.$e->getMessage());
-                }
-
                 return redirect()->route('order.success', [
                     'invoice_id' => $order->invoice_id,
                     'amount' => $order->total,
-                    'method' => 'Cash on Delivery',
                     'order' => $order,
-                ])->with('success', 'Order created successfully!');
+                    'payment' => $payment,
+                    'method' => 'Cash on Delivery',
+                ])->with('success', 'Your order has been placed successfully!');
+            } elseif ($request->payment_method == 'nagad') {
+                return view('frontend.payment.nagad', [
+                    'order' => $order->id,
+                    'amount' => $order->total,
+                ]);
+            } elseif ($request->payment_method == 'bkash') {
+                return view('frontend.payment.bkash', [
+                    'order' => $order->id,
+                    'amount' => $order->total,
+                ]);
             } else {
-                return $order;
+                return redirect()->back()->with('error', 'Invalid payment method.');
             }
 
         } catch (\Exception $e) {

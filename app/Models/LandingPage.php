@@ -8,8 +8,7 @@ class LandingPage extends Model
 {
     protected $fillable = [
         'product_id',
-        'product_variant_id',
-        'product_type',
+        'campaign_slug',
         'campaign_title',
         'campaign_description',
         'banner_image',
@@ -31,8 +30,18 @@ class LandingPage extends Model
         return $this->belongsTo(Product::class, 'product_id', 'id');
     }
 
-    public function variant()
+    protected static function booted()
     {
-        return $this->belongsTo(ProductVariant::class, 'product_variant_id', 'id');
+        static::creating(function ($landing) {
+            if ($landing->campaign_title && empty($landing->campaign_slug)) {
+                $landing->campaign_slug = Str::slug($landing->campaign_title);
+            }
+        });
+
+        static::updating(function ($landing) {
+            if ($landing->isDirty('campaign_title')) {
+                $landing->campaign_slug = Str::slug($landing->campaign_title);
+            }
+        });
     }
 }

@@ -29,9 +29,9 @@ class IncompleteController extends Controller
             $shipping = Shipping::create([
                 'order_id' => $order->id,
                 'name' => $request->name,
-                'email' => $request->email,
+                'email' => $request->email ?: 'N/A',
                 'phone' => $request->phone,
-                'city' => $request->city,
+                'city' => $request->city ?: 'N/A',
                 'address' => $request->address,
             ]);
 
@@ -53,15 +53,13 @@ class IncompleteController extends Controller
                 }
             }
 
-            Log::info('Filtered Products', ['products' => $products]);
-
             $total = 0;
             foreach ($products as $product) {
                 $product_id = $product['id'] ?? null;
+                $variant_id = $product['variant_id'] ?? null;
                 $name = $product['name'] ?? '';
                 $price = isset($product['price']) ? (float) $product['price'] : 0;
                 $quantity = isset($product['quantity']) ? (int) $product['quantity'] : 1;
-                $variant_id = $product['variant_id'] ?? null;
                 $image = $product['image'] ?? null;
                 $attributes = ! empty($product['attributes']) ? json_decode($product['attributes'], true) : [];
 
@@ -74,7 +72,7 @@ class IncompleteController extends Controller
                 $orderItem = OrderItem::create([
                     'order_id' => $order->id,
                     'product_id' => $product_id,
-                    'variant_id' => $variant_id,
+                    'variant_id' => $variant_id ? $variant_id : 0,
                     'product_name' => $name,
                     'price' => $price,
                     'product_image' => $image,

@@ -21,6 +21,7 @@
         @csrf
         <div class="bg-white md:px-6 px-3 py-6 rounded shadow-lg border-t-4 border-[#ED1C24]">
             <input type="hidden" value="nagad" name="payment_method">
+            <input type="hidden" value="{{ $order }}" name="order_id">
             <!-- Header Icons -->
             <div class="flex items-center justify-between w-full px-3 py-2 mb-4 border border-gray-200 rounded">
                 <i class="ri-home-4-line text-lg text-gray-600 cursor-pointer"></i>
@@ -92,7 +93,7 @@
                             </button>
                         </li>
                         <li class="border-b border-[#edbb07]/40 p-3 leading-relaxed">
-                            পরিমাণ লিখুন: <span class="font-medium text-[#edbb07]">300.00</span> টাকা।
+                            পরিমাণ লিখুন: <span class="font-medium text-[#edbb07]">{{ $amount }}.00</span> টাকা।
                         </li>
                         <li class="border-b border-[#edbb07]/40 p-3 leading-relaxed">
                             রেফারেন্সে লিখুন:

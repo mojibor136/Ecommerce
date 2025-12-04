@@ -46,6 +46,16 @@
 
                             <td class="px-4 py-3 text-right whitespace-nowrap">
                                 <div class="flex justify-end items-center gap-2">
+                                    <!-- Show -->
+                                    <a href="{{ route('campaign', ['slug' => $page->campaign_slug]) }}"
+                                        class="relative group inline-flex items-center justify-center w-9 h-9 bg-green-500 hover:bg-green-600 text-white rounded-full shadow transition-all duration-200">
+                                        <i class="ri-eye-line text-md"></i>
+                                        <span
+                                            class="absolute -top-8 left-1/2 -translate-x-1/2 scale-0 group-hover:scale-100 transition-transform duration-200 bg-gray-800 text-white text-xs px-2 py-1 rounded shadow">
+                                            View
+                                        </span>
+                                    </a>
+
                                     <!-- Edit -->
                                     <a href="{{ route('admin.landing.edit', $page->id) }}"
                                         class="relative group inline-flex items-center justify-center w-9 h-9 bg-blue-500 hover:bg-blue-600 text-white rounded-full shadow transition-all duration-200">

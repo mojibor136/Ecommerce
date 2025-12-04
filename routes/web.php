@@ -32,6 +32,8 @@ Route::middleware(['web', ClearBuyNow::class])->group(function () {
     Route::controller(HomeController::class)->group(function () {
         Route::get('/', 'index')->name('home');
         Route::get('/deals', 'deals')->name('deals');
+        Route::get('/campaign/{slug}', 'campaign')->name('campaign');
+        Route::get('/campaign/order/success', 'campaign_success')->name('campaign.success');
         Route::get('/help-center', 'help')->name('help');
         Route::get('/contact', 'contact')->name('contact');
         Route::get('/privacy-policy', 'policy')->name('policy');
@@ -39,6 +41,7 @@ Route::middleware(['web', ClearBuyNow::class])->group(function () {
         Route::get('/your/shop', 'shop')->name('shop');
         Route::get('/product/{slug}', 'product')->name('product.details');
         Route::get('/order/success', 'success')->name('order.success');
+        Route::post('/order/create', 'orderCreate')->name('order.create');
         Route::get('/order/tracking', 'tracking')->name('order.tracking');
         Route::get('/category/{slug}', 'categoryProduct')->name('category.product');
         Route::get('/subcategory/{slug}', 'subcategoryProduct')->name('subcategory.product');

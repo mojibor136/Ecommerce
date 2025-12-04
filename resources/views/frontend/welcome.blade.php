@@ -169,11 +169,6 @@
                             <img loading="lazy" src="{{ asset('uploads/products/' . $product->images->first()->image) }}"
                                 alt="Smartphone XYZ"
                                 class="w-full h-full object-cover transform hover:scale-105 transition duration-300">
-                            <button
-                                onclick="event.stopPropagation(); document.getElementById('add_cart_{{ $product->id }}').submit();"
-                                class="absolute bottom-2 left-2 bg-[{{ $theme->theme_bg }}] hover:bg-[{{ $theme->theme_bg }}] text-white w-9 h-9 flex items-center justify-center rounded-full transition">
-                                <i class="ri-shopping-cart-line text-md"></i>
-                            </button>
                         </div>
                         <h3 class="text-gray-700 font-semibold text-center capitalize text-[14.5px] line-clamp-2 mb-1">
                             {{ $product->name }}</h3>
@@ -202,24 +197,28 @@
                             @endif
                         </p>
 
-                        <form method="POST" action="{{ route('cart.add', $product->id) }}" class="hidden"
-                            id="add_cart_{{ $product->id }}">
-                            @csrf
-                            <input type="hidden" name="quantity" value="1">
-                            <input type="hidden" name="image"
-                                value="{{ asset('uploads/products/' . $product->images->first()->image) }}">
-                        </form>
-
-                        <form method="POST" action="{{ route('checkout.buy-now', $product->id) }}" class="w-full">
-                            @csrf
-                            <input type="hidden" name="quantity" value="1">
-                            <input type="hidden" name="image"
-                                value="{{ asset('uploads/products/' . $product->images->first()->image) }}">
-                            <button type="submit" onclick="event.stopPropagation();"
-                                class="bg-[{{ $theme->theme_bg }}] hover:bg-[{{ $theme->theme_hover }}] text-white px-2 py-2 rounded w-full text-[14.5px]">
-                                Buy Now
-                            </button>
-                        </form>
+                        <div class="flex flex-col gap-1 w-full">
+                            <form method="POST" action="{{ route('checkout.buy-now', $product->id) }}" class="flex-1">
+                                @csrf
+                                <input type="hidden" name="quantity" value="1">
+                                <input type="hidden" name="image"
+                                    value="{{ asset('uploads/products/' . $product->images->first()->image) }}">
+                                <button type="submit" onclick="event.stopPropagation();"
+                                    class="bg-[{{ $theme->nav_bg }}]/90 hover:bg-[{{ $theme->nav_bg }}] text-[{{ $theme->nav_text }}] px-2 py-2 rounded w-full text-[14.5px]">
+                                    অর্ডার করুন
+                                </button>
+                            </form>
+                            <form method="POST" action="{{ route('cart.add', $product->id) }}" class="flex-1">
+                                @csrf
+                                <input type="hidden" name="quantity" value="1">
+                                <input type="hidden" name="image"
+                                    value="{{ asset('uploads/products/' . $product->images->first()->image) }}">
+                                <button type="submit" onclick="event.stopPropagation();"
+                                    class="bg-[{{ $theme->theme_bg }}] hover:bg-[{{ $theme->theme_hover }}] text-[{{ $theme->theme_text }}] px-2 py-2 rounded w-full text-[14.5px]">
+                                    কার্টে রাখুন
+                                </button>
+                            </form>
+                        </div>
                     </div>
                 @endforeach
             </div>
@@ -264,7 +263,12 @@
                             @endif
                         @endif
 
-                        <div class="w-full h-48 overflow-hidden">
+                        <div class="w-full h-48 overflow-hidden relative">
+                            <button
+                                onclick="event.stopPropagation(); document.getElementById('add_cart_{{ $product->id }}').submit();"
+                                class="absolute bottom-2 left-2 bg-[{{ $theme->theme_bg }}] hover:bg-[{{ $theme->theme_bg }}] text-white w-9 h-9 flex items-center justify-center rounded-full transition">
+                                <i class="ri-shopping-cart-line text-md"></i>
+                            </button>
                             <img loading="lazy" src="{{ asset('uploads/products/' . $product->images->first()->image) }}"
                                 alt="Smartphone XYZ"
                                 class="w-full h-full object-cover transform hover:scale-105 transition duration-300">
@@ -298,16 +302,19 @@
                                         class="line-through text-gray-400 text-[14px]">&#2547;{{ $product->old_price }}</span>
                                 @endif
                             </p>
-                            <form method="POST" action="{{ route('checkout.buy-now', $product->id) }}" class="w-auto">
-                                @csrf
-                                <input type="hidden" name="quantity" value="1">
-                                <input type="hidden" name="image"
-                                    value="{{ asset('uploads/products/' . $product->images->first()->image) }}">
-                                <button type="submit" onclick="event.stopPropagation();"
-                                    class="bg-[{{ $theme->theme_bg }}] hover:bg-[{{ $theme->theme_hover }}] text-white px-2 py-2 rounded w-full text-[14.5px]">
-                                    Buy Now
-                                </button>
-                            </form>
+                            <div class="flex flex-row gap-1 w-full">
+                                <form method="POST" action="{{ route('checkout.buy-now', $product->id) }}"
+                                    class="flex-1">
+                                    @csrf
+                                    <input type="hidden" name="quantity" value="1">
+                                    <input type="hidden" name="image"
+                                        value="{{ asset('uploads/products/' . $product->images->first()->image) }}">
+                                    <button type="submit" onclick="event.stopPropagation();"
+                                        class="bg-[{{ $theme->nav_bg }}]/90 hover:bg-[{{ $theme->nav_bg }}] text-[{{ $theme->nav_text }}] px-2 py-2 rounded w-full text-[14.5px]">
+                                        অর্ডার করুন
+                                    </button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 @endforeach
@@ -381,17 +388,29 @@
                                             class="line-through text-gray-400 text-[14px]">&#2547;{{ $product->old_price }}</span>
                                     @endif
                                 </p>
-                                <form method="POST" action="{{ route('checkout.buy-now', $product->id) }}"
-                                    class="w-auto">
-                                    @csrf
-                                    <input type="hidden" name="quantity" value="1">
-                                    <input type="hidden" name="image"
-                                        value="{{ asset('uploads/products/' . $product->images->first()->image) }}">
-                                    <button type="submit" onclick="event.stopPropagation();"
-                                        class="bg-[{{ $theme->theme_bg }}] hover:bg-[{{ $theme->theme_hover }}] text-white px-2 py-2 rounded w-full text-[14.5px]">
-                                        Buy Now
-                                    </button>
-                                </form>
+                                <div class="flex flex-row gap-1 w-full">
+                                    <form method="POST" action="{{ route('checkout.buy-now', $product->id) }}"
+                                        class="flex-1">
+                                        @csrf
+                                        <input type="hidden" name="quantity" value="1">
+                                        <input type="hidden" name="image"
+                                            value="{{ asset('uploads/products/' . $product->images->first()->image) }}">
+                                        <button type="submit" onclick="event.stopPropagation();"
+                                            class="bg-[{{ $theme->nav_bg }}]/90 hover:bg-[{{ $theme->nav_bg }}] text-[{{ $theme->nav_text }}] px-2 py-2 rounded w-full text-[14.5px]">
+                                            <i class="ri-shopping-bag-line"></i> অর্ডার করুন
+                                        </button>
+                                    </form>
+                                    <form method="POST" action="{{ route('cart.add', $product->id) }}" class="w-12">
+                                        @csrf
+                                        <input type="hidden" name="quantity" value="1">
+                                        <input type="hidden" name="image"
+                                            value="{{ asset('uploads/products/' . $product->images->first()->image) }}">
+                                        <button type="submit" onclick="event.stopPropagation();"
+                                            class="bg-[{{ $theme->theme_bg }}] hover:bg-[{{ $theme->theme_hover }}] text-[{{ $theme->theme_text }}] px-2 py-2 rounded w-full text-[14.5px]">
+                                          <i class="ri-shopping-cart-line text-md"></i>
+                                        </button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     @endforeach

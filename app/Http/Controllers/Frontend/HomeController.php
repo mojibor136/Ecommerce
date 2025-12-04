@@ -3,12 +3,21 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
+use App\Mail\AdminMail;
 use App\Models\Banner;
 use App\Models\Category;
+use App\Models\GmailSmtp;
+use App\Models\LandingPage;
 use App\Models\Order;
+use App\Models\OrderItem;
 use App\Models\Product;
+use App\Models\Setting;
+use App\Models\Shipping;
 use App\Models\Subcategory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class HomeController extends Controller
 {
@@ -422,5 +431,148 @@ class HomeController extends Controller
         });
 
         return response()->json($data);
+    }
+
+    public function campaign($slug)
+    {
+        $campaign = LandingPage::where('campaign_slug', $slug)->firstOrFail();
+
+        $product = Product::with('images')->find($campaign->product_id);
+
+        return view('frontend.campaign.campaign', [
+            'campaign' => $campaign,
+            'product' => $product,
+        ]);
+    }
+
+    public function orderCreate(Request $request)
+    {
+        DB::beginTransaction();
+
+        $smtp = GmailSmtp::where('status', 1)->first();
+        $setting = Setting::first();
+
+        if ($smtp) {
+            config([
+                'mail.default' => 'smtp',
+                'mail.mailers.smtp.transport' => 'smtp',
+                'mail.mailers.smtp.host' => $smtp->host,
+                'mail.mailers.smtp.port' => $smtp->port,
+                'mail.mailers.smtp.username' => $smtp->email,
+                'mail.mailers.smtp.password' => $smtp->password,
+                'mail.mailers.smtp.encryption' => strtolower($smtp->encryption),
+                'mail.from.address' => $smtp->email,
+                'mail.from.name' => $setting->name,
+            ]);
+        }
+
+        try {
+
+            $order = Order::create([
+                'order_status' => 'pending',
+                'payment_status' => 'pending',
+                'shipping_charge' => $request->area,
+                'total' => '0',
+                'discount' => '0',
+                'tracking_id' => '0',
+                'courier_method' => 'Any',
+                'ip_address' => $request->ip(),
+                'user_agent' => $request->userAgent(),
+            ]);
+
+            Shipping::create([
+                'order_id' => $order->id,
+                'name' => $request->name ?? '',
+                'email' => $request->email,
+                'phone' => $request->phone,
+                'city' => $request->city ?? '',
+                'address' => $request->address,
+            ]);
+
+            $products = [];
+
+            if ($request->has('product')) {
+                $products[] = $request->product;
+            } elseif ($request->has('products')) {
+                $products = $request->products;
+            }
+
+            $total = +$request->charge - $request->discount;
+            $payment = null;
+
+            foreach ($products as $product) {
+                $subtotal = $product['price'] * $product['quantity'];
+                $total += $subtotal;
+
+                $attributes = [];
+                if (! empty($product['attributes'])) {
+                    $attributes = json_decode($product['attributes'], true);
+                }
+
+                OrderItem::create([
+                    'order_id' => $order->id,
+                    'product_id' => $product['id'],
+                    'variant_id' => 0,
+                    'product_name' => $product['name'],
+                    'price' => $product['price'],
+                    'product_image' => $product['image'],
+                    'attributes' => json_encode($attributes),
+                    'quantity' => $product['quantity'],
+                    'subtotal' => $subtotal,
+                ]);
+            }
+
+            $total += $request->charge;
+
+            $total -= $request->discount;
+
+            if ($payment) {
+                $payment->amount = $total;
+                $payment->save();
+            }
+
+            $order->total = $total;
+            $order->save();
+
+            $incomplete = Order::find($request->incomplete);
+
+            if ($incomplete) {
+                $incomplete->delete();
+            }
+
+            try {
+                Mail::to($smtp->email)->send(new AdminMail($order));
+            } catch (\Exception $e) {
+                Log::error('Order Mail Failed: '.$e->getMessage());
+            }
+
+            DB::commit();
+
+            return redirect()->route('campaign.success', [
+                'invoice' => $order->invoice_id,
+                'amount' => $order->total,
+            ]);
+
+        } catch (\Exception $e) {
+
+            DB::rollBack();
+
+            Log::error('Order Creation Failed', [
+                'error' => $e->getMessage(),
+                'line' => $e->getLine(),
+                'file' => $e->getFile(),
+            ]);
+
+            return back()->with('error', 'Order creation failed: '.$e->getMessage());
+        }
+    }
+
+    public function campaign_success(Request $request)
+    {
+        $invoice = $request->invoice;
+        $amount = $request->amount;
+        $method = 'Cash on Delivery';
+
+        return view('frontend.campaign.success', compact('invoice', 'amount', 'method'));
     }
 }

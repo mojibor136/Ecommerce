@@ -4,44 +4,141 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use App\Models\LandingPage;
+use App\Models\Product;
+use File;
 use Illuminate\Http\Request;
 
 class LandingPageController extends Controller
 {
     public function index()
     {
-        $landing = LandingPage::paginate(10);
+        $landing = LandingPage::latest()->paginate(10);
 
         return view('backend.landing.index', compact('landing'));
     }
 
     public function create()
     {
-        return view('backend.landing.create');
+        $products = Product::all();
+
+        return view('backend.landing.create', compact('products'));
     }
 
     public function store(Request $request)
     {
-        // Logic to store landing page data
+        $request->validate([
+            'product_id' => 'required|exists:products,id',
+            'campaign_title' => 'required|string|max:255',
+            'banner_image.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'review_image.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'status' => 'required|boolean',
+        ]);
+
+        $data = $request->all();
+
+        if ($request->hasFile('banner_image')) {
+            $bannerImages = [];
+            foreach ($request->file('banner_image') as $file) {
+                $filename = time().'_'.$file->getClientOriginalName();
+                $file->move(public_path('uploads/landing/banners'), $filename);
+                $bannerImages[] = 'uploads/landing/banners/'.$filename;
+            }
+            $data['banner_image'] = json_encode($bannerImages);
+        }
+
+        if ($request->hasFile('review_image')) {
+            $reviewImages = [];
+            foreach ($request->file('review_image') as $file) {
+                $filename = time().'_'.$file->getClientOriginalName();
+                $file->move(public_path('uploads/landing/reviews'), $filename);
+                $reviewImages[] = 'uploads/landing/reviews/'.$filename;
+            }
+            $data['review_image'] = json_encode($reviewImages);
+        }
+
+        LandingPage::create($data);
+
+        return redirect()->route('admin.landing.index')->with('success', 'Campaign created successfully.');
     }
 
-    public function show($id)
+    public function edit(LandingPage $landing)
     {
-        return view('backend.landing.show', compact('id'));
+        $products = Product::all();
+
+        return view('backend.landing.edit', compact('landing', 'products'));
     }
 
-    public function edit($id)
+    public function update(Request $request, LandingPage $landing)
     {
-        return view('backend.landing.edit', compact('id'));
+        $request->validate([
+            'product_id' => 'required|exists:products,id',
+            'campaign_title' => 'required|string|max:255',
+            'banner_image.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'review_image.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'status' => 'required|boolean',
+        ]);
+
+        $data = $request->all();
+
+        if ($request->hasFile('banner_image')) {
+            if ($landing->banner_image) {
+                foreach (json_decode($landing->banner_image) as $oldBanner) {
+                    if (File::exists(public_path($oldBanner))) {
+                        File::delete(public_path($oldBanner));
+                    }
+                }
+            }
+            $bannerImages = [];
+            foreach ($request->file('banner_image') as $file) {
+                $filename = time().'_'.$file->getClientOriginalName();
+                $file->move(public_path('uploads/landing/banners'), $filename);
+                $bannerImages[] = 'uploads/landing/banners/'.$filename;
+            }
+            $data['banner_image'] = json_encode($bannerImages);
+        }
+
+        if ($request->hasFile('review_image')) {
+            if ($landing->review_image) {
+                foreach (json_decode($landing->review_image) as $oldReview) {
+                    if (File::exists(public_path($oldReview))) {
+                        File::delete(public_path($oldReview));
+                    }
+                }
+            }
+            $reviewImages = [];
+            foreach ($request->file('review_image') as $file) {
+                $filename = time().'_'.$file->getClientOriginalName();
+                $file->move(public_path('uploads/landing/reviews'), $filename);
+                $reviewImages[] = 'uploads/landing/reviews/'.$filename;
+            }
+            $data['review_image'] = json_encode($reviewImages);
+        }
+
+        $landing->update($data);
+
+        return redirect()->route('admin.landing.index')->with('success', 'Campaign updated successfully.');
     }
 
-    public function update(Request $request, $id)
+    public function destroy(LandingPage $landing)
     {
-        // Logic to update landing page data
-    }
+        if ($landing->banner_image) {
+            foreach (json_decode($landing->banner_image) as $banner) {
+                if (File::exists(public_path($banner))) {
+                    File::delete(public_path($banner));
+                }
+            }
+        }
 
-    public function destroy($id)
-    {
-        // Logic to delete landing page data
+        if ($landing->review_image) {
+            foreach (json_decode($landing->review_image) as $review) {
+                if (File::exists(public_path($review))) {
+                    File::delete(public_path($review));
+                }
+            }
+        }
+
+        $landing->delete();
+
+        return redirect()->route('admin.landing.index')->with('success', 'Campaign deleted successfully.');
     }
 }

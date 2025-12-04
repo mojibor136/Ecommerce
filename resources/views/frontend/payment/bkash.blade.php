@@ -21,6 +21,7 @@
         @csrf
         <div class="bg-white md:px-6 px-3 py-6 rounded shadow-lg border-t-4 border-[#E2136E]">
             <input type="hidden" value="bkash" name="payment_method">
+            <input type="hidden" value="{{ $order }}" name="order_id">
             <!-- Header Icons -->
             <div class="flex items-center justify-between w-full px-3 py-2 mb-4 border border-gray-200 rounded">
                 <i class="ri-home-4-line text-lg text-gray-600 cursor-pointer hover:text-[#E2136E] transition"></i>
@@ -94,7 +95,7 @@ px-4 py-2 shadow-sm focus:outline-none focus:ring-0 focus:border-[#222] focus:ri
                             </button>
                         </li>
                         <li class="border-b border-[#222]/40 p-3 leading-relaxed">
-                            পরিমাণ লিখুন: <span class="font-medium text-[#222]">300.00</span> টাকা।
+                            পরিমাণ লিখুন: <span class="font-medium text-[#222]">{{ $amount }}.00</span> টাকা।
                         </li>
                         <li class="border-b border-[#222]/40 p-3 leading-relaxed">
                             রেফারেন্সে লিখুন: <span class="font-medium text-[#222]">Invoice ID বা আপনার নাম</span>।
