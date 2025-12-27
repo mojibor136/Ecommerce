@@ -682,4 +682,88 @@ class OrderController extends Controller
             return back()->with('error', 'Exception: '.$e->getMessage());
         }
     }
+
+    public function report(Request $request)
+    {
+        $query = Order::with(['items.product', 'shipping'])
+            ->where('order_status', 'delivered');
+
+        if ($request->filled('start_date') && $request->filled('end_date')) {
+            $start = Carbon::parse($request->start_date)->startOfDay();
+            $end = Carbon::parse($request->end_date)->endOfDay();
+            $query->whereBetween('created_at', [$start, $end]);
+        }
+
+        $orders = $query->latest()->get();
+
+        $totalSell = 0;
+        $totalBuy = 0;
+
+        foreach ($orders as $order) {
+            $orderSell = 0;
+            $orderBuy = 0;
+
+            foreach ($order->items as $item) {
+                $sellPrice = $item->price * $item->quantity;
+                $orderSell += $sellPrice;
+
+                if ($item->product) {
+                    $buyPrice = $item->product->buy_price * $item->quantity;
+                    $orderBuy += $buyPrice;
+                }
+            }
+
+            $order->order_sell = $orderSell;
+            $order->order_buy = $orderBuy;
+            $order->order_profit = $orderSell - $orderBuy;
+
+            $totalSell += $orderSell;
+            $totalBuy += $orderBuy;
+        }
+
+        $profit = $totalSell - $totalBuy;
+
+        return view('backend.order.report', compact(
+            'orders',
+            'totalSell',
+            'totalBuy',
+            'profit'
+        ));
+    }
+
+    public function lossProfit(Request $request)
+    {
+        $query = Order::with(['items.product'])
+            ->where('order_status', 'delivered');
+
+        if ($request->filled('start_date') && $request->filled('end_date')) {
+            $start = Carbon::parse($request->start_date)->startOfDay();
+            $end = Carbon::parse($request->end_date)->endOfDay();
+            $query->whereBetween('created_at', [$start, $end]);
+        }
+
+        $orders = $query->latest()->get();
+
+        $totalSales = 0;
+        $totalCost = 0;
+
+        foreach ($orders as $order) {
+            foreach ($order->items as $item) {
+                $totalSales += $item->price * $item->quantity;
+
+                if ($item->product) {
+                    $totalCost += $item->product->buy_price * $item->quantity;
+                }
+            }
+        }
+
+        $totalProfit = $totalSales - $totalCost;
+
+        return view('backend.order.loss_profit', compact(
+            'totalSales',
+            'totalCost',
+            'totalProfit',
+            'orders'
+        ));
+    }
 }

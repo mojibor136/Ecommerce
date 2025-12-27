@@ -314,7 +314,11 @@
             <table class="min-w-full table-auto">
                 <thead class="bg-[{{ $theme->theme_bg }}] text-[{{ $theme->theme_text }}] text-sm font-semibold">
                     <tr>
-                        <th class="px-4 py-3 text-center">#</th>
+                        <th class="px-4 py-3 text-center">
+                            <input type="checkbox"
+                                class="order-checkbox w-[16px] h-[16px] text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
+                                onclick="event.stopPropagation(); selectAll();">
+                        </th>
                         <th class="px-4 py-3 text-left whitespace-nowrap">Invoice ID</th>
                         <th class="px-4 py-3 text-left whitespace-nowrap">Customer</th>
                         <th class="px-4 py-3 text-left whitespace-nowrap">Products</th>
@@ -331,7 +335,7 @@
 
                             <td class="px-4 py-3 text-center whitespace-nowrap">
                                 <input type="checkbox" name="orders[]" value="{{ $order->id }}"
-                                    class="order-checkbox w-[16px] h-[16px] text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
+                                    class="order-checkbox w-[16px] h-[16px] text-indigo-600 border-gray-10 rounded focus:ring-indigo-500"
                                     onclick="event.stopPropagation(); updateSelectedIds();">
                             </td>
 
@@ -391,7 +395,7 @@
                             </td>
 
                             <td class="px-4 py-3 text-center whitespace-nowrap">
-                                @if ($order->payment_status === 'paid')
+                                @if ($order->payment)
                                     <span class="px-2 py-1.5 rounded bg-green-500 text-white text-xs">Paid</span>
                                 @else
                                     <span class="px-2 py-1.5 rounded bg-red-500 text-white text-xs">Unpaid</span>
@@ -474,6 +478,17 @@
     </script>
 
     <script>
+        function selectAll() {
+            const selectAllCheckbox = document.querySelector('th input[type="checkbox"]');
+            const checkboxes = document.querySelectorAll('.order-checkbox');
+
+            checkboxes.forEach(cb => {
+                cb.checked = selectAllCheckbox.checked;
+            });
+
+            updateSelectedIds();
+        }
+
         function updateSelectedIds() {
             const checkboxes = document.querySelectorAll('.order-checkbox:checked');
             const ids = Array.from(checkboxes).map(cb => cb.value);

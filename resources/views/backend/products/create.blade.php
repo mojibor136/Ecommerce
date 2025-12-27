@@ -155,7 +155,7 @@
                 <!-- Image -->
                 <div class="col-span-2 md:col-span-1">
                     <label class="block text-md text-gray-700 mb-1 font-medium">Product Image</label>
-                    <input type="file" name="image" accept="image/*"
+                    <input type="file" name="image[]" accept="image/*" multiple
                         class="w-full rounded-md border border-gray-300 text-gray-900 focus:ring-2 focus:ring-[{{ $theme->theme_bg }}]
            file:bg-[{{ $theme->theme_bg }}] file:text-[{{ $theme->theme_text }}] file:border-0 file:rounded-l file:px-3 file:py-2 file:cursor-pointer
            hover:file:bg-[{{ $theme->theme_hover }}] transition-all duration-200">

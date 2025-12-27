@@ -12,6 +12,7 @@ use App\Models\Product;
 use App\Models\ProductVariant;
 use App\Models\Setting;
 use App\Models\Shipping;
+use App\Models\Textlocal;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -22,6 +23,16 @@ class OrderController extends Controller
     public function createOrder(Request $request)
     {
         DB::beginTransaction();
+
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'phone' => ['required', 'regex:/^01\d{9}$/'],
+            'city' => 'required|string',
+            'address' => 'required|string',
+            'charge' => 'nullable|numeric',
+            'discount' => 'nullable|numeric',
+        ]);
 
         $smtp = GmailSmtp::where('status', 1)->first();
         $setting = Setting::first();
@@ -39,6 +50,8 @@ class OrderController extends Controller
                 'mail.from.name' => $setting->name,
             ]);
         }
+
+        $sms = Textlocal::first();
 
         try {
 
@@ -110,6 +123,29 @@ class OrderController extends Controller
 
             $incomplete = Order::find($request->incomplete);
 
+            if ($sms && $request->phone) {
+                try {
+                    $api_key = $sms->api_key;
+
+                    $number = $request->phone;
+
+                    if (! str_starts_with($number, '+88')) {
+                        $number = '+88'.ltrim($number, '0');
+                    }
+                    $message = "Dear {$request->name}, your order #{$order->invoice_id} has been placed successfully. Total: ৳{$order->total}";
+
+                    $url = $sms->url."?api_key={$api_key}&number={$number}&message=".urlencode($message);
+
+                    $response = file_get_contents($url);
+                    $data = json_decode($response, true);
+
+                    if ($data['status'] != 'success') {
+                        Log::warning('SMS failed: '.$data['message']);
+                    }
+                } catch (\Exception $e) {
+                    Log::error('SMS sending failed: '.$e->getMessage());
+                }
+            }
             if ($incomplete) {
                 $incomplete->delete();
             }
@@ -124,7 +160,6 @@ class OrderController extends Controller
             }
 
             DB::commit();
-
             if ($request->payment_method == 'cod') {
                 return redirect()->route('order.success', [
                     'invoice_id' => $order->invoice_id,

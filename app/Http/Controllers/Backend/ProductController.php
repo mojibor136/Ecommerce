@@ -65,12 +65,13 @@ class ProductController extends Controller
             'sku' => 'required|string|max:100|unique:products,sku',
             'description' => 'required|string',
             'category_id' => 'required|exists:categories,id',
-            'subcategory_id' => 'required|exists:subcategories,id',
+            'subcategory_id' => 'nullable|exists:subcategories,id',
             'buy_price' => 'required|numeric|min:0',
             'old_price' => 'required|numeric|min:0',
             'new_price' => 'required|numeric|min:0',
             'stock' => 'required|numeric|min:0',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'image' => 'nullable|array',
+            'image.*' => 'image|mimes:jpeg,png,jpg,gif,webp|max:51200',
             'status' => 'required|in:0,1',
             'type' => 'required|in:0,1',
             'hot_deal' => 'required|in:0,1',
@@ -103,7 +104,7 @@ class ProductController extends Controller
                 'old_price' => $validated['old_price'],
                 'new_price' => $validated['new_price'],
                 'category_id' => $validated['category_id'],
-                'subcategory_id' => $validated['subcategory_id'],
+                'subcategory_id' => $validated['subcategory_id'] ?? 0,
                 'status' => $validated['status'],
                 'hot_deal' => $validated['hot_deal'],
                 'brand' => $validated['brand'] ?? ($setting->brand ?? null),
@@ -111,15 +112,16 @@ class ProductController extends Controller
             ]);
 
             if ($request->hasFile('image')) {
-                $imageFile = $request->file('image');
-                $imageName = uniqid().'.'.$imageFile->getClientOriginalExtension();
-                $imageFile->move(public_path('uploads/products'), $imageName);
+                foreach ($request->file('image') as $key => $imageFile) {
+                    $imageName = uniqid().'.'.$imageFile->getClientOriginalExtension();
+                    $imageFile->move(public_path('uploads/products'), $imageName);
 
-                ProductImage::create([
-                    'product_id' => $product->id,
-                    'image' => $imageName,
-                    'is_main' => 1,
-                ]);
+                    ProductImage::create([
+                        'product_id' => $product->id,
+                        'image' => $imageName,
+                        'is_main' => $key === 0 ? 1 : 0,
+                    ]);
+                }
             }
 
             if ($validated['type'] == 1 && isset($validated['variants'])) {
@@ -235,14 +237,15 @@ class ProductController extends Controller
             'sku' => 'required|string|max:100|unique:products,sku,'.$id,
             'description' => 'nullable|string',
             'category_id' => 'required|exists:categories,id',
-            'subcategory_id' => 'required|exists:subcategories,id',
+            'subcategory_id' => 'nullable|exists:subcategories,id',
             'buy_price' => 'nullable|numeric|min:0',
             'old_price' => 'nullable|numeric|min:0',
             'new_price' => 'nullable|numeric|min:0',
             'stock' => 'nullable|integer|min:0',
             'status' => 'required|in:0,1',
             'type' => 'required|in:0,1',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'image' => 'nullable|array',
+            'image.*' => 'image|mimes:jpeg,png,jpg,gif,webp|max:51200',
             'variants' => 'nullable|array',
         ]);
 
@@ -251,7 +254,7 @@ class ProductController extends Controller
             'sku' => $request->sku,
             'desc' => $request->description,
             'category_id' => $request->category_id,
-            'subcategory_id' => $request->subcategory_id,
+            'subcategory_id' => $request->subcategory_id ?? 0,
             'buy_price' => $request->buy_price,
             'old_price' => $request->old_price,
             'new_price' => $request->new_price,
@@ -263,24 +266,33 @@ class ProductController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
-            $file = $request->file('image');
-            $filename = time().'.'.$file->getClientOriginalExtension();
-            $file->move(public_path('uploads/products'), $filename);
+            foreach ($request->file('image') as $key => $imageFile) {
+                $imageName = uniqid().'.'.$imageFile->getClientOriginalExtension();
+                $imageFile->move(public_path('uploads/products'), $imageName);
 
-            $oldImage = $product->images()->where('is_main', 1)->first();
-            if ($oldImage) {
-                $oldPath = public_path('uploads/products/'.$oldImage->image);
-                if (file_exists($oldPath)) {
-                    unlink($oldPath);
+                if ($key === 0) {
+                    $oldImage = $product->images()->where('is_main', 1)->first();
+                    if ($oldImage) {
+                        $oldPath = public_path('uploads/products/'.$oldImage->image);
+                        if (file_exists($oldPath)) {
+                            unlink($oldPath);
+                        }
+                        $oldImage->delete();
+                    }
+
+                    ProductImage::create([
+                        'product_id' => $product->id,
+                        'image' => $imageName,
+                        'is_main' => 1,
+                    ]);
+                } else {
+                    ProductImage::create([
+                        'product_id' => $product->id,
+                        'image' => $imageName,
+                        'is_main' => 0,
+                    ]);
                 }
-                $oldImage->delete();
             }
-
-            ProductImage::create([
-                'product_id' => $product->id,
-                'image' => $filename,
-                'is_main' => 1,
-            ]);
         }
 
         if ($request->type == 1 && $request->has('variants')) {

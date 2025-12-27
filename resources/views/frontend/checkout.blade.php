@@ -32,51 +32,56 @@
                 @endif
                 <div class="lg:w-2/3 bg-white shadow rounded-lg md:p-6 p-4">
                     <h2 class="text-lg font-semibold mb-4 flex items-center gap-2">
-                        <i class="ri-user-line text-[{{ $theme->theme_bg }}]"></i>Customer Information
+                        <i class="ri-user-line text-[{{ $theme->theme_bg }}]"></i>কাস্টমার তথ্য
                     </h2>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                         <div>
-                            <label class="text-md mb-1 text-gray-600">Full Name</label>
+                            <label class="text-md mb-1 text-gray-600">আপনার নাম</label>
                             <input type="text" name="name" value="{{ old('name') }}" required
                                 class="w-full border border-gray-300 rounded px-3 py-2 text-md focus:border-[{{ $theme->theme_bg }}] focus:ring-1 focus:ring-[{{ $theme->theme_bg }}] outline-none"
-                                placeholder="Enter your name">
+                                placeholder="আপনার নাম লিখুন">
                         </div>
+
                         <div>
-                            <label class="text-md mb-1 text-gray-600">Email Address</label>
+                            <label class="text-md mb-1 text-gray-600">ইমেইল ঠিকানা</label>
                             <input type="email" name="email" value="{{ old('email') }}" required
                                 class="w-full border border-gray-300 rounded px-3 py-2 text-md focus:border-[{{ $theme->theme_bg }}] focus:ring-1 focus:ring-[{{ $theme->theme_bg }}] outline-none"
                                 placeholder="you@example.com">
                         </div>
+
                         <div>
-                            <label class="text-md mb-1 text-gray-600">Phone Number</label>
+                            <label class="text-md mb-1 text-gray-600">ফোন নাম্বার</label>
                             <input type="tel" name="phone" value="{{ old('phone') }}" required
                                 class="w-full border border-gray-300 rounded px-3 py-2 text-md focus:border-[{{ $theme->theme_bg }}] focus:ring-1 focus:ring-[{{ $theme->theme_bg }}] outline-none"
                                 placeholder="+8801XXXXXXXXX">
                         </div>
+
                         <div>
-                            <label class="text-md mb-1 text-gray-600">City</label>
+                            <label class="text-md mb-1 text-gray-600">শহরের নাম</label>
                             <input type="text" name="city" value="{{ old('city') }}" required
                                 class="w-full border border-gray-300 rounded px-3 py-2 text-md focus:border-[{{ $theme->theme_bg }}] focus:ring-1 focus:ring-[{{ $theme->theme_bg }}] outline-none"
-                                placeholder="Enter city">
+                                placeholder="শহরের নাম লিখুন">
                         </div>
+
                         <div class="md:col-span-2">
-                            <label class="text-md mb-1 text-gray-600">Delivery Area</label>
+                            <label class="text-md mb-1 text-gray-600">ডেলিভারি এরিয়া</label>
                             <select name="charge" id="deliveryArea" required
-                                class="w-full border border-gray-300 rounded px-3 py-[10px] text-md focus:border-[{{ $theme->theme_bg }}] focus:ring-1 focus:ring-[{{ $theme->theme_bg }}] outline-none">
-                                <option value="{{ $inDhakaCharge }}">Inside Dhaka</option>
-                                <option value="{{ $outDhakaCharge }}">Outside Dhaka</option>
+                                class="deliveryArea w-full border border-gray-300 rounded px-3 py-[10px] text-md focus:border-[{{ $theme->theme_bg }}] focus:ring-1 focus:ring-[{{ $theme->theme_bg }}] outline-none">
+                                <option value="{{ $inDhakaCharge }}">ঢাকার ভিতরে</option>
+                                <option value="{{ $outDhakaCharge }}">ঢাকার বাইরে</option>
                             </select>
                         </div>
+
                         <div class="md:col-span-2">
-                            <label class="text-md mb-1 text-gray-600">Full Address</label>
+                            <label class="text-md mb-1 text-gray-600">সম্পূর্ণ ঠিকানা</label>
                             <textarea name="address" rows="3" required
                                 class="w-full border border-gray-300 rounded px-3 py-2 text-md focus:border-[{{ $theme->theme_bg }}] focus:ring-1 focus:ring-[{{ $theme->theme_bg }}] outline-none"
-                                placeholder="House, Road, Area">{{ old('address') }}</textarea>
+                                placeholder="বাড়ি, রোড, এরিয়া">{{ old('address') }}</textarea>
                         </div>
                     </div>
 
                     <h2 class="text-lg font-semibold flex items-center gap-2">
-                        <i class="ri-shopping-bag-3-line text-[{{ $theme->theme_bg }}]"></i>Order Details
+                        <i class="ri-shopping-bag-3-line text-[{{ $theme->theme_bg }}]"></i>অর্ডার বিবরণ
                     </h2>
                     <div class="flex flex-col gap-2">
                         <div class="flex items-center justify-between border-b border-gray-200 py-4 cart-item"
@@ -119,10 +124,6 @@
                             class="ri-bill-line text-[{{ $theme->theme_bg }}]"></i>Order Summary</h2>
 
                     <div class="flex justify-between mb-2">
-                        <span class="text-gray-600">Your Location</span>
-                        <span class="text-gray-800 font-medium customer-location">Detecting...</span>
-                    </div>
-                    <div class="flex justify-between mb-2">
                         <span class="text-gray-600">Subtotal</span>
                         <span class="font-medium text-gray-800 subtotal">৳{{ number_format($subtotal, 0) }}</span>
                     </div>
@@ -148,23 +149,26 @@
                                     class="w-24 h-12 mx-auto">
                             </div>
 
-                            <div class="payment-card border border-gray-300 rounded-lg px-2 text-center transition-all duration-300 
-                                {{ $bkashStatus == 1 ? 'cursor-pointer hover:scale-95' : 'opacity-40 cursor-not-allowed' }}"
-                                data-method="bkash"
-                                @if ($bkashStatus == 1) onclick="selectPayment('bkash')" @endif>
+                            @if ($bkashStatus == 1)
+                                <div class="payment-card border border-gray-300 rounded-lg px-2 text-center transition-all duration-300 
+                                cursor-pointer hover:scale-95"
+                                    data-method="bkash" onclick="selectPayment('bkash')">
 
-                                <img src="https://www.logo.wine/a/logo/BKash/BKash-bKash-Logo.wine.svg" alt="bKash"
-                                    class="w-24 h-12 mx-auto">
-                            </div>
+                                    <img src="https://www.logo.wine/a/logo/BKash/BKash-bKash-Logo.wine.svg" alt="bKash"
+                                        class="w-24 h-12 mx-auto">
+                                </div>
+                            @endif
 
-                            <div class="payment-card border border-gray-300 rounded-lg px-2 text-center transition-all duration-300 
-                                {{ $nagadStatus == 1 ? 'cursor-pointer hover:scale-95' : 'opacity-40 cursor-not-allowed' }}"
-                                data-method="nagad"
-                                @if ($nagadStatus == 1) onclick="selectPayment('nagad')" @endif>
+                            @if ($nagadStatus == 1)
+                                <div class="payment-card border border-gray-300 rounded-lg px-2 text-center transition-all duration-300 
+                                cursor-pointer hover:scale-95"
+                                    data-method="nagad" onclick="selectPayment('nagad')">
 
-                                <img src="https://www.logo.wine/a/logo/Nagad/Nagad-Logo.wine.svg" alt="Nagad"
-                                    class="w-24 h-12 mx-auto">
-                            </div>
+                                    <img src="https://www.logo.wine/a/logo/Nagad/Nagad-Logo.wine.svg" alt="Nagad"
+                                        class="w-24 h-12 mx-auto">
+                                </div>
+                            @endif
+
                         </div>
                         <input type="hidden" name="payment_method" id="selectedPaymentMethod" value="cod">
                     </div>
@@ -230,51 +234,58 @@
                 @endforeach
                 <div class="lg:w-2/3 bg-white shadow rounded-lg md:p-6 p-4">
                     <h2 class="text-lg font-semibold mb-4 flex items-center gap-2">
-                        <i class="ri-user-line text-[{{ $theme->theme_bg }}]"></i>Customer Information
+                        <i class="ri-user-line text-[{{ $theme->theme_bg }}]"></i>কাস্টমার তথ্য
                     </h2>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+
                         <div>
-                            <label class="text-md mb-1 text-gray-600">Full Name</label>
+                            <label class="text-md mb-1 text-gray-600">আপনার নাম</label>
                             <input type="text" name="name" value="{{ old('name') }}" required
                                 class="w-full border border-gray-300 rounded px-3 py-2 text-md focus:border-[{{ $theme->theme_bg }}] focus:ring-1 focus:ring-[{{ $theme->theme_bg }}] outline-none"
-                                placeholder="Enter your name">
+                                placeholder="আপনার নাম লিখুন">
                         </div>
+
                         <div>
-                            <label class="text-md mb-1 text-gray-600">Email Address</label>
+                            <label class="text-md mb-1 text-gray-600">ইমেইল ঠিকানা</label>
                             <input type="email" name="email" value="{{ old('email') }}" required
                                 class="w-full border border-gray-300 rounded px-3 py-2 text-md focus:border-[{{ $theme->theme_bg }}] focus:ring-1 focus:ring-[{{ $theme->theme_bg }}] outline-none"
-                                placeholder="you@example.com">
+                                placeholder="আপনার ইমেইল লিখুন">
                         </div>
+
                         <div>
-                            <label class="text-md mb-1 text-gray-600">Phone Number</label>
+                            <label class="text-md mb-1 text-gray-600">ফোন নম্বর</label>
                             <input type="tel" name="phone" value="{{ old('phone') }}" required
                                 class="w-full border border-gray-300 rounded px-3 py-2 text-md focus:border-[{{ $theme->theme_bg }}] focus:ring-1 focus:ring-[{{ $theme->theme_bg }}] outline-none"
                                 placeholder="+8801XXXXXXXXX">
                         </div>
+
                         <div>
-                            <label class="text-md mb-1 text-gray-600">City</label>
+                            <label class="text-md mb-1 text-gray-600">শহর</label>
                             <input type="text" name="city" value="{{ old('city') }}" required
                                 class="w-full border border-gray-300 rounded px-3 py-2 text-md focus:border-[{{ $theme->theme_bg }}] focus:ring-1 focus:ring-[{{ $theme->theme_bg }}] outline-none"
-                                placeholder="Enter city">
+                                placeholder="শহরের নাম লিখুন">
                         </div>
+
                         <div class="md:col-span-2">
-                            <label class="text-md mb-1 text-gray-600">Delivery Area</label>
+                            <label class="text-md mb-1 text-gray-600">ডেলিভারি এরিয়া</label>
                             <select name="charge" id="deliveryArea" required
-                                class="w-full border border-gray-300 rounded px-3 py-[10px] text-md focus:border-[{{ $theme->theme_bg }}] focus:ring-1 focus:ring-[{{ $theme->theme_bg }}] outline-none">
-                                <option value="{{ $inDhakaCharge }}">Inside Dhaka</option>
-                                <option value="{{ $outDhakaCharge }}">Outside Dhaka</option>
+                                class="deliveryArea w-full border border-gray-300 rounded px-3 py-[10px] text-md focus:border-[{{ $theme->theme_bg }}] focus:ring-1 focus:ring-[{{ $theme->theme_bg }}] outline-none">
+                                <option value="{{ $inDhakaCharge }}">ঢাকার ভিতরে</option>
+                                <option value="{{ $outDhakaCharge }}">ঢাকার বাইরে</option>
                             </select>
                         </div>
+
                         <div class="md:col-span-2">
-                            <label class="text-md mb-1 text-gray-600">Full Address</label>
+                            <label class="text-md mb-1 text-gray-600">সম্পূর্ণ ঠিকানা</label>
                             <textarea name="address" rows="3" required
                                 class="w-full border border-gray-300 rounded px-3 py-2 text-md focus:border-[{{ $theme->theme_bg }}] focus:ring-1 focus:ring-[{{ $theme->theme_bg }}] outline-none"
-                                placeholder="House, Road, Area">{{ old('address') }}</textarea>
+                                placeholder="বাড়ি, রোড, এরিয়া লিখুন">{{ old('address') }}</textarea>
                         </div>
+
                     </div>
 
                     <h2 class="text-lg font-semibold flex items-center gap-2">
-                        <i class="ri-shopping-bag-3-line text-[{{ $theme->theme_bg }}]"></i>Order Details
+                        <i class="ri-shopping-bag-3-line text-[{{ $theme->theme_bg }}]"></i>অর্ডার বিবরণ
                     </h2>
                     <div class="flex flex-col gap-2">
                         @foreach ($cart as $id => $item)
@@ -325,10 +336,6 @@
                             class="ri-bill-line text-[{{ $theme->theme_bg }}]"></i>Order Summary</h2>
 
                     <div class="flex justify-between mb-2">
-                        <span class="text-gray-600">Your Location</span>
-                        <span class="text-gray-800 font-medium customer-location">Detecting...</span>
-                    </div>
-                    <div class="flex justify-between mb-2">
                         <span class="text-gray-600">Subtotal</span>
                         <span class="font-medium text-gray-800 subtotal">৳{{ number_format($subtotal, 0) }}</span>
                     </div>
@@ -355,23 +362,27 @@
                                     class="w-24 h-12 mx-auto">
                             </div>
 
-                            <div class="payment-card border border-gray-300 rounded-lg px-2 text-center transition-all duration-300 
-                                {{ $bkashStatus == 1 ? 'cursor-pointer hover:scale-95' : 'opacity-40 cursor-not-allowed' }}"
-                                data-method="bkash"
-                                @if ($bkashStatus == 1) onclick="selectPayment('bkash')" @endif>
+                            @if ($bkashStatus == 1)
+                                <div class="payment-card border border-gray-300 rounded-lg px-2 text-center transition-all duration-300 
+                            cursor-pointer hover:scale-95"
+                                    data-method="bkash" onclick="selectPayment('bkash')">
 
-                                <img src="https://www.logo.wine/a/logo/BKash/BKash-bKash-Logo.wine.svg" alt="bKash"
-                                    class="w-24 h-12 mx-auto">
-                            </div>
+                                    <img src="https://www.logo.wine/a/logo/BKash/BKash-bKash-Logo.wine.svg" alt="bKash"
+                                        class="w-24 h-12 mx-auto">
+                                </div>
+                            @endif
 
-                            <div class="payment-card border border-gray-300 rounded-lg px-2 text-center transition-all duration-300 
-                                {{ $nagadStatus == 1 ? 'cursor-pointer hover:scale-95' : 'opacity-40 cursor-not-allowed' }}"
-                                data-method="nagad"
-                                @if ($nagadStatus == 1) onclick="selectPayment('nagad')" @endif>
+                            @if ($nagadStatus == 1)
+                                <div class="payment-card border border-gray-300 rounded-lg px-2 text-center transition-all duration-300 
+                                cursor-pointer hover:scale-95"
+                                    data-method="nagad" onclick="selectPayment('nagad')">
 
-                                <img src="https://www.logo.wine/a/logo/Nagad/Nagad-Logo.wine.svg" alt="Nagad"
-                                    class="w-24 h-12 mx-auto">
-                            </div>
+                                    <img src="https://www.logo.wine/a/logo/Nagad/Nagad-Logo.wine.svg" alt="Nagad"
+                                        class="w-24 h-12 mx-auto">
+                                </div>
+                            @endif
+
+
                         </div>
                         <input type="hidden" name="payment_method" id="selectedPaymentMethod" value="cod">
                     </div>
@@ -622,47 +633,24 @@
     </script>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const locationSpan = document.querySelector('.customer-location');
-
-            if (!navigator.geolocation) {
-                locationSpan.textContent = "Location not supported";
-                return;
+        $(document).ready(function() {
+            function updateTotal(dropdown) {
+                const formContainer = $(dropdown).closest('form');
+                let subtotalText = formContainer.find('.subtotal').first().text().replace(/[৳,]/g, '');
+                let subtotal = parseFloat(subtotalText) || 0;
+                let charge = parseFloat($(dropdown).val()) || 0;
+                formContainer.find('.shipping').text('৳' + charge.toLocaleString());
+                let total = subtotal + charge;
+                formContainer.find('.total').text('৳' + total.toLocaleString());
             }
 
-            navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
+            $('.deliveryArea').on('change', function() {
+                updateTotal(this);
+            });
 
-            function successCallback(position) {
-                const lat = position.coords.latitude;
-                const lon = position.coords.longitude;
-
-                const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`;
-
-                fetch(url)
-                    .then(res => res.json())
-                    .then(data => {
-                        if (data.address) {
-                            const city = data.address.city || data.address.town || data.address.village ||
-                                "Unknown city";
-                            const country = data.address.country || "Unknown country";
-
-                            locationSpan.textContent = `${city}, ${country}`;
-
-                            sessionStorage.setItem('customerCity', city);
-                            sessionStorage.setItem('customerCountry', country);
-                        } else {
-                            locationSpan.textContent = "Location not available";
-                        }
-                    })
-                    .catch(err => {
-                        console.error(err);
-                        locationSpan.textContent = "Location not available";
-                    });
-            }
-
-            function errorCallback(err) {
-                locationSpan.textContent = "Permission denied";
-            }
+            $('.deliveryArea').each(function() {
+                updateTotal(this);
+            });
         });
     </script>
 @endsection

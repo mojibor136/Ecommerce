@@ -90,24 +90,6 @@
     text-sm sm:text-base outline-none focus:ring-2 focus:ring-[{{ $theme->theme_bg }}] transition-all duration-200">
                 </div>
 
-                <!-- TinyMCE CDN -->
-                <script src="https://cdn.tiny.cloud/1/fsx8l20fj4nn5mesnxt5ddhbf0yrj7q6kz5ph1i042r9p7ub/tinymce/8/tinymce.min.js"
-                    referrerpolicy="origin" crossorigin="anonymous"></script>
-                <script>
-                    tinymce.init({
-                        selector: '#productDescription',
-                        height: 300,
-                        menubar: false,
-                        plugins: 'lists link image table code',
-                        toolbar: 'undo redo | formatselect | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist | link image | code',
-                        setup: function(editor) {
-                            editor.on('init', function() {
-                                editor.setContent(`{!! old('description', $product->desc) !!}`);
-                            });
-                        }
-                    });
-                </script>
-
                 <!-- Category -->
                 <div class="col-span-2 md:col-span-1">
                     <label class="block text-md text-gray-700 mb-1 font-medium">Select Category</label>
@@ -161,13 +143,20 @@
     text-sm sm:text-base outline-none focus:ring-2 focus:ring-[{{ $theme->theme_bg }}] transition-all duration-200">
                 </div>
 
-                <!-- Image -->
                 <div class="col-span-2 md:col-span-1">
-                    <label class="block text-md text-gray-700 mb-1 font-medium">Product Image</label>
-                    <input type="file" name="image" accept="image/*"
+                    <label class="block text-md text-gray-700 mb-1 font-medium">Product Images</label>
+                    <div class="flex flex-wrap gap-2 mb-2">
+                        @foreach ($product->images as $img)
+                            <div class="relative w-24 h-24 border rounded overflow-hidden">
+                                <img src="{{ asset('public/uploads/products/' . $img->image) }}"
+                                    class="w-full h-full object-cover">
+                            </div>
+                        @endforeach
+                    </div>
+                    <input type="file" name="image[]" accept="image/*" multiple
                         class="w-full rounded-md border border-gray-300 text-gray-900 focus:ring-2 focus:ring-[{{ $theme->theme_bg }}]
-           file:bg-[{{ $theme->theme_bg }}] file:text-[{{ $theme->theme_text }}] file:border-0 file:rounded-l file:px-3 file:py-2 file:cursor-pointer
-           hover:file:bg-[{{ $theme->theme_hover }}] transition-all duration-200">
+        file:bg-[{{ $theme->theme_bg }}] file:text-[{{ $theme->theme_text }}] file:border-0 file:rounded-l file:px-3 file:py-2 file:cursor-pointer
+        hover:file:bg-[{{ $theme->theme_hover }}] transition-all duration-200">
                 </div>
 
                 <!-- Status -->
@@ -176,7 +165,8 @@
                     <select name="status"
                         class="w-full rounded-md bg-white text-gray-900 border px-3 sm:px-4 py-2.5
         text-sm sm:text-base outline-none focus:ring-2 focus:ring-[{{ $theme->theme_bg }}] transition-all duration-200 border-gray-300">
-                        <option value="1" {{ old('status', $product->status) == 1 ? 'selected' : '' }}>Active</option>
+                        <option value="1" {{ old('status', $product->status) == 1 ? 'selected' : '' }}>Active
+                        </option>
                         <option value="0" {{ old('status', $product->status) == 0 ? 'selected' : '' }}>Inactive
                         </option>
                     </select>
@@ -420,3 +410,29 @@
         });
     </script>
 @endsection
+
+@push('scripts')
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-lite.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-lite.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/lang/summernote-en-US.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('#productDescription').summernote({
+                placeholder: 'Write something...',
+                tabsize: 2,
+                height: 200,
+                toolbar: [
+                    ['style', ['bold', 'italic', 'underline', 'clear']],
+                    ['font', ['strikethrough', 'superscript', 'subscript']],
+                    ['fontsize', ['fontsize']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['insert', ['link', 'picture', 'video']],
+                    ['view', ['fullscreen', 'codeview', 'help']]
+                ]
+            });
+        });
+    </script>
+@endpush
